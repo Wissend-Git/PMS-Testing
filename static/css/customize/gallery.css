@@ -1,0 +1,257 @@
+.gallery_content{
+	background-color: #fff;
+	margin: 1rem 0rem;
+	padding-bottom: 1rem;
+	border-radius: 3px;
+}
+
+.gallery_head{
+	list-style: none;
+	color: #00abad;
+	font-weight: 600;
+	font-size: 25px;
+	display: block;
+	padding: 7px 5px 0px;
+	margin: 5px;
+	text-align: center;
+}
+
+.gallery_tab{
+  display: flex;
+  border-bottom: 1px solid #ccc;
+  /*border-radius: 5px;*/
+  /*box-shadow: 0 0 0 #4d4d4d, 0 8px 20px -7px #4d4d4d;*/
+}
+
+.gallery_content i{
+	margin-right: 8px;
+	width: 15px;
+}
+
+.gallery_tab button{
+	background: transparent;
+	border: none;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	outline: none;
+	cursor: pointer;
+	padding: 10px 15px;
+	margin-right: 1px;
+	font-size: 13px;
+	font-weight: 600;
+}
+
+.report_tab .fa{
+	margin-right: 10px;
+}
+
+.gallery_tab button:hover{
+	background-color: #e5e5e5;
+}
+
+/*###################################################### List & Grid Content ######################################################*/
+/*.content_allignment{
+    position: absolute;
+    right: 0;
+    padding: 8px;
+    margin-right: 10px;
+}
+
+.content_allignment button{
+    background-color: #d9d9d9;
+    color: #000;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.content_allignment button:hover{
+    background-color: #404040;
+    color: #fff;
+}*/
+/*###################################################### List & Grid Content ######################################################*/
+
+/*###################################################### Tab interior ######################################################*/
+
+.gallery_tab_content p{
+  /*color: #00b1b3;*/
+  color: #000;
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 8px;
+  padding: 15px;
+  /*border-bottom: 1px solid #ccc;*/
+}
+
+.gallery_tab_content .gallery_row{
+	padding: 0 10px;
+}
+
+.hover-shadow:hover{
+	box-shadow: 0 5px 10px 0 #595959, 0 6px 15px 0 #4d4d4d;
+}
+
+.gallery_tab_content .gallery_col{
+  float: left;
+  width: 25%;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+.gallery_col:hover{
+  -ms-transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+/*###################################################### Tab interior ######################################################*/
+
+/*###################################################### Popup Image options ######################################################*/
+#popup_image{
+    display: none;
+    position:absolute;
+    padding-top: 30px;
+    margin:0 auto;
+    top: 50%;
+    left: 50%;
+    z-index: 111;
+    background-color: #1d1b1bba;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transform: translate(-50%, -50%);
+    box-shadow: 0px 0px 50px 2px #000;
+    overflow: auto;
+}
+
+#popup_image img{
+    height: 600px;
+    width: auto;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding: 35px;
+}
+
+#popup_image span{
+    color: #ffffff;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    font-size: 20px;
+}
+
+.popup_head{
+  
+}
+
+.popup_image_content{
+  position: relative;
+  margin: auto;
+  padding: 10px;
+  max-width: 85%;
+}
+
+#popup_image span i:hover{
+    border-radius: 25px;
+    background-color: #ffffff;
+    padding: 4px 6px;
+    color: #333333 !important;
+    opacity: 1;
+}
+
+.popup_image_content .close:hover{
+    opacity: 1 !important;
+}
+
+.popup_image_content .close{
+    color: #ffffff;
+    position: absolute;
+    top: 20px;
+    right: 0px;
+    font-size: 20px;
+    font-weight: bold;
+    width: 50px;
+    height: 50px;
+    opacity: 1;
+    text-shadow: none;
+}
+
+
+.popup_image_content .prev, .popup_image_content  .next{
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  padding: 5px 10px;
+  margin-top: 0;
+  font-weight: bold;
+  font-size: 13px;
+  transition: 0.3s ease;
+  color: #ffffff !important;
+  border-radius: 25px;
+}
+
+.popup_image_content .next{
+    right: 0;
+}
+
+.popup_image_content .prev{
+    left: 0;
+}
+
+.popup_image_content  .prev:hover, .popup_image_content .next:hover{
+  background-color: #ffffff;
+  color: #333333 !important;
+}
+
+.numbertext{
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+  position: absolute;
+  top: 1;
+}
+/*###################################################### Popup Image options ######################################################*/
+
+#no_image img{
+  margin-left: 44.5%;
+  margin-top: 20px;
+  width: 120px;
+  height: 120px;
+}
+/*###################################################### notification count ######################################################*/
+/*.gallery_tab .badge{
+	display: block;
+	position: absolute;
+	background: #1d1b1b;
+	color: #fff;
+	border-radius: 50%;
+	min-width: 15px;
+	min-height: 15px;
+	text-align: center;
+	padding: 5px;
+	box-sizing: content-box;
+	white-space: nowrap;
+	top: 40px;
+	right: auto;
+}
+
+.gallery_tab .badge:before{
+	content: "";
+	display: inline-block;
+	vertical-align: middle;
+	padding-top: 100%;
+	height: 0;
+}
+
+.gallery_tab .badge span{
+	display: inline-block;
+	vertical-align: middle;
+}*/
+/*###################################################### notification count ######################################################*/
+
+.gallery_tab_content .gallery_col img{
+  border-radius: 5px;
+}

@@ -1,0 +1,263 @@
+body{
+    user-select: auto;
+}
+
+.project_content{
+    background-color: #ffffff;
+    margin: 1rem 0rem;
+    padding-bottom: 1rem;
+    border-radius: 3px;
+}
+
+.project_content form select{
+    font-size: 13px;
+    border-radius: 2px;
+    padding: 1px 0px;
+    font-weight: 600;
+    width: 11%;
+}
+
+/* ############################################ input date Modifications ############################################*/
+.project_content form input[id^="prod_date"]{
+    font-size: 11px;
+    border-radius: 3px;
+    padding: 1px 1px;
+    margin-top: 5px;
+    font-weight: 600;
+    width: 11%;
+}
+/* ############################################ input date Modifications ############################################*/
+
+.project_content form input[name^="hours_"], .project_content form input[name^="minutes_"]{
+    width: 10%;
+}
+
+.project_content h4{
+    color: #01aab2;
+    font-weight: 600;
+    display: inline;
+
+}
+
+.project_content form ul{
+    list-style-type: none;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+.project_content form ul li{
+    font-size: 13px;
+    display: inline;
+    /* margin: 0px 5px; */
+}
+
+.ui-autocomplete li{
+    padding: 0px 5px !important;
+    font-size: 13px;
+}
+
+.ui-autocomplete li:hover, .ui-state-focus, .project_content form ul li option, .project_content form ul li option:hover{
+    background-color: #01cfd3 !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.project_content form ul li option, .project_content form select{
+    cursor: pointer;
+}
+
+.project_content form select::selected{
+    color: red;
+}
+
+.project_content form li input{
+    width: 10%;
+    font-size: 13px;
+    font-weight: 600;
+    height: 22px;
+    padding: 0px 3px;
+}
+
+.project_content form li input::placeholder{
+    color: #887c7c;
+    font-weight: 600;
+}
+
+
+#target_add_more{
+    color: #00abad;
+    border-radius: 2px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 1px 7px;
+    outline: none;
+    height: 22px;
+    margin-left: 10px;
+    background-color: #daf2f3;
+    border: 1px solid #00abad;
+}
+
+.project_content form select option:nth-child(1){
+    display: none;
+}
+
+#product_type_error_text{
+    color: red;
+    font-size: 13px;
+}
+
+.project_content form input[id^="task_name"], .project_content form input[name*="_category_"]{
+    width: 20% !important;
+    margin-left: 10px;
+}
+
+#add_more_target input[name*="_category_"], #add_more_target input[name*="task_name_"], #add_more_target input[name^="hours_"]{
+    margin-left: 13px;
+}
+
+#add_more_target input[name*="_count_"]{
+    margin-left: 15px;
+}
+
+
+.project_content form li[class^="product_category"]{
+    display: none;
+}
+
+.project_content form input[name^="child_count"], .project_content form input[name*="_count_"], .project_content form input[name^="hours_"], .project_content form input[name^="minutes_"]{
+    margin-left: 10px;
+}
+
+#remove_data p{
+    color: #e85959 !important;
+    cursor: pointer;
+    display: inline;
+    margin-left: 10px;
+    border-radius: 2px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 1px 7px;
+    outline: none;
+    height: 22px;
+    background-color: #daf2f3;
+    border: 1px solid #00abad;
+}
+
+.user_comments p, .user_comments textarea{
+    display: inline;
+    font-size: 13px;
+}
+
+.user_comments textarea{
+    width: 50%;
+    height: 100px;
+    margin-bottom: -85px;
+    padding: 0px 5px;
+    color: #222222;
+    font-weight: 600;
+    resize: none;
+}
+
+.project_content form h3{
+    color: #00abad;
+    font-weight: 600;
+    padding: 1rem 0rem;
+    display: inline-block;
+}
+
+#target_submit{
+    background-color: #00abad;
+    border: 0;
+    color: #ffffff;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 20px;
+    margin-top: 5rem;
+    text-align: center;
+    outline: none;
+}
+
+.user_comments{
+    margin-top: 2rem;
+    height: 115px;
+}
+
+.target_info{
+    font-size: 13px;
+    display: inline-block;
+    color: #00abad;
+}
+
+.project_content form span.mandatory {
+    display: table-caption;
+    color:red
+}
+
+.target_count{
+    margin-top: 1rem;
+    font-size: 13px;
+}
+
+.target_count label{
+    display: inline-block;
+    color: #00abad;
+}
+
+.target_count input{
+    width: 7%;
+    font-weight: 600;
+    height: 22px;
+    padding: 0px 3px;
+}
+
+.family_control{
+    display: inline-flex;
+}
+.adding_child, .adding_both, .adding_parent{
+    background-color: #ffffff;
+    color: #00abad;
+    border-radius: 3px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 0px 10px;
+    outline: none;
+    height: 22px;
+    border: 1px solid #00abad;
+    margin-left: 10px;
+}
+
+.adding_child:hover, .adding_both:hover, .adding_parent:hover{
+    background-color: #00abad;
+    color: #ffffff;
+    border: 0;
+}
+
+.family_control{
+    display: inline-flex;
+    color: #212529;
+    margin: 1rem 0rem;
+    font-size: 13px;
+}
+
+.total_hours_count{
+    position: absolute;
+    right: 5px;
+    padding: 5px;
+    margin: 5px;
+    background-color: aquamarine;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #000;
+    top: 5px;
+}
+
+.total_hours_count b{
+    color: #f2f2f2;
+    background: #080808;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px;
+}

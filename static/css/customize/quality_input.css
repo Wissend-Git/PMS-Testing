@@ -1,0 +1,256 @@
+
+.quality_content{
+    background-color: #ffffff;
+    margin: 1rem 0rem 0rem;
+    padding-bottom: 1rem;
+    border-radius: 3px;
+}
+
+.quality_content ul h4 {
+    color: #01aab2;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.quality_input{
+    margin-top: 1rem;
+}
+
+.quality_input ul{
+    list-style-type: none;
+    display: inline;
+    padding: 0;
+    margin-top: 10px;
+    color: #565656;
+    margin-bottom: 7px;
+}
+
+.quality_input ul li{
+    /* display: inline; */
+    margin: 0;
+    border-radius: 5px;
+    padding: 8px 0px;
+}
+
+.quality_input ul li{
+    display: inline;
+}
+
+.quality_input ul li select{
+    width: 100%;
+    border-radius: 3px;
+    padding: 3px;
+    outline: none;
+    color: #565656;
+    background-color: #daf2f3;
+    border: 1px solid #00abad;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* .quality_input ul li#quality_process select{
+    width: 15% !important;
+} */
+
+#quality_user_input .custom-control{
+    display: inline !important;
+}
+
+.quality_input ul li#quality_user_input li{
+    padding: 8px 15px;
+}
+
+#add_more_quality [id^="quality_error"]{
+    display: block;
+}
+
+[id^="quality_error"] li{
+    display: inline-block !important;
+}
+
+[id^="quality_error"] li input{
+    width: 60%;
+    font-size: 12px;
+    color: #222222;
+    height: 25px;
+    padding: 0px 7px;
+    font-weight: 600;
+    border-radius: 3px;
+    border: 1px solid #00abad;
+}
+
+[id^="quality_error"] li select{
+    width: 100%;
+    border-radius: 3px;
+    padding: 3px;
+    outline: none;
+    color: #565656;
+    background-color: #daf2f3;
+    border: 1px solid #00abad;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+[id^="quality_error"] li input::placeholder{
+    color: #887c7c;
+}
+
+.quality_submit button{
+    background-color: #00abad;
+    border: 0;
+    color: #ffffff;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 20px;
+    margin-top: 3rem;
+    text-align: center;
+    outline: none;
+}
+
+.add_more_process{
+    color: #00abad;
+    border-radius: 2px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 10px;
+    outline: none;
+    margin-left: 10px;
+    background-color: #daf2f3;
+    border: 1px solid #00abad;
+}
+
+#product_type_error_text{
+    color: red;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+#add_more_quality [id^="quality_error"] li{
+    margin-right: 4.5px;
+}
+
+input[name^="file_"]{
+    width: 100% !important;
+}
+
+#remove_data p{
+    color: #e85959 !important;
+    cursor: pointer;
+    display: inline;
+    margin-left: 10px;
+    font-size: 12px;
+}
+
+.wrap_label{
+    display: inline-block;
+}
+
+.wrap_label_input{
+    display: inline-block;
+    margin-right: -60px;
+}
+
+.wrap_label label, .wrap_label_input label{
+    display: block;
+    margin-bottom: 1px;
+    color: black;
+    font-size: 11px;
+}
+
+.wrap_label label::after, .wrap_label_input label::after{
+    content:" *";
+    color:red;
+}
+
+.quality_comments textarea{
+    overflow: auto;
+    resize: none;
+    width: 300px;
+    height: 40px;
+    font-size: 12px;
+    color: #222222;
+    padding: 0px 5px;
+    font-weight: 600;
+    border-radius: 3px;
+    border: 1px solid #00abad;
+}
+
+li#remove_data{
+    margin-left: 70px;
+}
+
+.wrap_label select#myFilter{
+    width: 150px;
+}
+
+.wrap_label_input input[name^="hours"], .wrap_label_input input[name^="minutes"]{
+    width: 60px;
+    margin-right: 65px;
+}
+
+/* Total Counts of recieved & Audited */
+.total_recieved_count{
+    position: fixed;
+    right: 3%;
+    top: 100px;
+    background: #4d4d4dba;
+    color: #fff;
+    font-size: 13px;
+    text-align: center;
+    padding: 5px;
+    height: 30px;
+    border-radius: 50px;
+    width: 100px;
+}
+
+.total_audited_count{
+    position: fixed;
+    right: 3%;
+    top: 140px;
+    background: #4d4d4dba;
+    color: #fff;
+    font-size: 13px;
+    text-align: center;
+    padding: 5px;
+    height: 30px;
+    border-radius: 50px;
+    width: 100px;
+}
+
+.total_recieved_label{
+    top: 100px;
+    right: 160px;
+    position: fixed;
+    background: transparent;
+    font-size: 13px;
+    color: #fff;
+    text-align: left;
+    width: auto;
+    padding: 7px;
+}
+
+.total_audited_label{
+    top: 140px;
+    right: 160px;
+    position: fixed;
+    background: transparent;
+    font-size: 13px;
+    color: #fff;
+    text-align: left;
+    width: auto;
+    padding: 7px;
+}
+
+.overall_qc_counts{
+    display: block;
+    position: fixed;
+    background: #00b1b3;
+    right: 2%;
+    top: 90px;
+    width: 250px;
+    height: 90px;
+    border-radius: 15px;
+}

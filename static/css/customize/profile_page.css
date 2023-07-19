@@ -1,0 +1,657 @@
+.profile_content{
+    border-radius: 4px;
+    text-align: center;
+    border: 2px solid #00b1b3;
+    background-color: #ffffff;
+    margin: 0px 10px;
+}
+
+.profile_right{
+    margin-top: 1rem !important;
+}
+
+.profile_block ul li{
+    font-size: 12px !important;
+}
+
+.profile_info .profile_block p{
+    display: block;
+    margin-bottom: 0;
+    font-size: 13px;
+    color: #333333;
+}
+
+.profile_info ul li p:nth-child(2){
+    margin-bottom: 5px;
+}
+
+.profile_info ul li p:nth-child(1){
+    color: #01aab2;
+    font-size: 12px;
+}
+
+.profile_img_content{
+    height: 250px;
+    width: 180px;
+    text-align: center;
+    margin: 10px 0px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.profile_img{
+/*    background-image: linear-gradient(to bottom right, #01adb1, #01d6da);*/
+/*    background: #01adb1;*/
+    border-radius: 3px;
+}
+
+.profile_img h6{
+    font-weight: 600 !important;
+    margin-top: 1rem;
+    color: #ffffff;
+}
+
+.profile_img p{
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.profile_content img{
+    width: 200px;
+    height: auto;
+    margin: 1rem 0rem;
+    border-radius: 10px;
+    box-shadow: 6px 6px 12px 1px #c5c5c5, -6px -6px 12px #fff;
+}
+
+.profile_info ul{
+    text-align: left;
+    width: 100%;
+    color: #01aab2;
+    margin-left: 0px;
+}
+
+.profile_info ul li{
+    text-align: center;
+}
+
+.info_title{
+    margin-top: 15px;
+    color: #ffffff;
+/*    background-image: linear-gradient(to bottom right, #01adb1, #01d6da);*/
+    background: #01adb1;
+    font-size: 15px !important;
+    padding: 3px;
+    border-radius: 5px;
+}
+
+.profile_name{
+    color: #666666;
+    font-size: 80px;
+    font-weight: 600;
+}
+
+ul.project_list{
+    margin-left: 0 !important;
+    margin-top: 10px;
+    padding: 10px;
+}
+
+ul.project_list li.project_name{
+    list-style-type: none;
+}
+
+ul.project_list li.project_name button{
+    width: 170px;
+    margin-bottom: 2px;
+    border: 1px solid #01aab2;
+    border-radius: 50px;
+    background: transparent;
+    color: #01aab2;
+    font-size: 11px;
+    font-style: 10px; font-weight: 600;
+    padding: 2px;
+    outline: none;
+}
+
+ul.project_list li.project_name button:hover, .profile_block p.admin_projects:hover{
+    background-image: linear-gradient(to bottom right, #01adb1, #01d6da);
+    color: #ffffff;
+    -ms-transform: scale(1.08);
+    -webkit-transform: scale(1.08);
+    transform: scale(1.08);
+}
+
+
+#popup_users, #popup_projects, #overall_popup_projects{
+    user-select: text;
+    display: none;
+    position: fixed;
+    z-index: 3;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: #1d1b1bba;
+    padding-top: 60px;
+}
+
+#popup_users .popup_users_content, #popup_projects .popup_projects_content, #overall_popup_projects .overall_popup_projects_content{
+    background-color: #ffffff;
+    margin: 5% auto 15% auto;
+    border: 1px solid #888;
+    width: 70%;
+    height: auto;
+    /*height: 500px;*/
+    border-radius: 10px;
+    padding: 10px;
+}
+
+#popup_users .close, #popup_projects .close{
+    position: static;
+    right: 25px;
+    top: 0;
+    color: #000;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#popup_users .close:hover, #popup_users .close:focus, #popup_projects .close:hover, #popup_projects .close:focus{
+    color: red;
+    cursor: pointer;
+}
+
+#overall_popup_projects .close{
+    position: absolute;
+    right: 15%;
+    top: 120px;
+    background: red;
+    color: #000;
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 50px;
+    width: 30px;
+    text-align: center;
+}
+
+#overall_popup_projects .close:hover, #overall_popup_projects .close:focus{
+    color: #ffffff;
+    cursor: pointer;
+}
+
+#popup_users ul li{
+    list-style-type: none;
+}
+
+.animate{
+    -webkit-animation: animatezoom 0.6s;
+    animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom{
+    from {-webkit-transform: scale(0)}
+    to {-webkit-transform: scale(1)}
+}
+  
+@keyframes animatezoom{
+    from {transform: scale(0)}
+    to {transform: scale(1)}
+}
+
+#popup_users h2.js_project_name{
+    font-weight: 600;
+    background: transparent;
+    color: #01aab2;
+    text-align: center;
+    animation: 5s ease-out 0s 1 slideInFromTop;
+}
+
+#popup_users ul.js_users, #popup_projects ul.js_projects{
+    padding: 10px;
+    margin: 15px;
+    border-radius: 5px;
+}
+
+.offical_heads span{
+    font-size: 12px;
+    color: #ff8080;
+}
+
+.offical_heads h6{
+    font-size: 15px;
+    font-weight: 600;
+    font-style: bold;
+    color: #292929;
+}
+
+#popup_users ul.js_users span{
+    padding: 5px;
+    text-align: center;
+    color: #ff8080;
+}
+
+ul.js_officals{
+    padding: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    animation: 5s ease-out 0s 1 slideInFromTop;
+}
+
+ul.js_officals li.offical_heads{
+    padding: 5px;
+    text-align: center;
+    margin-right: 40px;
+    margin-left: 40px;
+}
+
+#popup_users .user_count, #popup_projects .project_count{
+    position: absolute;
+    left: 13%;
+    top: 110px;
+    z-index: 1;
+    background: #000;
+    color: #ffffff;
+    border: 5px solid #01adb1;
+    border-radius: 50px;
+    box-shadow: 0 2px 8px 1px #292929;
+    font-size: 25px;
+    font-weight: 600;
+    width: 60px;
+    height: 60px;
+    padding-top: 10px;
+    text-align: center;
+    animation: 4s ease-out 0s 1 slideInFromLeft;
+}
+
+#popup_users .tag_label, #popup_projects .tag_label{
+    position: absolute;
+    left: 15%;
+    top: 120px;
+    background: #000;
+    color: #ffffff;
+    border: 5px solid #01adb1;
+    border-radius: 50px;
+    box-shadow: 0 2px 8px 1px #292929;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    width: 150px;
+    height: 40px;
+    padding-top: 1px;
+    animation: 4s ease-out 0s 1 slideInFromLeft;
+}
+
+.profile_block p.admin_projects{
+    cursor: pointer;
+    border: 1px solid #01aab2;
+    border-radius: 50px;
+    background: transparent;
+    color: #01aab2;
+    outline: none;
+    width: 170px;
+    margin-top: 10px;
+    margin-left: 25%;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px;
+}
+
+ul.js_projects li.popup_project_name{padding: 0; margin: 0;}
+
+#popup_projects ul.js_projects li button{
+    cursor: pointer;
+    width: 150px;
+    margin: 5px 15px;
+    border: 1px solid #01aab2;
+    border-radius: 50px;
+    background: transparent;
+    color: #01aab2;
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 2px;
+    text-align: center;
+    outline: none;
+}
+
+#popup_projects ul.js_projects li button:hover{
+    background-image: linear-gradient(to bottom right, #01adb1, #01d6da);
+    color: #ffffff;
+    -ms-transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+ul.js_users h6.desig_header, #overall_project_content .overall_project_body .users_block h6.desig_header{
+    width: 100%;
+    margin: 12px auto;
+    font-size: 12px;
+    font-weight: 600;
+    color: #ff8080;
+    /*color: #01aab2;*/
+    padding: 5px;
+    border-bottom: 1px dotted #292929ba;
+}
+
+#popup_users ul li.user_name, #overall_project_content .overall_project_body .users_block li.user_name{
+    list-style-type: none;
+    /*color: #292929;*/
+    /*color: #ff8080;*/
+    color: #01aab2;
+    font-size: 12px;
+    font-weight: 600;
+    font-style: bold;
+    text-align: left;
+    padding-left: 5px;
+    margin-bottom: 5px;
+}
+
+.profile_block .profile_all_project{
+    width: 170px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 50px;
+    border: 1px solid #01aab2;
+    background: transparent;
+    color: #01aab2;
+    font-size: 11px;
+    font-style: 10px; font-weight: 600;
+    padding: 2px;
+    outline: none;
+}
+
+.profile_block .profile_all_project:hover{
+    background-image: linear-gradient(to bottom right, #01adb1, #01d6da);
+    color: #ffffff;
+}
+
+/*################################# OverALL ###################################################*/
+
+#overall_project_content{
+    background: #41b29b;
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+    /*border: 1px solid #01aab2;*/
+    border: 3px solid #01aab2;
+    background: #ffffff;
+    font-weight: 600;
+    padding: 5px;
+    /*border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;*/
+    border-radius: 10px;
+    /*box-shadow: 0 1px 8px #1d1b1bba;*/
+}
+
+
+@keyframes slideInFromLeft{
+  0%{transform: translateX(-100%);}
+  40%{transform: translateX(0);}
+}
+
+@keyframes slideInFromRight{
+  0%{transform: translateX(100%);}
+  40%{transform: translateX(0);}
+}
+
+@keyframes slideInFromTop{
+  0%{transform: translateY(-100%);}
+  40%{transform: translateY(0);}
+}
+
+#overall_project_content h4.overall_project_header{
+    width: 100%;
+    height: 40px;
+    background-image: linear-gradient(to bottom right, #01adb1, #01d6da);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 20px;
+    padding: 7px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+ul.overall_projects{
+    padding: 15px !important;
+}
+
+#overall_project_content ul.overall_project_body{
+    width: 100%;
+    margin-left: 0 !important;
+    padding: 5px;
+}
+
+#overall_project_content .overall_project_count{
+    position: absolute;
+    background: #000;
+    z-index: 4;
+    color: #ffffff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    left: 16%;
+    top: auto;
+    padding-top: 7px;
+    text-align: center;
+    border: 2px solid #01aab2;
+    box-shadow: 0 2px 8px 1px #292929;
+    animation: 5s ease-out 0s 1 slideInFromLeft;
+}
+
+#overall_project_content .tag_label{
+    position: absolute;
+    background: #000;
+    color: #ffffff;
+    width: 100px;
+    height: 30px;
+    border-radius: 50px;
+    left: 17.6%;
+    margin-top: 4px;
+    text-align: center;
+    border: 2px solid #01aab2;
+    box-shadow: 0 2px 8px 1px #292929;
+    animation: 5s ease-out 0s 1 slideInFromLeft;
+}
+
+#overall_project_content .overall_project_body .heads_block{
+    padding: 5px;
+    text-align: center;
+    margin-left: 15%;
+}
+
+#overall_project_content .overall_project_body .heads_block li.offical_heads{
+    padding: 5px;
+    text-align: center;
+    margin-bottom: 3px;
+    margin-right: 40px; margin-left: 40px;
+}
+
+#overall_project_content .overall_project_body .users_block{
+    width: 100%;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+/* ############################################## Announcement Block ##############################################*/
+.announcement_content{
+    border: 2px solid #00b1b3;
+    border-radius: 3px;
+    margin: 0px 10px;
+    background-color: #ffffff;
+}
+
+.announcement_content h6, .attendance_block h6{
+    font-weight: 600;
+    width: 100%;
+    text-align: center;
+    color: #ffffff;
+    padding: 10px;
+    background-color: #01aab2;
+    border-radius: 3px;
+}
+
+.announcement_block{
+    padding: 15px;
+}
+
+.announcement_content h5{
+    color: #01aab2;
+    font-weight: bold;
+    text-align: left !important;
+
+}
+
+.announcement_block ul{
+    margin-left: 15px;
+}
+
+.announcement_block li{
+    list-style-type: circle;
+    font-size: 13px !important;
+    text-align: left;
+}
+
+.announcement_content p, .announcement_content span{
+    font-size: 13px;
+    color: #565656;
+    padding: 0px 5px;
+}
+
+.announcement_block .click_order{
+    text-align: center;
+    width: 100% !important;
+}
+
+.announcement_content span{
+    color: #01aab2 !important;
+}
+/* ############################################## Announcement Block ##############################################*/
+
+
+/* ############################################## Attendance Block ##############################################*/
+.attendance_block{
+    border: 2px solid #00b1b3;
+    border-radius: 3px;
+    margin: 0px 10px;
+    background-color: #ffffff;
+    padding: 15px;
+}
+
+.attendance_block ul{
+    text-align: center;
+    margin: 15px 0px;
+}
+
+.attendance_block ul li{
+    background-color: #f2f2f2;
+    border-radius: 3px;
+}
+
+.attendance_block button{
+    margin: 10px 0px 5px;
+    border-radius: 3px;
+    font-size: 13px;
+    padding: 5px 10px;
+    background: #666666;
+    color: #fff;
+    font-weight: 600;
+    border: 2px solid #666666;
+    outline: none;
+}
+
+.attendance_block #log_total_block p{
+    font-size: 11px;
+    padding: 5px;
+    background: #eaaeae;
+    color: #000;
+    font-weight: 600;
+    border: 2px solid #eaaeae;
+    outline: none;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px -3px #292929;
+}
+
+#project_summary_table .attend_party ul.row_summaries li:nth-child(2){background-color: #e6f3ff;}
+#project_summary_table .attend_party ul.row_summaries li:nth-child(3){background-color: #bff2d8;}
+#project_summary_table .attend_party ul.row_summaries li:nth-child(4){background-color: #fad1d5;}
+
+#project_summary_table .attend_party ul.row_summaries:hover > li{
+  background-color: #f4f4d7;
+}
+.attendance_block #log_total_block p span{
+    font-size: 20px;
+    color: #000;
+    font-weight: 600;
+}
+
+.attendance_block #log_total_block{
+    background-color: transparent !important;
+}
+
+.attendance_block button:hover{
+    background: #01aab2;
+    border: 2px solid #01aab2;
+}
+
+.attendance_block p{
+    font-size: 10px;
+    padding: 5px;
+}
+.attendance_block p span{
+    font-size: 12px;
+    margin-left: 5px;
+    font-weight: 600;
+}
+/* ############################################## Attendance Block ##############################################*/
+
+/* ############################## Policy CSS ############################## */
+ul.policy_blocks li{
+    list-style-type: none;
+    background-color: transparent;
+    padding: 3px;
+    text-align: center;
+    margin: 2px 8px;
+}
+
+ul.policy_blocks li a{
+    width: 150px !important;
+    cursor: pointer;
+    font-size: 11px;
+    text-decoration: none;
+    text-align: center;
+    color: #01aab2;
+    border: 1px solid #01aab2;
+    border-radius: 50px;
+    padding: 3px;
+}
+
+ul.policy_blocks li a:hover{
+    background: #01adb1;
+    color: #ffffff;
+}
+
+.click_order ul li{
+    color: #666666;
+    font-size: 11px;
+    font-weight: 600;
+    font-style: bold;
+    text-align: left;
+    padding-left: 5px;
+    margin-bottom: 5px;
+    list-style-type: none;
+}
+
+.click_order a{
+    text-decoration: none;
+    margin: 10px;
+    border-radius: 3px;
+    font-size: 13px;
+    padding: 10px;
+    background: #666666;
+    color: #fff;
+    font-weight: 600;
+    outline: none;
+    text-decoration: none;
+}
+/* ############################## Policy CSS ##############################

@@ -1,0 +1,454 @@
+body{
+    user-select: auto;
+}
+.report_content{
+    background-color: #ffffff;
+    margin: 1rem 0rem 2rem;
+    padding-bottom: 1rem;
+    border-radius: 3px;
+}
+
+.report_content ul h4 {
+    color: #00abad;
+    font-weight: 600;
+    display: inline-block;
+}
+
+#data_table{
+    font-size: 11.5px;
+    margin: 1rem 0rem 2rem;
+    position: relative;
+    overflow-y: visible;
+    /*table-layout: fixed;*/
+}
+
+#data_table thead tr{
+    background-color: #01cfd3;
+}
+
+#data_table thead tr th{
+    background-color: #01cfd3;
+    position: sticky;
+}
+
+#data_table thead th, #data_table tbody td{
+    padding: 5px 0px;
+}
+
+#data_table thead th select{
+    color: #ffffff;
+    font-weight: 600;
+    background-color: #01cfd3;
+    outline: none;
+    border: 1px solid #ffffff;
+    border-radius: 3px;
+}
+
+.table-striped tbody tr:nth-of-type(even){
+    background-color: #ffffff !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd){
+    background-color: #4cc5c71c !important;
+}
+
+.report_content .cat_button{
+    display: block;
+}
+
+/*Modified CSS*/
+.report-filter{
+    padding: 10px;
+    border: 1px solid #b3b3b3;
+    border-radius: 3px;
+}
+
+.report-filter ul#refinement-header{
+    padding-left: 10px;
+    margin: 0px;
+}
+
+.report-filter ul li{
+    list-style-type: none;
+    margin-right: -5px;
+    width: 7px;
+}
+
+.report-filter ul li .col{
+    width: 100%;
+}
+
+.report-filter .custom-control-input:checked~ .custom-control-label::before{
+  cursor: pointer;
+  padding: 0px 5px;
+  border-radius: 3px;
+  outline: initial;
+}
+
+.report-filter .custom-control-input:checked~ .custom-control-label::after{
+  cursor: pointer;
+  padding: 0px 10px;
+  border-radius: 3px;
+  color: white;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+  background-position-x: 3px;
+}
+
+/* Additional Option */
+/* Method - 1 ############################## [dropdown] #########################################*/
+.filter_dropdown, .user_filter_dropdown, .file_filter_dropdown{
+    float: right;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.filter_dropdown_text, .user_filter_dropdown_text, .file_filter_dropdown_text{
+    display: inline-block;
+    text-align: center;
+    background-color: #01cfd3;
+    color: #fff;
+    border-radius: 5px;
+    width: 100px;
+    margin-bottom: 7px;
+}
+
+.filter_dropdown_content, .user_filter_dropdown_content, .file_filter_dropdown_content{
+    right: 0;
+    width: 100px;
+    display: none;
+    position: absolute;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    min-width: max-content;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    cursor: pointer;
+}
+
+.filter_dropdown_text:hover, .user_filter_dropdown_text:hover, .file_filter_dropdown_text:hover{
+    background-color: #00b1b3;
+    color: #fff;
+}
+/* Method - 1 ############################## [dropdown] #########################################*/
+
+#data_table tfoot tr{
+    background-color: #01cfd3;
+    height: 30px;
+}
+
+#data_table tfoot td{
+    padding: 5px 0px;
+    color: #ffffff;
+}
+
+#data_table tfoot, #data_table tfoot th, #data_table tfoot td{
+    position: -webkit-sticky;
+    position: sticky;
+    bottom: 0;
+    background: #01cfd3;
+    color: #fff;
+    z-index:0;
+}
+/*Modified CSS*/
+
+/* Quality Modified CSS*/
+.report_content .report_type{
+    list-style: none;
+    color: #00abad;
+    font-weight: 600;
+    font-size: 25px;
+    display: block;
+    padding: 7px 5px 0px;
+    margin: 5px;
+    text-align: center;
+}
+/* Quality Modified CSS*/
+
+/*#################################### Tab Content ####################################*/
+.report_tab{
+    display: flex;
+    border-bottom: 1px solid #ccc;
+}
+
+.report_tab button{
+    background: transparent;
+    border: none;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 15px;
+    margin-right: 1px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.report_tab .fa{
+    margin-right: 10px;
+}
+
+.report_tab button:hover{
+    background-color: #e5e5e5;
+}
+
+/*color: #ff7846;*/
+.export_button{
+    text-align: center;
+    background-color: #007139;
+    color: #fff;
+    border-radius: 5px;
+    width: 100px;
+    margin: 10px;
+    left: 0;
+    border: 0;
+    outline: none;
+    font-weight: 600;
+    padding: 5px;
+    position: absolute;
+    font-size: 13px;
+}
+.export_button:hover{background-color: #007139ba;}
+/*#################################### Tab Content ####################################*/
+
+/*#################################### REVERT Content ####################################*/
+#data_table td#revert_row{
+    border: none; outline: none;
+    cursor: pointer;
+    color: black;
+    border-radius: 5px;
+    width: 30px;
+    height: 18px;
+    padding: 5px;
+    font-size: 15px;
+    font-weight: 800;
+    border-top: 1px solid #dee2e6;
+}
+
+#data_table td#revert_row:hover{
+    color: #00b1b3;
+}
+
+input[type=text]{
+    width: 30%;
+    padding: 10px 12px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+button#revert_button{
+    background-color: #00b1b3;
+    color: #fff;
+    border: none;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+    width: 70px;
+    height: 40px;
+    font-weight: 800;
+    margin-left: 87%;
+    margin-bottom: 10px;
+}
+
+.revert_class p{
+    text-align: center;
+    padding-bottom: 7px;
+    font-size: 22px;
+    margin-bottom: 5px;
+    color: #00b1b3;
+}
+
+button#revert_button:hover{
+    background-color: #01cfd3;
+    color: #fff;
+}
+
+.revert_data{
+    padding: 16px;
+}
+
+.revertion{
+    display: none;
+    position: fixed;
+    z-index: 1;
+    right: 0;
+    top: 0;
+    width: 83.5%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+}
+
+.revertion ul li{
+    list-style-type: none;
+    margin-left: -10px;
+}
+
+#revert_form.modal-content{
+    background-color: #fefefe;
+    margin: 5% auto 15% auto;
+    border: 1px solid #888;
+    width: 75%;
+}
+
+.close{
+    position: absolute;
+    right: 25px;
+    top: 0;
+    color: #000;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus{
+    color: red;
+    cursor: pointer;
+}
+
+.animate{
+    -webkit-animation: animatezoom 0.6s;
+    animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom{
+    from {-webkit-transform: scale(0)}
+    to {-webkit-transform: scale(1)}
+}
+  
+@keyframes animatezoom{
+    from {transform: scale(0)}
+    to {transform: scale(1)}
+}
+
+.revert_class{
+    padding: 15px;
+    margin: 20px;
+}
+
+.revert_class label{
+    width: 65px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #00b1b3;
+    text-align: left;
+}
+
+.revert_class input{
+    width: 175px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #4d4d4d;
+}
+
+#revertion text{
+    color: #00b1b3;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    padding: 5px;
+    margin-left: 67%;
+}
+
+#revertion text b{
+    font-size: 16px;
+    color: #ff8080;
+}
+/*#################################### REVERT Content ####################################*/
+
+
+/*#################################### Filename Content ####################################*/
+#data_table tbody tr td.row_Filename p{
+    max-width: 140px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: default;
+}
+
+/*#################################### summary Content ####################################*/
+.overall_qc_reports{
+    display: block;
+    position: fixed;
+    background: #fe8080;
+    right: 2%;
+    top: 85px;
+    width: auto;
+    height: auto;
+    border-radius: 10px;
+    z-index: 1;
+    box-shadow: 0px 3px 10px 0px #4c4c4c;
+}
+
+table.summary_table{
+    margin: 9px;
+    border-radius: 5px;
+}
+
+table.summary_table thead th{
+    width: 80px;
+    text-align: center;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    background: #d04949;
+    color: #fff;
+}
+
+/*table.summary_table thead th:first-child{
+    background: none !important;
+}
+*/
+
+table.summary_table thead th:first-child{
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+table.summary_table thead th:last-child{
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+table.summary_table tbody td{
+    width: 80px;
+    text-align: center;
+    color: #000;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+table.summary_table tbody td p{
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    border: 1px solid #fe8080;
+    margin: 5px 5px 0px 3px;
+    background: #ffd699;
+    border-radius: 50px;
+    box-shadow: 2px 1px 3px 0px #d04949;
+    padding: 0px 20px;
+}
+
+table.summary_table tbody td label{
+    text-align: center;
+    font-size: 13px;
+    width: 85px;
+    font-weight: bold;
+    margin: 2px 0px;
+    border-radius: 50px;
+    padding: 1px 10px;
+}
+
+table.summary_table tbody tr:first-child td:first-child, table.summary_table tbody tr:last-child td:first-child{
+    border-right: 2px solid #d04949;
+}

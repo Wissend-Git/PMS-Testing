@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Wissend</title>
+    <link rel="icon" href="{{url_for('static', filename='images/icons/wissend_black_icon_40X40.png')}}">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> -->
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/bootstrap.min.css')}}" />
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/montserrat.css')}}" />
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/poppins.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/customize/main_css.css')}}" />
+    <style>
+        .loader_wrapper{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+        background: #f8f8f8;
+    }
+    .loader {
+        border: 2px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 2px solid #3498db;
+        -webkit-animation: spin 0.5s linear infinite;
+        animation: spin 0.5s linear infinite;
+        z-index: 1001;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 40px;
+        height: 40px;
+        margin: auto;
+    }
+    
+    @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    .loaded .loader_wrapper {
+        visibility: hidden;
+    }
+    
+      </style>
+      <script>
+        window.addEventListener('load', function () {
+            $('body').addClass('loaded');
+            let block_height = $("#right_block .profile_content").height();
+            $("#right_block .announcement_content .announcement_block").css("height",(block_height/2)+"px");
+        })
+      </script>
+</head>
+
+<body class="login_bg">
+    <div class="loader_wrapper">
+        <div class="loader"></div>
+    </div>
+    <div class="container-fluid h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <div class="col-md-3 offset-md-6 login_form">
+                <form id="home_login" method="POST">
+                    <img src="../static/images/icons/user_128.png">
+                    <div class="form-group">
+                        <input type="text" name="user_id" class="form-control" placeholder="Wissend Employee ID" autocomplete="on">
+                    </div>
+                    <div class="form-group">
+                        <i class="fa fa-eye-slash" id="login_togglePassword" onclick="login_change_icon()"></i>
+                        <input type="password" name="user_pswd" class="form-control" placeholder="Password" autocomplete="on">
+                    </div>
+                    <div class="form-group">
+                        <p id="error_text" class="text-danger pt-2">{{error_status}}</p>
+                        <div class="param_inline row">
+                            <span class="col-md-7 forgot_pwd"><i class="fa fa-refresh"></i> Forgot Password ?</span>
+                            <button class="col-md-4" type="submit">Sign in</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="recovery_form">
+        <form id="reset_pwd_form" method="POST" action="{{url_for('login_page')}}">
+            <span class="close recovery_form_close" title="Close Recovery Form">&times;</span>
+            <h3>Forgot Password</h3>
+            <p>
+                Enter your <b style="color: red;">Wissend Employee ID</b>
+                <input type="text" name="recover_wiss_id" placeholder="Wissend ID">
+            </p>
+            <span id="error_wiss_id" class="text-danger pt-2"></span>
+            <button type="submit" class="form_otp">Generate OTP</button>
+        </form>
+    </div>
+    <section id="footer">
+      <div class="footer">
+        <p>© 2020 Wissend. All rights reserved.</p>
+      </div>
+    </section>
+    <script src="{{url_for('static', filename= 'js/jquery.min.js')}}"></script>
+    <script src="{{url_for('static', filename= 'js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/customize/login.js')}}"></script>
+</body>
+
+
+</html>

@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Wissend</title>
+  
+  <link rel="stylesheet" href="{{url_for('static', filename= 'css/bootstrap.min.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename= 'css/font-awesome.min.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename= 'css/montserrat.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename= 'css/poppins.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename= 'css/bootstrap-datepicker.css')}}" />
+  <link rel="stylesheet" href="{{url_for('static', filename='css/customize/main_css.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename='css/customize/header_page.css')}}">
+  <link rel="icon" href="{{url_for('static', filename='images/icons/wissend_black_icon_40X40.png')}}">
+  <script>
+  window.addEventListener('load', function () {
+    $('body').addClass('loaded');
+    
+    //set announcement div height
+    let block_height = $("#right_block .profile_content").height();
+    $("#right_block .announcement_content .announcement_block").css("height",(block_height/2)+"px");
+  })
+
+  </script>
+</head>
+<body oncontextmenu="return false;">
+  <div class="loader_wrapper">
+  <div class="loader"></div>
+  </div>
+  <section id="tool_header">
+  <div class="container-fluid">
+    <div class="row header_block">
+    <div class="col-md-4">
+      <a href="{{url_for('employee_page')}}">
+      <img src="{{url_for('static', filename='images/icons/250x100.png')}}">
+      </a>
+    </div>
+    <div class="col-md-4 text-center">
+      <h3>Performance Management System</h3>
+    </div>
+    <div class="col-md-4">
+      <ul>
+      <li>
+        <div class="dropdown">
+        <button type="button" class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span>{{received_data['employee_name'].split()[0]}}</span>
+          <span><img src="{{url_for('static', filename=received_data['profile_img'])}}"></span>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right mt-2" aria-labelledby="dropdownMenuButton">
+          <ul>
+          <li class="dropdown-item">
+            <h5 class="font-weight-bold">{{received_data['employee_name']}}</h5>
+          </li>
+          <li class="dropdown-item">
+            <p>{{received_data['employee_designation']}}</p>
+          </li>
+          <li class="dropdown-item">
+            <p>{{received_data['wissend_id']}}</p>
+          </li>
+          </ul>
+          <a class="dropdown-item" id="logout" href="{{url_for('logout')}}">Logout</a>
+        </div>
+        </div>
+      </li>
+      </ul>
+    </div>
+    </div>
+  </div>
+  </section>
+  <section id="body_content">
+  <div class="container-fluid">
+    <div class="row">
+    <div class="col-md-2 left_side_block">
+      <p class="col-md-12" id="today_date"></p>
+      <div class="mt-1 text-center" id="project_filter">
+      <div class="accordion md-accordion" id="side_menu" role="tablist" aria-multiselectable="true">
+        <div class="card">
+        <div class="card-header" role="tab" id="head_1">
+          {% if received_data['emp_type'] in ['PU']%}
+          <a data-toggle="collapse" data-parent="#side_menu" href="{{url_for('employee_page')}}" aria-expanded="false" aria-controls="collapse_1">
+          {% else %}
+          <a data-toggle="collapse" data-parent="#side_menu" href="{{url_for('team_lead')}}" aria-expanded="false" aria-controls="collapse_1">
+          {% endif %}
+            <h6>
+            <i class="fa fa-address-card" aria-hidden="true"></i>Profile
+            </h6>
+          </a>
+        </div>
+        <div id="collapse_1" class="collapse" style="display: none;" role="tabpanel" aria-labelledby="head_1" data-parent="#side_menu">
+          <div class="card-body">
+          </div>
+        </div>
+        </div>
+        
+        <div class="card">
+        <div class="card-header" role="tab" id="head_2" >
+          <a class="collapsed"  data-toggle="collapse" data-parent="#side_menu" href="#collapse_2" aria-expanded="false" aria-controls="collapse_2">
+          <h6>
+            <i class="fa fa-database" aria-hidden="true"></i>Production
+          </h6>
+          </a>
+        </div>
+        <div id="collapse_2" class="collapse" role="tabpanel" aria-labelledby="head_2" data-parent="#side_menu">
+          <div class="card-body">
+          <div class="mt-1 text-center" id="project_filter">
+            <form method="POST" action="{{url_for('employee_process')}}">
+            <ul>
+              <li id="project_selected_user">
+              <select name="project_selected" id="production_project">
+                <option value="" >Select Project</option>
+                {% for project, values in received_data['employee_projects'].items() %}
+                {% if values['status'] == 'Active' %}
+                <option value="{{project}}" {{ 'selected="selected"' if received_data['project_selected'] == project else "" }}>{{project}}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+              </li>
+              <li id="process_selected_user">
+              <select name="process_selected" id="production_process">
+                <option value="">Select Process</option>
+                {% for project, values in received_data['employee_projects'].items() %}
+                {% if values['status'] == 'Active' %}
+                  {% for process_list, data_list in values.items() %}
+                  {% if process_list != 'project_id' and process_list != 'project_short_name' and process_list != 'status'  %}
+                    {% for process, data in data_list.items() %}
+                    <option value="{{project}}_{{process}}" {% if received_data['process_selected'] == process %} selected="selected"{% endif %}>{{process}}</option>
+                    {% endfor %}
+                  {% endif %}
+                  {% endfor %}
+                  {% endif %}
+                {% endfor %}
+              </select>
+              </li>
+              <li>
+              <button id="project_submit_user" type="submit" >Submit</button>
+              </li>
+            </ul>
+            <p id="project_error_text_user" class="text-danger font-weight-bold"></p>
+            </form>
+          </div>
+          </div>
+        </div>
+        </div>
+        <div class="card">
+          <div class="card-header" role="tab" id="head_9">
+            <a class="collapsed" data-toggle="collapse" data-parent="#side_menu" href="#collapse_9" aria-expanded="false" aria-controls="collapse_9">
+              <h6><i class="fa fa-hand-o-up"></i>Attendance Report</h6>
+            </a>
+          </div>
+          <div id="collapse_9" class="collapse" role="tabpanel" aria-labelledby="head_9" data-parent="#side_menu">
+            <div class="card-body">
+              <form method="POST" action="{{url_for('attd_report')}}">
+                <ul>
+                  <li id="attd_date_range">
+                      <div class="input-daterange input-group" id="datepicker" >
+                        <div class="justify-content-center">
+                            <div class="input-group input-daterange">
+                              <input type="text" class="form-control" id="attd_from_date" name="attd_from_date" placeholder="From Date" {{ "value="+received_data['attd_from_date'] if received_data['attd_from_date'] != "" else '' }} readonly>
+                              <input type="text" class="form-control" id="attd_to_date" name="attd_to_date" placeholder="To Date" {{ "value="+received_data['attd_to_date'] if received_data['attd_to_date'] != "" else '' }} readonly>
+                            </div>
+                        </div>
+                      </div>
+                  </li>
+                  <li>
+                    <p id="attd_error_text" class="text-danger font-weight-bold"></p>
+                    <button id="attd_submit" name="report" type="submit">Submit</button>
+                  </li>
+                </ul> 
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" role="tab" id="head_3">
+	          <a class="collapsed" data-toggle="collapse" data-parent="#side_menu" href="#collapse_3" aria-expanded="false" aria-controls="collapse_3">
+	            <h6>
+	              <i class="fa fa-line-chart" aria-hidden="true"></i>Reports
+	            </h6>
+	          </a>
+	        </div>
+	        <div id="collapse_3" class="collapse" role="tabpanel" aria-labelledby="head_3" data-parent="#side_menu">
+	          <div class="card-body">
+	            <div class="mt-1 text-center" id="project_filter">
+	              <form method="POST" action="{{url_for('employee_reports')}}">
+                  <ul>
+                    {% if received_data['emp_type'] in ['PU']%}
+                      <li>
+                        <ul id="select_report_type">
+                          <li class="custom-checkbox custom-control">
+                            <input name="productivity_report" type="checkbox" id="productivity_report" class="custom-control-input" {{'checked="checked"' if received_data['report_type'] == 'Productivity' else ""}}>
+                            <label id="tooltip" class="custom-control-label" for="productivity_report">PRD <label class="tooltiptext">Productivity</label></label>
+                          </li>
+                          <li class="custom-checkbox custom-control">
+                            <input name="team_quality" type="checkbox" id="team_quality" class="custom-control-input" {{'checked="checked"' if received_data['report_type'] == 'Quality Team' else ""}}>
+                            <label id="tooltip" class="custom-control-label" for="team_quality">QTR <label class="tooltiptext">Team Quality</label></label>
+                          </li>
+                          <li class="custom-checkbox custom-control">
+                            <input name="user_quality" type="checkbox" id="user_quality" class="custom-control-input" {{'checked="checked"' if received_data['report_type'] == 'Quality User' else ""}}>
+                            <label id="tooltip" class="custom-control-label" for="user_quality">QUR <label class="tooltiptext">Quality User</label></label>
+                          </li>
+                        </ul>
+                      </li>
+                    {% endif %}
+                    {% if received_data['emp_type'] not in ['PU']%}
+                      <li>
+                        <ul id="select_report_type">
+                          <li class="custom-checkbox custom-control">
+                            <input name="productivity_report" type="checkbox" id="productivity_report" class="custom-control-input" {{'checked="checked"' if received_data['report_type'] == 'Productivity' else ""}}>
+                            <label id="tooltip" class="custom-control-label" for="productivity_report">PRD <label class="tooltiptext">Productivity</label></label>
+                          </li>
+                          <li class="custom-checkbox custom-control">
+                            <input name="team_quality" type="checkbox" id="team_quality" class="custom-control-input" {{'checked="checked"' if received_data['report_type'] == 'Quality Team' else ""}}>
+                            <label id="tooltip" class="custom-control-label" for="team_quality">QTR <label class="tooltiptext">Team Quality</label></label>
+                          </li>
+                          <li class="custom-checkbox custom-control">
+                            <input name="user_quality" type="checkbox" id="user_quality" class="custom-control-input" {{'checked="checked"' if received_data['report_type'] == 'Quality User' else ""}}>
+                            <label id="tooltip" class="custom-control-label" for="user_quality">QUR <label class="tooltiptext">Quality User</label></label>
+                          </li>
+                          <li class="custom-checkbox custom-control">
+                            <input name="assure_quality" type="checkbox" id="assure_quality" class="custom-control-input" {{'checked="checked"' if received_data['report_type'] == 'Quality Assurance' else ""}}>
+                            <label id="tooltip" class="custom-control-label" for="assure_quality">QAR <label class="tooltiptext">Quality Assurance</label></label>
+                          </li>
+                        </ul>
+                      </li>
+                    {% endif %}
+                <li id="project_selected_report">
+                  <select name="project_selected" id="productivity_project">
+                    <option value="" >Select Project</option>
+                    <option value="All" {{ 'selected="selected"' if received_data['project_selected'] == "All" else ""}}>All</option>
+                    {% for project, values in received_data['employee_projects'].items() %}
+                      <option value="{{project}}" {{ 'selected="selected"' if received_data['project_selected'] == project else "" }}>{{project}}</option>
+                    {% endfor %}
+                  </select>
+                </li>
+                <li id="process_selected_report">
+                  <select name="process_selected" id="productivity_process">
+                    <option value="">Select Process</option>
+                    <option value="All" {{ 'selected="selected"' if received_data['process_selected'] == "All" else ""}}>All</option>
+                    {% for project, values in received_data['employee_projects'].items() %}
+                      {% for process_list, data_list in values.items() %}
+                        {% if process_list != 'project_id' and process_list != 'project_short_name' and process_list != 'status' %}
+                          {% for process, data in data_list.items() %}
+                            <option value="{{project}}_{{process}}" {% if received_data['process_selected'] == process %} selected="selected"{% endif %}>{{process}}</option>
+                          {% endfor %}
+                        {% endif %}
+                      {% endfor %}
+                    {% endfor %}
+                  </select>
+                </li>
+                <li id="check_team_user">
+                  <div class="custom-checkbox custom-control">
+                    <ul>
+                    <li>
+                      <input name="check_project" type="checkbox" id="check_project" class="custom-control-input" {{'checked="checked"' if received_data['check_project'] == '1' else ""}} checked onclick="return false">
+                      <label class="custom-control-label" for="check_project">Project</label>
+                    </li>
+                    <li>
+                      <input name="check_process" type="checkbox" id="check_process" class="custom-control-input" {{'checked="checked"' if received_data['check_process'] == '1' else ""}}>
+                      <label class="custom-control-label" for="check_process">Process</label>
+                    </li>
+                    <li>
+                      <input name="check_user" type="checkbox" id="check_user" class="custom-control-input" {{'checked="checked"' if received_data['check_user'] == '1' else ""}}>
+                      <label class="custom-control-label" for="check_user">Team</label>
+                    </li>
+                    </ul>
+                  </div>
+                </li>
+                <li id="user_selected">
+                  <select name="user_selected" id="myFilter">
+                    <option value="">Select User</option>
+                    <option value="All" {{ 'selected="selected"' if received_data['user_selected'] == "All" else ""}}>All</option>
+                      {% for project_name, process_data in received_data['project_user_data'].items() %}
+                      {% if project_name != "All" %}
+                      {% for user_data_list in process_data.values() %}
+                        {% for user_data in user_data_list %}
+                        <option value="{{project_name}}_{{user_data[1]}}" {{ 'selected="selected"' if received_data['user_selected'] == user_data[1] else ""}}>{{user_data[0]}}</option>
+                        {% endfor %}
+                        {% endfor %}
+                      {% endif %}
+                      {% endfor %}
+                  </select>
+                </li>
+                <li>
+                  <div class="input-daterange input-group" id="datepicker" >
+                    <div class="justify-content-center">
+                      <div class="input-group input-daterange">
+                      <input type="text" class="form-control" id="from_date" name="from_date" placeholder="From Date" {{ "value="+received_data['from_date'] if received_data['from_date'] != "" else '' }} readonly>
+                      <input type="text" class="form-control" id="to_date" name="to_date" placeholder="To Date" {{ "value="+received_data['to_date'] if received_data['to_date'] != "" else '' }} readonly>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="row">
+                    <div class="col-md-6" id="selected_year">
+                    <select name="year_selected">
+                      <option value="" {{ 'selected="selected"' if received_data['year_selected'] == "" else ""}}>Year</option>
+                      <option value="All" {{ 'selected="selected"' if received_data['year_selected'] == "All" else ""}}>All</option>
+                      <option value="2019" {{ 'selected="selected"' if received_data['year_selected'] == "2019" else ""}}>2019</option>
+                      <option value="2020" {{ 'selected="selected"' if received_data['year_selected'] == "2020" else ""}}>2020</option>
+                      <option value="2021" {{ 'selected="selected"' if received_data['year_selected'] == "2021" else ""}}>2021</option>
+                      <option value="2022" {{ 'selected="selected"' if received_data['year_selected'] == "2022" else ""}}>2022</option>
+                      <option value="2023" {{ 'selected="selected"' if received_data['year_selected'] == "2023" else ""}}>2023</option>
+                    </select>
+                    </div>
+                    <div class="col-md-6" id="selected_month">
+                    <select name="month_selected">
+                      <option value="" {{ 'selected="selected"' if received_data['month_selected'] == "" else ""}}>Month</option>
+                      <option value="All" {{ 'selected="selected"' if received_data['month_selected'] == "All" else ""}}>All</option>
+                      <option value="1" {{ 'selected="selected"' if received_data['month_selected'] == "1" else ""}}>January</option>
+                      <option value="2" {{ 'selected="selected"' if received_data['month_selected'] == "2" else ""}}>February</option>
+                      <option value="3" {{ 'selected="selected"' if received_data['month_selected'] == "3" else ""}}>March</option>
+                      <option value="4" {{ 'selected="selected"' if received_data['month_selected'] == "4" else ""}}>April</option>
+                      <option value="5" {{ 'selected="selected"' if received_data['month_selected'] == "5" else ""}}>May</option>
+                      <option value="6" {{ 'selected="selected"' if received_data['month_selected'] == "6" else ""}}>June</option>
+                      <option value="7" {{ 'selected="selected"' if received_data['month_selected'] == "7" else ""}}>July</option>
+                      <option value="8" {{ 'selected="selected"' if received_data['month_selected'] == "8" else ""}}>August</option>
+                      <option value="9" {{ 'selected="selected"' if received_data['month_selected'] == "9" else ""}}>September</option>
+                      <option value="10" {{ 'selected="selected"' if received_data['month_selected'] == "10" else ""}}>October</option>
+                      <option value="11" {{ 'selected="selected"' if received_data['month_selected'] == "11" else ""}}>November</option>
+                      <option value="12" {{ 'selected="selected"' if received_data['month_selected'] == "12" else ""}}>December</option>
+                    </select>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div id="summary_form">
+                    <div class="custom-checkbox custom-control"  >
+                    <ul class="mt-0">
+                      <li>
+                      <input name="result_year" type="checkbox" id="check_year" class="custom-control-input" {{'checked="checked"' if received_data['result_year'] == 1 else ""}}>
+                      <label class="custom-control-label" for="check_year">Y</label>
+                      </li>
+                      <li>
+                      <input name="result_month" type="checkbox" id="check_month" class="custom-control-input" {{'checked="checked"' if received_data['result_month'] == 1 else ""}}>
+                      <label class="custom-control-label" for="check_month">M</label>
+                      </li>
+                      <li>
+                      <input name="result_week" type="checkbox" id="check_week" class="custom-control-input" {{'checked="checked"' if received_data['result_week'] == 1 else ""}}>
+                      <label class="custom-control-label" for="check_week">W</label>
+                      </li>
+                      <li>
+                      <input name="result_day" type="checkbox" id="check_day" class="custom-control-input" {{'checked="checked"' if received_data['result_day'] == 1 else ""}}>
+                      <label class="custom-control-label" for="check_day">D</label>
+                      </li>
+                    </ul>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <button id="project_submit" type="submit" >Submit</button>
+                  <button id="reset_submit" type="submit" >Reset</button>
+                </li>
+              </ul>
+              <p id="project_error_text" class="text-danger font-weight-bold"></p>
+              </form>
+            </div>
+            </div>
+          </div>
+        </div>
+        {% if received_data['emp_type'] in ["ADMIN","TA","TM","TL","TMR","TLR",'TBH','TBHR'] %}
+          <div class="card menu_active">
+            <div class="card-header" role="tab" id="head_4" >
+              <a class="collapsed"  data-toggle="collapse" data-parent="#side_menu" href="#collapse_4" aria-expanded="false" aria-controls="collapse_4">
+                <h6>
+                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>Key Result Area (KRA)
+                </h6>
+              </a>
+            </div>
+            <div id="collapse_4" class="collapse show" role="tabpanel" aria-labelledby="head_4" data-parent="#side_menu">
+              <div class="card-body">
+                <div id="kra_dropdown">
+                  <form method="POST" action="{{url_for('kra_input')}}">
+                    <ul>
+                    <li>
+                      <select name="kra_user_selected" id="myFilter1">
+                        <option value="">Select User</option>
+                        {% if received_data['emp_type'] not in ["TL","TLR"] %}
+                          <option value="All" {{ 'selected="selected"' if received_data['kra_user_id'] == "All" else ""}}>All</option>
+                        {% endif %}
+                        {% for project, values in received_data['employee_projects'].items() %}
+                          {% if values['status'] == 'Active' %}
+                            {% for process_list, data_list in values.items() %}
+                              {% if process_list != 'project_id' and process_list != 'project_short_name' and process_list != 'status' %}
+                                {% for process, data in data_list.items() %}
+                                  {% if received_data['emp_type'] in ["TL","TLR"] %}
+                                    {% if data['lead_id'] == received_data['employee_id'] %}
+                                      <option value="{{data['lead_id']}}" {% if received_data['kra_user_id'] == data['lead_id']|string %} selected="selected"{% endif %}>{{data['lead']}} - {{data['lead_wiss_id']}}</option>
+                                    {% endif %}
+                                  {% elif received_data['emp_type'] in ["TM","TMR"] %}
+                                    {% if data['lead_id'] != data['business_head_id'] %}
+                                      <option value="{{data['lead_id']}}" {% if received_data['kra_user_id'] == data['lead_id']|string %} selected="selected"{% endif %}>{{data['lead']}} - {{data['lead_wiss_id']}}</option>
+                                    {% endif %}
+                                    {% if data['manager_id'] == received_data['employee_id'] and data['manager_id'] != data['business_head_id'] %}
+                                      <option value="{{data['manager_id']}}" {% if received_data['kra_user_id'] == data['manager_id']|string %} selected="selected"{% endif %}>{{data['manager']}} - {{data['manager_wiss_id']}}</option>
+                                    {% endif %}
+                                  {% else %}
+                                    {% if data['lead_id'] != data['business_head_id'] %}
+                                      <option value="{{data['lead_id']}}" {% if received_data['kra_user_id'] == data['lead_id']|string %} selected="selected"{% endif %}>{{data['lead']}} - {{data['lead_wiss_id']}}</option>
+                                    {% endif %}
+                                    {% if data['manager_id'] != data['business_head_id'] %}
+                                      <option value="{{data['manager_id']}}" {% if received_data['kra_user_id'] == data['manager_id']|string  %} selected="selected"{% endif %}>{{data['manager']}} - {{data['manager_wiss_id']}}</option>
+                                    {% endif %}
+                                  {% endif %}
+                                {% endfor %}
+                              {% endif %}
+                            {% endfor %}
+                          {% endif %}
+                        {% endfor %}
+                      </select>
+                    </li>
+                    <li id="check_kra_type">
+                      <ul class="custom-checkbox custom-control">
+                        <li>
+                          <input name="kra_input" type="checkbox" id="kra_input" class="custom-control-input" {{'checked="checked"' if received_data['kra_input'] == '1' else ""}}>
+                          <label class="custom-control-label" for="kra_input">Input</label>
+                        </li>
+                        <li>
+                          <input name="kra_report" type="checkbox" id="kra_report" class="custom-control-input" {{'checked="checked"' if received_data['kra_report'] == '1' else ""}}>
+                          <label class="custom-control-label" for="kra_report">Report</label>
+                        </li>
+                      </ul>
+                    </li>
+                    <li id="kra_month_range">
+                      <div class="row">
+                        <div class="col-md-6" id="kra_selected_year">
+                          <select name="kra_year_selected">
+                            <option value="" {{ 'selected="selected"' if received_data['kra_year_selected'] == "" else ""}}>Year</option>
+                            <option value="All" {{ 'selected="selected"' if received_data['kra_year_selected'] == "All" else ""}}>All</option>
+                            <option value="2020" {{ 'selected="selected"' if received_data['kra_year_selected'] == "2020" else ""}}>2020</option>
+                            <option value="2021" {{ 'selected="selected"' if received_data['kra_year_selected'] == "2021" else ""}}>2021</option>
+                            <option value="2022" {{ 'selected="selected"' if received_data['kra_year_selected'] == "2022" else ""}}>2022</option>
+                            <option value="2023" {{ 'selected="selected"' if received_data['kra_year_selected'] == "2023" else ""}}>2023</option>
+                          </select>
+                        </div>
+                        <div class="col-md-6" id="kra_selected_month">
+                          <select name="kra_month_selected">
+                            <option value="" {{ 'selected="selected"' if received_data['kra_month_selected'] == "" else ""}}>Month</option>
+                            <option value="All" {{ 'selected="selected"' if received_data['kra_month_selected'] == "All" else ""}}>All</option>
+                            <option value="1" {{ 'selected="selected"' if received_data['kra_month_selected'] == "1" else ""}}>January</option>
+                            <option value="2" {{ 'selected="selected"' if received_data['kra_month_selected'] == "2" else ""}}>February</option>
+                            <option value="3" {{ 'selected="selected"' if received_data['kra_month_selected'] == "3" else ""}}>March</option>
+                            <option value="4" {{ 'selected="selected"' if received_data['kra_month_selected'] == "4" else ""}}>April</option>
+                            <option value="5" {{ 'selected="selected"' if received_data['kra_month_selected'] == "5" else ""}}>May</option>
+                            <option value="6" {{ 'selected="selected"' if received_data['kra_month_selected'] == "6" else ""}}>June</option>
+                            <option value="7" {{ 'selected="selected"' if received_data['kra_month_selected'] == "7" else ""}}>July</option>
+                            <option value="8" {{ 'selected="selected"' if received_data['kra_month_selected'] == "8" else ""}}>August</option>
+                            <option value="9" {{ 'selected="selected"' if received_data['kra_month_selected'] == "9" else ""}}>September</option>
+                            <option value="10" {{ 'selected="selected"' if received_data['kra_month_selected'] == "10" else ""}}>October</option>
+                            <option value="11" {{ 'selected="selected"' if received_data['kra_month_selected'] == "11" else ""}}>November</option>
+                            <option value="12" {{ 'selected="selected"' if received_data['kra_month_selected'] == "12" else ""}}>December</option>
+                        </select>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <p id="kra_error_text_user" class="text-danger font-weight-bold"></p>
+                  <button id="kra_submit" type="submit" >Submit</button>
+                  </form>
+                </div>
+                </div>
+            </div>
+          </div>
+        {% endif %}
+          {% if received_data['check_key_lead'] == 1 or received_data['emp_type'] in ['ADMIN','TA'] %}
+            <div class="card addon_card">
+              <div class="card-header" role="tab" id="head_6">
+                <a data-toggle="collapse" data-parent="#side_menu" href="{{url_for('addon')}}" aria-expanded="false" aria-controls="collapse_6">
+                  <h6><i class="fa fa-plus-square" aria-hidden="true"></i>Add-On</h6>
+                </a>
+              </div>
+              <div id="collapse_6" class="collapsed" style="display: none;" role="tabpanel" aria-labelledby="head_1" data-parent="#side_menu">
+                <div class="card-body">
+                </div>
+              </div>
+            </div>
+          {% endif %}
+
+          {% if received_data['emp_type'] in ['ADMIN','TA','TBH','TBHR'] %}
+            <div class="card gallery_card">
+              <div class="card-header" role="tab" id="head_8">
+                <a data-toggle="collapse" data-parent="#side_menu" href="{{url_for('emp_entry')}}" aria-expanded="false" aria-controls="collapse_8">
+                  <h6><i class="fa fa-users"></i>Employees Entry</h6>
+                </a>
+              </div>
+              <div id="collapse_8" class="collapsed" style="display: none;" role="tabpanel" aria-labelledby="head_1" data-parent="#side_menu">
+                <div class="card-body">
+                </div>
+              </div>
+            </div>
+          {% endif %}
+
+          <div class="card gallery_card">
+            <div class="card-header" role="tab" id="head_7">
+              <a data-toggle="collapse" data-parent="#side_menu" href="{{url_for('gallery')}}" aria-expanded="false" aria-controls="collapse_7">
+                <h6><i class="fa fa-picture-o" aria-hidden="true"></i>Gallery</h6>
+              </a>
+            </div>
+            <div id="collapse_7" class="collapsed" style="display: none;" role="tabpanel" aria-labelledby="head_1" data-parent="#side_menu">
+              <div class="card-body">
+              </div>
+            </div>
+          </div>
+
+          <div class="card leave_card">
+            <div class="card-header" role="tab" id="head_10">
+              <a data-toggle="collapse" data-parent="#side_menu" href="{{url_for('leave_request')}}" aria-expanded="false" aria-controls="collapse_10">
+                <h6><i class="fa fa-calendar-minus-o" aria-hidden="true"></i>Leave</h6>
+              </a>
+            </div>
+            <div id="collapse_10" class="collapsed" style="display: none;" role="tabpanel" aria-labelledby="head_1" data-parent="#side_menu">
+              <div class="card-body">
+              </div>
+            </div>
+          </div>
+      </div>
+      </div>
+    </div>
+    <div class="col-md-10 offset-md-2 body_bckgrnd" id="right_block">
+      <div class="row">
+        <div class="kra_overall">
+          <ul>
+            <li><p>Kra For Employee</p></li>
+            <li class="kra_user_img"><img src="{{url_for('static', filename=received_data['kra_user_img'])}}"></li>
+            {% if received_data['kra_emp_type'] == "Manager" %}
+            <li>
+              <label>Manager</label>
+              <p>{{received_data['kra_report_manager']}}</p>
+            </li>
+            <li>
+              <label>Manager Rating (%) </label>
+              <p id="manager_rating">0</p>
+            </li>
+            <li>
+              <label>Business Head</label>
+              <p>{{received_data['kra_report_business_head']}}</p>
+            </li>
+            <li>
+              <label>Business Head Rating (%) </label>
+              <p id="bh_rating">0</p>
+            </li>
+            {% else %}
+              <li><label>Lead</label><p>{{received_data['kra_report_lead']}}</p></li>
+              <li>
+                <label>Lead Rating (%) </label>
+                <p id="lead_rating">0</p>
+              </li>
+              <li><label>Manager</label><p>{{received_data['kra_report_manager']}}</p></li>
+              <li>
+                <label>Manager Rating (%) </label>
+                <p id="manager_rating">0</p>
+              </li>
+              <li>
+                <label>Business Head</label>
+                <p>{{received_data['kra_report_business_head']}}</p>
+              </li>
+              <li>
+                <label>Business Head Rating (%) </label>
+                <p id="bh_rating">0</p>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+        <div class="col-md-12 profile_right">
+          <div class="row">
+            <div class="col-md-12 kra_content">
+              <form method="POST" action="{{url_for('kra_input')}}">
+                <ul class="kra_header">
+                  {% if kra_ques_ans != {} %}
+                  {% set header_val = {"val":""} %}
+                    {% for ques, ques_data in kra_ques_ans.items() %}
+                        {% set index = loop.index %}
+                          {% if header_val['val'] != ques_data['header'] %}
+                            <div class="kra_hb">
+                              <h4>{{ques_data['header']}}</h4>
+                            </div>
+                            {% if header_val.update({'val':ques_data['header']}) %}{% endif %}
+                          {% endif %}
+                          <li id="kra_content">
+                            <div class="inner_header">
+                              <div>
+                                <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                <h5>{{ques}} <span>- ( {{ques_data['percent']}}% )</span></h5>
+                              </div>
+                              <div class="kra_rating">
+                                <ul>
+                                  {% if received_data['kra_emp_type'] == "Lead" %}
+                                  <li>
+                                    <label>Lead : </label>
+                                    <p id="tl_kra_rating">{% if prev_record != [] %}{{prev_record[index-1]['lead_rating']}}{% else %}0{% endif %}</p>
+                                  </li>
+                                  {% endif %}
+                                  <li>
+                                    <label>Manager : </label>
+                                    <p id="m_kra_rating">{% if prev_record != [] %}{{prev_record[index-1]['manager_rating']}}{% else %}0{% endif %}</p>
+                                  </li>
+                                  <li>
+                                    <label>Business Head : </label>
+                                    <p id="bh_kra_rating">{% if prev_record != [] %}{{prev_record[index-1]['business_head_rating']}}{% else %}0{% endif %}</p>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                            <ul>
+                              <li>
+                                {% for ans, ans_data in ques_data['keys'].items() %}
+                                  {% set inner_index = loop.index %}
+                                  <div>
+                                    {% if received_data['emp_type'] in ["TL","TLR"] %}
+                                      <input type="radio" empt="{{received_data['emp_type']}}" id="{{ques}}_{{inner_index}}" value="{{ans_data['rating']}}" name="{{ques_data['qa_id']}}_{{ques_data['percent']}}" {% if prev_record != [] and ans_data['rating'] == prev_record[index-1]['lead_rating'] %}checked=true{% endif %}>
+                                    {% elif received_data['emp_type'] in ["TM","TMR"] %}
+                                      <input type="radio" empt="{{received_data['emp_type']}}" id="{{ques}}_{{inner_index}}" value="{{ans_data['rating']}}" name="{{ques_data['qa_id']}}_{{ques_data['percent']}}" {% if prev_record != [] and ans_data['rating'] == prev_record[index-1]['manager_rating'] %}checked=true{% endif %}>
+                                    {% else %}
+                                    <input type="radio" empt="{{received_data['emp_type']}}" id="{{ques}}_{{inner_index}}" value="{{ans_data['rating']}}" name="{{ques_data['qa_id']}}_{{ques_data['percent']}}" {% if prev_record != [] and ans_data['rating'] == prev_record[index-1]['business_head_rating'] %}checked=true{% endif %}>
+                                    {% endif %}
+                                    <label for="{{ques}}_{{inner_index}}">{{ans}} <span>({{ans_data['rating']}})</span></label>
+                                  </div>
+                                {% endfor %}
+                              </li>
+                            </ul>
+                          </li>
+                    {% endfor %}
+                  {% endif %}
+                </ul>
+                <input class="d-none" name="achieved_rating" id="ach_rating" empt="{{received_data['emp_type']}}" type="text" value="0" readonly>
+                <input class="d-none" name="kra_for_employee_id" value="{{received_data['kra_user_id']}}" readonly>
+                <div class="kra_comments">
+                  <label>Comments</label>
+                  <label>:</label>
+                  <textarea name="comments"></textarea>
+                </div>
+                <div class="text-center">
+                  <p id="kra_input_error"></p>
+                  <button type="submit" empt="{{received_data['emp_type']}}" >Submit</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  </section>
+  <section id="footer">
+    <div class="footer">
+      <p>© 2020 Wissend. All rights reserved.</p>
+    </div>
+  </section>
+  <script type="text/javascript">
+    var my_storage = '{{received_data|tojson}}';
+  </script>
+  <script src="{{url_for('static', filename= 'js/jquery.min.js')}}"></script>
+  <script src="{{url_for('static', filename= 'js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{url_for('static', filename='js/popper.min.js')}}"></script>
+  <script src="{{url_for('static', filename= 'js/bootstrap-datepicker.js')}}"></script>
+  <script src="{{url_for('static', filename= 'js/customize/main_js.js')}}"></script>
+  <script src="{{url_for('static', filename= 'js/customize/kra.js')}}"></script>
+</body>
+</html>

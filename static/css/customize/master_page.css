@@ -1,0 +1,135 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: "Montserrat", sans-serif !important;
+    font-weight: 600 !important;
+}
+
+#body_content .container-fluid{
+    background-color: #f4f7ff;
+}
+
+.analysis_module{
+    background-color: #ffffff;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    margin: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.analysis_module:hover{
+    -webkit-box-shadow: 0px 20px 20px 15px #dce0e6;
+    -moz-box-shadow:    0px 20px 20px 15px #dce0e6;
+    box-shadow:         0px 20px 20px 15px #dce0e6;
+}
+
+.analysis_module:nth-child(1){
+    color: #2b7bec;
+}
+
+.analysis_module:nth-child(2){
+    color:#18a363;
+}
+
+.analysis_module:nth-child(3){
+    color: #f82627;
+}
+
+.analysis_module:nth-child(5){
+    color: #862aa8;
+}
+
+.analysis_module:nth-child(4){
+    color: #f47a27;
+}
+
+.analysis_module ul{
+    padding: 0;
+}
+
+.analysis_module ul li{
+    list-style-type: none;
+}
+
+.analysis_module ul span{
+    border: 1px solid red;
+    border-radius: 50px;
+    padding: 4px 5px;
+}
+
+ul.exp_split{
+    list-style-type: none;
+    display: inline-block;
+    width: 25%;
+    margin: 10px;
+}
+
+ul.exp_split li{
+    display: block;
+}
+
+.counter {
+	font-size: 45px;
+}
+
+.analysis_module i{
+    margin-left: 10px;
+}
+
+.footer{
+    position: fixed;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    padding: 8px 0px 0px 10px; 
+    bottom: 0; 
+    width: 100%; 
+    height: 30px;
+    z-index: 100;
+    /* background: #d6d4d4; */
+}
+
+
+.sticky-col {
+    position: sticky;
+    position: -webkit-sticky;
+    z-index: 11;
+    background-color:  #e1f2f9 !important;
+}
+
+table thead .first-col,table thead .second-col,table thead .third-col{
+    background-color:  #01cfd3 !important;
+    color: #ffffff;
+}
+
+.first-col {
+	left: 0px;    
+}
+
+.second-col {
+	left: 30px;    
+}
+
+.third-col{
+    left: 167px;
+}
+
+table, th, td {
+    border: 1px solid #333333;
+    border-collapse: collapse;
+}
+
+
+#data_table tbody{
+    background-color: #ffffff;
+}
+
+
+#data_table select{
+    text-align: center;
+    text-align-last: center;
+}

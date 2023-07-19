@@ -1,0 +1,1082 @@
+/*Global comment*/
+/*button{
+    width: 9em;
+    height: 2em;
+    border-radius: 30em;
+    font-size: 15px;
+    font-family: inherit;
+    border: none;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: 6px 6px 12px 1px #c5c5c5, -6px -6px 12px #fff;
+}*/
+
+/* No Content  */
+h6.no_data_capsule{
+    padding: 5px;
+    margin: 5px;
+    color: #f75d5d;
+    font-size: 16px;
+}
+
+
+/* ########################### Regular Leave Tab Content ########################### */
+.leave_content{
+    background-color: #ffffff;
+    margin: 1rem 0rem;
+    padding-bottom: 1rem;
+    border-radius: 3px;
+}
+
+.leave_content .leave_head{
+    display: block;
+    list-style: none;
+    color: #00abad;
+    font-weight: 600;
+    font-size: 22px;
+    padding: 7px 5px 0px;
+    margin: 5px;
+    text-align: center;
+}
+
+.leave_detail_tabs{
+  display: flex;
+  border-bottom: 1px solid #ccc;
+}
+
+.leave_detail_tabs button{
+    background: transparent;
+    border: none;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 15px;
+    margin-right: 1px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.leave_detail_tabs button:hover{
+    background-color: #e5e5e5;
+}
+
+
+.leave_detail_tabs button b{
+    padding-left: 5px;
+}
+
+/* ########################### Form ########################### */
+.application_form{
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-left: 0;
+    box-shadow: 0 2px 10px rgb(0 0 0 / 15%);
+    align-items: center;
+    justify-content: center;
+}
+
+#input_application_form{
+    list-style-type: none;
+    padding-left: 5px;
+}
+
+.leave_application{
+    padding-top: 20px;
+}
+
+
+/* ######################## Balance & Taking - Status ######################## */
+.taking_and_balance_content{
+    /*padding: 5px;
+    margin: 10px;*/
+    /*border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 1px 0px 5px 0px #ccc;*/
+    padding: 0px;
+    margin: 0px;
+    border-bottom: 1px solid #ccc;
+}
+
+.taking_and_balance_content .balance_status, .taking_and_balance_content .taking_status{
+    padding: 2px;
+}
+
+.taking_and_balance_content h5{
+    margin: 2px;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    padding: 5px;
+/*    color: #00b1b3;*/
+}
+
+.balance_status h5{color: #5ea782;}
+.taking_status h5{color: #8c8c8c;}
+
+.taking_and_balance_content ul{
+    display: inline-flex;
+    padding: 0px;
+/*    margin: 5px;*/
+    margin-bottom: 20px;
+    list-style-type: none;
+    width: -webkit-fill-available;
+/*    border: 1px solid #ccc;*/
+    border-radius: 5px;
+/*    box-shadow: 0px 0px 5px 1px #ccc;*/
+}
+
+
+.taking_and_balance_content ul li{
+    display: inline-flex;
+    padding: 5px;
+    width: 100%;
+    height: fit-content;
+    margin: 3px;
+    text-align: center;
+    align-items: center;
+}
+
+.taking_and_balance_content b{
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px;
+    width: -webkit-fill-available;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.taking_and_balance_content .balance_status b{
+    border: 1px solid #5ea782;
+    color: #5ea782;
+}
+
+.taking_and_balance_content .taking_status b{
+    border: 1px solid #8c8c8c;
+    color: #8c8c8c;
+}
+
+
+.taking_and_balance_content span{
+    font-size: 13px;
+    font-weight: 600;
+    padding: 3px;
+    width: -webkit-fill-available;
+    color: #fff;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.taking_and_balance_content .balance_status span{
+    background: #5ea782;
+    border: 1px solid #5ea782;
+}
+
+.taking_and_balance_content .taking_status span{
+    background: #8c8c8c;
+    border: 1px solid #8c8c8c;
+}
+
+/* ######################## Balance & Taking - Status ######################## */
+
+/* ######################## Leave application entries ######################## */
+/* ######################## Major Content*/
+span.required{
+    color: red !important;
+    font-style: bold !important;
+    font-weight: 600 !important;
+    font-size: 15px !important;
+}
+
+.leave_application form label{
+    font-size: 13px;
+    padding: 5px;
+    margin-left: 5px;
+    color: #333333;
+    width: 125px;
+    text-align: left;
+    font-weight: 700;
+}
+
+.leave_application form select{
+    width: 20%;
+    border-radius: 5px;
+    padding: 5px;
+    outline: none;
+    color: #8c8c8c;
+    border: 1px solid #8c8c8c;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 15px;
+    padding: 2px 0px 4px;
+}
+
+.ui-autocomplete li:hover, .ui-state-focus, .leave_application form ul li option, .leave_application form ul li option:hover{
+    color: #8c8c8c !important;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.leave_application form .row_content{
+    margin-bottom: 0.25rem;
+}
+
+#avail_bar{
+    width: 250px;
+    height: 250px;
+    font-size: 9px;
+    position: relative;
+    left: -10%;
+    top: 1px;
+    padding-right: 20px;
+}
+
+
+/* ######################## Submit Content*/
+.leave_application form .execute_btn{
+    text-align: center;
+    padding-bottom: 15px;
+    margin-bottom: 0.5rem;
+}
+
+.leave_application form button{
+    width: 10%;
+    border-radius: 5px;
+    padding: 5px;
+    outline: none;
+    background: transparent;
+/*    color: #436d70;*/
+/*    border: 1px solid #436d70;*/
+    color: #00b1b3;
+    border: 1px solid #00b1b3;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    margin-left: 5px;
+}
+
+.leave_application form button:hover{
+    background: #00b1b3;
+    color: #ffffff;
+    box-shadow: 0 10px 10px -8px #737383;
+}
+
+.leave_application form button#reject_btn:hover{
+    background: #cc2900;
+    color: #ffffff;
+    border: 1px solid #cc2900;
+    box-shadow: 0 10px 10px -8px #737383;
+}
+
+/* ########################### Availablity of Leaves ########################### */
+.availablities{
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+    margin-left: 10%;
+}
+
+.availablities ul{
+    display: inline-flex;/*for down*/
+    padding-left: 0;
+    width: 250px;
+}
+
+.availablities ul li{
+    list-style-type: none;
+    display: inline-flex;
+    margin: 0px 9px 0px 9px;
+    width: 100%;
+}
+
+.availablities li h5{
+    width: 110px;
+    padding: 3px;
+    color: #8c8c8c;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 4px 0px 0px 0px;
+    text-align: right;
+}
+
+.availablities ul li span{
+    width: 110px;
+    padding: 4px;
+    color: #333333;
+    font-size: 14px;
+    text-align: left;
+    font-weight: 800;
+    margin: 0px 10px;
+}
+
+.leave_apply_to label{
+    font-size: 20px !important;
+}
+
+/* ########################### Applying to Content ########################### */
+.leave_apply_to i{
+    font-size: 50px;
+    text-align: right;
+    margin-left: 150px;
+    color: #436d70;
+}
+
+.leave_apply_to img{
+    width: 50px;
+    height: 50px;
+    margin-left: 150px;
+    border-radius: 50px;
+}
+
+.leave_apply_to ul{
+    position: absolute;
+    display: inline-block;
+    list-style-type: none;
+    padding-left: 8px;
+    margin-top: 8px;
+}
+
+.leave_apply_to ul li:nth-child(1){
+    font-size: 13px;
+    color: #333333;
+    font-weight: 600;
+}
+
+.leave_apply_to ul li:nth-child(2){
+    font-size: 10px;
+    color: #8c8c8c;
+}
+
+.leave_apply_to h3{
+    display: block;
+    margin-left: 16%;
+    padding-top: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #8c8c8c;
+}
+
+/* ########################### reason Content ########################### */
+.leave_reason label, .contact_info label{
+    display: block;
+    color: #8c8c8c !important;
+    margin: 0 !important;
+    font-size: 13px;
+}
+
+.leave_reason{
+    margin-left: 150px;
+    margin-bottom: 3rem !important;
+}
+
+.contact_info{
+    margin-left: 150px;
+    margin-bottom: 1rem !important;
+}
+
+.leave_reason textarea{
+    width: 50%;
+    position: absolute;
+    border-radius: 5px;
+    padding: 5px;
+    outline: none;
+    color: #8c8c8c;
+    border: 1px solid #8c8c8c;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: text;
+    resize: none;
+}
+
+.leave_reason textarea::placeholder{
+    color: #8c8c8c;
+    opacity: 1;
+}
+
+.typical_block input::placeholder{
+    color: #8c8c8c !important;
+}
+
+input#contact{
+    width: 15%;
+    border-radius: 5px;
+    padding: 5px;
+    outline: none;
+    color: #8c8c8c;
+    border: 1px solid #8c8c8c;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: text;
+}
+
+/*############################################################ Common date css ############################################################ */
+#leave_apply_tab .input-daterange input{
+    color: #737383 !important;
+    background-color: #ffffff !important;
+    font-size: 12px;
+    height: 25px;
+    padding: 3px;
+    font-weight: 600;
+    text-align: left;
+    border-radius: 5px !important;
+    border: 1px solid #8c8c8c !important;
+}
+
+#leave_apply_tab .datepicker.dropdown-menu{
+    background-color: #ffffff !important;
+    font-size: 13px;
+}
+
+#leave_apply_tab .input-daterange input.form-control:focus{
+    outline: none;
+    box-shadow: none;
+    border: 1px solid red;
+    border-radius: 50px;
+}
+
+#leave_apply_tab .datepicker table thead{
+    color: #8c8c8c;
+}
+
+/* ######################################## date and session ######################################## */
+/* ######################################## leave - date and session */
+.for_leave_application{
+    margin-bottom: 0.75rem;
+}
+
+.for_leave_application li{
+    display: block;
+}
+
+.for_leave_application .leave_block_segment{
+    margin-left: 13%;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    display: block;
+}
+
+.for_leave_application .date_block, .for_leave_application .session_block{
+    display: grid;
+    padding: 5px;
+    margin: 5px;
+}
+
+.for_leave_application .leave_date_and_session label{
+    text-align: left !important;
+    color: #8c8c8c !important;
+    margin: 0 !important;
+}
+
+.for_leave_application .session_block select{
+    width: 120% !important;
+    margin: 0 !important;
+}
+
+/* ######################################## permission - date and hours */
+.for_permission_application{
+    margin-bottom: 0.75rem;
+}
+
+.for_permission_application li{
+    display: block;
+}
+
+.for_permission_application .permission_block_segment{
+    margin-left: 13%;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    display: block;
+}
+
+.for_permission_application .date_block, .for_permission_application .hours_block{
+    display: grid;
+    padding: 5px;
+    margin: 5px;
+}
+
+.for_permission_application .perm_date_and_hours label{
+    text-align: left !important;
+    color: #8c8c8c !important;
+    margin: 0 !important;
+}
+
+.for_permission_application .hours_block select{
+    width: 120% !important;
+    margin: 0 !important;
+}
+
+/* ######################################## onduty - date and hours */
+.for_od_application{
+    margin-bottom: 0.75rem;
+}
+
+.for_od_application li{
+    display: block;
+}
+
+.for_od_application .od_block_segment{
+    margin-left: 13%;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    display: block;
+}
+
+.for_od_application .date_block, .for_od_application .hours_block{
+    display: grid;
+    padding: 5px;
+    margin: 5px;
+}
+
+.for_od_application .od_date_and_hours label{
+    text-align: left !important;
+    color: #8c8c8c !important;
+    margin: 0 !important;
+}
+
+.for_od_application .hours_block select{
+    width: 120% !important;
+    margin: 0 !important;
+}
+
+
+
+/*###################################################### approve confirm modal content ######################################################*/
+#approve_confirm{
+    display: none;
+    position: fixed;
+    z-index: 3;
+    right: 0; top: 0;
+    width: 100%; height: 100%;
+    overflow: auto;
+    background-color: #1d1b1bba;
+    padding-top: 60px;
+}
+
+#approve_confirm .approve_confirm_content{
+    position: relative;
+    margin: auto;
+    padding: 15px;
+    width: 70%; height: auto;
+    top: 15%;
+    background: #ffffff;
+    text-align: center;
+    border-radius: 10px;
+    animation: 1s ease-out 0s 1 slideInFromLeft;
+}
+
+#approve_confirm .approve_confirm_close:hover{color: #cc2900ba;}
+
+.approve_confirm_content p.approve_confirm_text{
+    text-align: center;
+    font-weight: 600;
+    font-size: 15px;
+    color: #436d70;
+    margin-top: 5%;
+}
+
+.approve_confirm_content h3.approve_confirmation{
+    text-align: center;
+    font-weight: 600;
+    color: red;
+    margin: 2%;
+}
+
+.approve_confirm_content img{
+    width: 60px; height: 60px;
+    margin-left: 40%;
+    margin-bottom: 11px;
+}
+
+/*.approve_confirm_content button{*/
+.approve_confirm_content button{
+    border: 1px solid #436d70;
+    color: #436d70;
+    outline: none;
+    border-radius: 50px;
+    background: transparent;
+    padding: 5px 15px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.approve_confirm_content form{
+    padding: 5px;
+}
+
+.approve_confirm_content form ul{
+    list-style-type: none;
+    width: 100%;
+    padding: 7px;
+    box-shadow: 0px 0px 6px 0px #ccc;
+    text-align: center;
+    border-radius: 5px;
+    margin-left: 0;
+    margin-top: 10px;
+    margin-bottom: 5%;
+}
+
+.approve_confirm_content form ul li{
+    margin: 5px;
+    padding: 2px;
+}
+
+.approve_confirm_content form ul li b{
+    font-size: 11px;
+    display: block;
+    color: #6d6c6c;
+}
+
+.approve_confirm_content form ul li span{
+    font-size: 14px;
+    display: block;
+    color: #436d70;
+}
+
+/*.approve_confirm_content button:hover{*/
+.approve_confirm_content button[value="approved"]:hover{
+    background-image: linear-gradient(to bottom right, #436d70, #70a5a9);
+    color: #ffffff;
+    border: 1px solid #436d70;
+}
+
+.approve_confirm_content button[value="canceled"]:hover{
+    background-image: linear-gradient(to bottom right, #dc3545, #ea7b85);
+    color: #ffffff;
+    border: 1px solid #dc3545;
+}
+
+@keyframes slideInFromLeft{
+  0%{transform: translateX(-100%);}
+  40%{transform: translateX(0);}
+}
+
+@keyframes slideInFromTop{
+  0%{transform: translateY(-100%);}
+  40%{transform: translateY(0);}
+}
+
+/*###################################################### alert modal content ######################################################*/
+#alert_modal{
+    display: block;
+    position: fixed;
+    z-index: 5;
+    right: 0; top: 0;
+    width: 100%; height: 100%;
+    overflow: auto;
+    background-color: #1d1b1bba;
+    padding-top: 60px;
+}
+
+#alert_modal .alert_modal_content{
+    position: relative;
+    margin: auto;
+    padding: 15px;
+    width: 30%; height: 30%;
+    top: 15%;
+    /*background: #436d70ba;*/
+    background: #ffffff;
+    justify-content: center;
+    border-radius: 10px;
+    /*border-left: 10px solid #80ffffba;
+    border-right: 10px solid #80ffffba;*/
+/*    animation: 5s ease-out 0s 1 slideInFromLeft;*/
+}
+
+#alert_modal .alert_modal_close:hover{color: #cc2900ba;}
+
+.alert_modal_content p.alert_modal_text{
+    text-align: center;
+    font-weight: 600;
+    font-size: 15px;
+/*    color: #436d70;*/
+    color: #cc1313;
+    margin-top: 10%;
+    margin-bottom: 5px;
+}
+
+.alert_modal_content img{
+    width: 60px; height: 60px;
+    margin-left: 40%;
+    margin-bottom: 11px;
+}
+
+/*.alert_modal_content button{*/
+.alert_modal_content a{
+    position: absolute;
+    right: 5%;
+    bottom: 10px;
+    border: 1px solid #436d70;
+    color: #436d70;
+    outline: none;
+    border-radius: 50px;
+    background: transparent;
+    padding: 5px 15px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 15px;
+    box-shadow: 0 0 0 0;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/*.alert_modal_content button:hover{*/
+.alert_modal_content a.alert_modal_visible:hover{
+    background-image: linear-gradient(to bottom right, #436d70, #70a5a9);
+    color: #ffffff;
+    border: 0;
+}
+
+@keyframes slideInFromLeft{
+  0%{transform: translateX(-100%);}
+  40%{transform: translateX(0);}
+}
+
+@keyframes slideInFromTop{
+  0%{transform: translateY(-100%);}
+  40%{transform: translateY(0);}
+}
+
+
+/*###################################################### Leave/Permission - Selection ######################################################*/
+.status_selection{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    margin: 5px;
+}
+
+.status_selection_2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    margin: 5px;
+}
+
+/*####################### For - ON/OF Switch ######################*/
+/* @@@@@@@@@@@@@@@@@@ on/off type-1 @@@@@@@@@@@@@@@@@@ */
+.status_selection .switch {
+  position: relative;
+  display: inline-block;
+  width: 135px;
+  height: 35px;
+}
+
+.status_selection .switch input{ 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.status_selection .slider{
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.status_selection .slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.status_selection input:checked+.slider{background-color: #00b1b3;}
+.status_selection input+.slider{background-color: #00b1b3;}
+
+.status_selection input:checked+.slider b{left: 0;}
+.status_selection input +.slider b{right: 0;}
+
+.status_selection input:focus+.slider{box-shadow: 0 0 1px #00b1b3;}
+
+.status_selection input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(65px);
+}
+
+.status_selection .slider.round {
+  border-radius: 50px;
+  height: 34px;
+}
+
+.status_selection .slider.round:before {
+  border-radius: 50%;
+}
+
+.status_selection .slider b{
+    font-size: 15px;
+    color: #fff;
+    position: absolute;
+    margin: 2px 10px;
+    padding: 5px;
+}
+
+/* @@@@@@@@@@@@@@@@@@ on/off type-2 @@@@@@@@@@@@@@@@@@ */
+.status_selection_2 .switch{
+  position: relative;
+  display: inline-block;
+  width: 200px;
+  height: 35px;
+}
+
+.status_selection_2 .switch input{ 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.status_selection_2 .slider{
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.status_selection_2 .slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.status_selection_2 input:checked+.slider{background-color: #00b1b3;}
+.status_selection_2 input+.slider{background-color: #00b1b3;}
+
+.status_selection_2 input:checked+.slider b{left: 0;}
+.status_selection_2 input +.slider b{right: 0;}
+
+.status_selection_2 input:focus+.slider{box-shadow: 0 0 1px #00b1b3;}
+
+
+.status_selection_2 input:checked + .slider:before {width: 127px;}
+.status_selection_2 input + .slider:before {width: 90px;}
+
+.status_selection_2 input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(65px);
+}
+
+.status_selection_2 .slider.round {
+  border-radius: 50px;
+  height: 34px;
+}
+
+.status_selection_2 input + .slider.round:before {
+    border-radius: 50px;
+    content: "";
+    padding: 2px 25px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #00b1b3;
+}
+
+.status_selection_2 .slider b{
+    font-size: 15px;
+    color: #fff;
+    position: absolute;
+    margin: 2px 10px;
+    padding: 5px;
+}
+/*####################### For - ON/OF Switch ######################*/
+
+
+#application_error_text{
+    color: red;
+    text-align: center;
+    font-size: 13px;
+}
+
+/*#######################  ######################*/
+
+
+
+/*###################################################### Leave Status content ######################################################*/
+/*.leave_status_table, .permission_status_table{
+    border: 1px solid #8c8c8c50;
+    border-radius: 10px;
+    margin: 10px 0px;
+    padding: 5px;
+}
+
+.leave_status_table table, .permission_status_table table{
+    width: 100%;
+}*/
+
+
+/*.leave_status_table table thead th, .permission_status_table table thead th{
+    border-bottom: 2px solid #8c8c8c50;
+}*/
+
+/*.leave_status_table table th, .permission_status_table table th{
+    width: 10%;
+    font-size: 13px;
+    color: #4d4d4d;
+    padding: 3px 10px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 3px;
+}*/
+
+/*.leave_status_table table th:nth-child(1), .permission_status_table table th:nth-child(1){
+    width: 22%;
+}*/
+
+/*.leave_status_table table th:nth-child(3), .permission_status_table table th:nth-child(3){
+    width: 20%;
+}*/
+
+/*.leave_status_table table th:nth-child(7), .permission_status_table table th:nth-child(7){
+    width: 70%;
+}*/
+
+/*.leave_status_table table tbody td ul, .permission_status_table table tbody td ul{
+    list-style-type: none;
+    margin: 2px;
+    padding: 5px 3px;
+}
+
+.leave_status_table table tbody td, .permission_status_table table tbody td{
+    width: 10%;
+    height: 15px;
+    font-size: 13px;
+    padding: 3px;
+    font-weight: 600;
+    color: #8c8c8c;
+    text-align: center;
+}*/
+
+/*.leave_status_table table tbody td:nth-child(1), .permission_status_table table tbody td:nth-child(1){
+    width: auto;
+    height: 20%;
+    display: inline-flex;
+    text-align: left;
+}*/
+
+
+/*.leave_status_table table tbody td:nth-child(1) > ul li:nth-child(2), .permission_status_table table tbody td:nth-child(1) > ul li:nth-child(2){
+    font-size: 11px;
+}*/
+
+/*.leave_status_table table tbody td:nth-child(7){
+    width: 60%;
+}
+
+.permission_status_table table tbody td:nth-child(6){
+    width: 60%;
+}*/
+
+.leave_status_table table tbody td img, .permission_status_table table tbody td img{
+    width: 45px;
+    height: 45px;
+    border-radius: 50px;
+    margin: 5px
+}
+
+#leave_status_tab{padding: 10px}
+table#ms_table{padding: 0}
+
+/*.leave_status_table table tbody td b, .permission_status_table table tbody td b{
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    font-size: 13px;
+    border: 1px solid #f0f4f7;
+    background: #f0f4f7;
+    color: #a2a8b4;
+}*/
+
+.leave_status_table tbody tr td[value], .leave_status_table tbody tr td:last-child{
+    cursor: pointer;
+}
+
+.leave_status_table table tr{
+    background-color: #eaf4f5 !important;
+}
+
+/* ############################ Tooltip ############################ */
+#reason_tooltip{
+    position: relative;
+    display: inline-block;
+}
+
+#reason_tooltip .reason_tooltiptext{
+    visibility: hidden;
+    width: auto;
+    height: auto;
+    background-color: #666666;
+    color: #fff;
+    text-align: left;
+    display: inline-block;
+    font-size: 11px;
+    border-radius: 6px;
+    padding: 5px 5px;
+    position: absolute;
+    z-index: 1;
+    top: -5px;
+    right: 120%;
+}
+
+#reason_tooltip .reason_tooltiptext::after{
+    content: "";
+    position: absolute;
+    top: 35%;
+    left: 100%;
+    margin-left: 0px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent #666666;
+}
+
+#reason_tooltip:hover .reason_tooltiptext{
+    visibility: visible;
+}
+
+.tooltip-inner{
+    background-color: #404040;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.bs-tooltip-auto[x-placement^=right] .arrow::before, .bs-tooltip-right .arrow::before{
+    border-right-color: #404040;
+}
+
+.bs-tooltip-auto[x-placement^=left] .arrow::before, .bs-tooltip-left .arrow::before{
+    border-left-color: #404040;
+}
+/* ############################ TD comments Tooptip ############################ */

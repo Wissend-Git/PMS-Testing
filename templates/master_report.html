@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Wissend</title>
+    <link rel="icon" href="{{url_for('static', filename='images/icons/wissend_black_icon_40X40.png')}}">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> -->
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/bootstrap.min.css')}}" />
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/montserrat.css')}}" />
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/poppins.css')}}" />
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/customize/header_page.css')}}" />
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/customize/master_page.css')}}" />
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/customize/employee_reports.css')}}" />
+    <style>
+        .loader_wrapper{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+        background: #f8f8f8;
+    }
+    .loader {
+        border: 2px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 2px solid #3498db;
+        -webkit-animation: spin 0.5s linear infinite;
+        animation: spin 0.5s linear infinite;
+        z-index: 1001;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 40px;
+        height: 40px;
+        margin: auto;
+    }
+    
+    @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    .loaded .loader_wrapper {
+        visibility: hidden;
+    }
+    
+      </style>
+      <script>
+        window.addEventListener('load', function () {
+            $('body').addClass('loaded');
+        })
+      </script>
+</head>
+
+<body oncontextmenu="return false;" class="login_bg">
+  <div class="loader_wrapper">
+        <div class="loader"></div>
+    </div>
+    <section id="tool_header">
+      <div class="container-fluid" id="header_width">
+        <div class="row header_block">
+          <div class="col-md-4">
+            <a href="{{url_for('master_page')}}">
+              <img src="{{url_for('static', filename='images/icons/250x100.png')}}">
+            </a>
+          </div>
+          <div class="col-md-4 text-center">
+            <h3>Master Employees Tracker</h3>
+          </div>
+          <div class="col-md-4">
+            <ul>
+              <li>
+                <a href="{{url_for('master_page')}}"><i class="fa fa-home" aria-hidden="true"></i></a>
+              </li>
+              <li>
+                <div class="dropdown">
+                  <button type="button" class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{received_data['employee_name'].split()[0]}}
+                    <img src="{{url_for('static', filename=received_data['profile_img'])}}">
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-right mt-2" aria-labelledby="dropdownMenuButton">
+                    <ul>
+                      <li class="dropdown-item">
+                        <h5 class="font-weight-bold">{{received_data['employee_name']}}</h5>
+                      </li>
+                      <li class="dropdown-item">
+                        <p>{{received_data['employee_designation']}}</p>
+                      </li>
+                      <li class="dropdown-item">
+                        <p>{{received_data['master_wissend_id']}}</p>
+                      </li>
+                    </ul>
+                    <a class="dropdown-item" id="logout" href="{{url_for('master_logout_page')}}">Logout</a>
+                  </li>
+                  </div>
+                </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="body_content">
+      <div class="container-fluid">
+        <div class="row">
+            {% if master_result["status"] != "No data found" %}
+            <table id="data_table" class="table text-center">
+                <thead>
+                  <tr>
+                    <th class="sticky-col first-col">S.No</th>
+                    {% for column_header in master_result['header'] %}
+                      {% set index = loop.index %}
+                      {% if index == 1  %}
+                        <th class="sticky-col second-col" scope="col">
+                      {% elif index == 2 %}
+                        <th class="sticky-col third-col" scope="col">
+                      {% else %}
+                        <th scope="col">
+                      {% endif %}
+                          <select id="{{column_header}}" onchange=filter_table(this)>
+                              <option value="{{column_header}}">{{column_header}}</option>
+                              {% for values in master_result['data'] %}
+                              <option>{{values[index - 1]}}</option>
+                              {% endfor %}
+                          </select>
+                        </th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for values in master_result['data'] %}
+                  {% set index_row = loop.index %}
+                    <tr scope="row">
+                      <td class="sticky-col first-col">{{index_row}}</td>
+                      {% for data in values %}
+                        {% if data == None or data == 0 %}
+                            <td></td>
+                        {% else %}
+                            {% set index = loop.index %}
+                                {% if index == 1 %}
+                                    <td class="sticky-col second-col">{{data}}</td>
+                                {% elif index == 2 %}
+                                    <td class="sticky-col third-col">{{data}}</td>
+                                {% else %}
+                                    <td>{{data}}</td>
+                                {% endif %}
+                        {% endif %}
+                      {% endfor %}
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              {% endif %}
+        </div>
+      </div>
+    </section>
+    <section id="footer">
+      <div class="footer">
+        <p>© 2020 Wissend. All rights reserved.</p>
+      </div>
+    </section>
+    <script src="{{url_for('static', filename= 'js/jquery.min.js')}}"></script>
+    <script src="{{url_for('static', filename= 'js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{url_for('static', filename= 'js/jquery.counterup.js')}}"></script>
+    <script src="{{url_for('static', filename= 'js/jquery.waypoints.js')}}"></script>
+    <script src="{{url_for('static', filename= 'js/customize/master_page.js')}}"></script>
+    <script src="{{url_for('static', filename= 'js/customize/filter_table.js')}}"></script>
+</body>
+
+
+</html>

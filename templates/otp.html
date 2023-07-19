@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Wissend</title>
+    <link rel="icon" href="{{url_for('static', filename='images/icons/wissend_black_icon_40X40.png')}}">
+    
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/bootstrap.min.css')}}" />
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/montserrat.css')}}" />
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/poppins.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/customize/main_css.css')}}" />
+    <style>
+        .loader_wrapper{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+        background: #f8f8f8;
+    }
+    .loader {
+        border: 2px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 2px solid #3498db;
+        -webkit-animation: spin 0.5s linear infinite;
+        animation: spin 0.5s linear infinite;
+        z-index: 1001;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 40px;
+        height: 40px;
+        margin: auto;
+    }
+    
+    @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    .loaded .loader_wrapper {
+        visibility: hidden;
+    }
+    
+      </style>
+      <script>
+        window.addEventListener('load', function () {
+            $('body').addClass('loaded');
+            let block_height = $("#right_block .profile_content").height();
+            $("#right_block .announcement_content .announcement_block").css("height",(block_height/2)+"px");
+        })
+      </script>
+</head>
+
+<body class="otp_bg" style="background: #808080 !important;">
+    <div class="loader_wrapper">
+        <div class="loader"></div>
+    </div>
+    <div class="otp_fluid">
+        <form id="otp_form" method="POST" action='/confirm_otp/<token_data>'>
+            <span class="close otp_form_close" title="Close OTP Form">&times;</span>
+            <h2>{{token_data[0][1]}}</h2>
+            <span>{{token_data[0][0]}}</span>
+            <p>Enter the <b>6-digit</b> code sent to the mail - <b style="color: red;">"{{token_data[0][2]}}"</b></p>
+            <input type="text" name="otp_getter" placeholder="OTP">
+            <p id="error_otp" class="text-danger pt-2"></p>
+            <button type="submit" class="otp_confirm">Create Password</button>
+        </form>
+    </div>
+    <section id="footer">
+      <div class="footer">
+        <p>© 2020 Wissend. All rights reserved.</p>
+      </div>
+    </section>
+    <script type="text/javascript">
+        var session_otp_collect = '{{session_otp}}';
+    </script>
+    <script src="{{url_for('static', filename= 'js/jquery.min.js')}}"></script>
+    <script src="{{url_for('static', filename= 'js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/customize/otp.js')}}"></script>
+    <script src="{{url_for('static', filename='js/customize/login.js')}}"></script>
+</body>
+</html>
