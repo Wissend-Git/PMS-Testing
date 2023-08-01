@@ -519,10 +519,11 @@
             </div>
 
             <div id="newuser_station_tab">
+              <button class="backshift_button">Back to Shifts</button>
               <form method="POST" action="{{url_for('addon')}}">
                 <div id="multiuser_selection">
                   <button class="multiselect_btn" type="button">Show Users</button>
-                  <div class="multiselect_content shadow rounded menu">
+                  <div class="multiselect_content d-none shadow rounded menu">
                     <span class="d-block newuser_menu-option newuser_drop_users">
                       <input name="multiselect_username_all" id="multiselect_username_all" type="checkbox" value="all">
                       <label for="multiselect_username_all">All</label>
@@ -740,6 +741,7 @@
             </div>
 
             <div id="shift_assign_tab" class="shift_assign_tab_content">
+              <button class="backshift_button">Back to Shifts</button>
               <form method="POST" action="{{url_for('addon')}}" onsubmit="SetupfinalSubmision(event)">
                 <ul class="project_segment">
                   {% for project, values in received_data['employee_projects'].items() %}
