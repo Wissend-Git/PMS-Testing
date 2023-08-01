@@ -512,41 +512,15 @@
             <ul class="addon_head"><li>Add-On Process</li></ul>
 
             <div class="tab addon_tab">
-              <button class="shift_show_tab_link" onclick="moveReport(event, 'addon_shift_show')"><b>Show Shifts</b></button>
-              <button class="shift_assign_tab_link" onclick="moveReport(event, 'addon_shift_assign')"><b>Shift Assign</b></button>
-              <button class="newuser_tab_link" onclick="moveReport(event, 'addon_newuser')"><b>Shift New Users</b></button>
+              <button class="shift_tab_link" onclick="moveReport(event, 'addon_shift')"><b>Shift Assign</b></button>
               <button class="process_tab_link" onclick="moveReport(event, 'addon_process')"><b>Process Creation</b></button>
             </div>
 
-            <div id="newuser_station_tab">
-              <form method="POST" action="{{url_for('addon')}}">
-                <div id="multiuser_selection">
-                  <button class="multiselect_btn" type="button">Show Users</button>
-                  <div class="multiselect_content shadow rounded menu">
-                    <span class="d-block newuser_menu-option newuser_drop_users">
-                      <input name="multiselect_username_all" id="multiselect_username_all" type="checkbox" value="all">
-                      <label for="multiselect_username_all">All</label>
-                    </span>
-                    {% for project_name, process_data in received_data['project_user_data'].items() %}
-                      {% if project_name != "All" %}
-                        {% for user_data_list in process_data.values() %}
-                          {% for user_data in user_data_list %}
-                            {% set index = loop.index %}
-                              {% if user_data[5] == "Active" %}
-                                <span class="d-block newuser_menu-option newuser_drop_users">
-                                  <input name="multiselect_username_{{user_data[1]}}" id="multiselect_username_{{user_data[1]}}" type="checkbox" value="{{user_data[1]}}" onclick="multiple_users_drop()">
-                                  <label for="multiselect_username_{{user_data[1]}}">{{user_data[0].split('-')[0]}}</label>
-                                </span>
-                              {% endif %} 
-                          {% endfor %}
-                        {% endfor %}
-                      {% endif %}
-                    {% endfor %}
-                  </div>
-                  <div class="d-none" id="newuser_multiuserDropdown" onclick="users_drop_hide(event)"></div>
-                </div>
-                <div id="newuser_selection_shift">
-                  <select name="newuser_project">
+            <div id="shift_assign_tab" class="shift_assign_tab_content">
+              <form method="POST" action="{{url_for('addon')}}" onsubmit="SetupfinalSubmision(event)">
+                <div class="shift_project_selection" id="assign_project">
+                  <label for="assign_project">Project</label>
+                  <select name="assign_project">
                     <option value="">Select Project</option>
                     {% for project, values in received_data['employee_projects'].items() %}
                       {% if values['status'] == 'Active' %}
@@ -554,357 +528,359 @@
                       {% endif %}
                     {% endfor %}
                   </select>
-                  <select name="newuser_selection_shift">
-                    <option value="">Select Shift</option>
-                    <option value="9.0-6.0" data_shift="G">09.00am - 06.00pm (General)</option>
-                    <option value="9.5-6.5" data_shift="G">09.30am - 06.30pm (General)</option>
-                    <option value="10.0-7.0" data_shift="G">10.00am - 07.00pm (General)</option>
-                    <option value="10.5-7.5" data_shift="G">10.30am - 07.30pm (General)</option>
-                    <option value="11.0-8.0" data_shift="G">11.00am - 08.00pm (General)</option>
-                    <option value="1.5-10.5" data_shift="S">01.30pm - 10.30pm (Second)</option>
-                    <option value="2.5-11.5" data_shift="S">02.30pm - 11.30pm (Second)</option>
-                    <option value="3.0-12.0" data_shift="N">03.00pm - 12.00am (Night)</option>
-                    <option value="3.5-12.5" data_shift="N">03.30pm - 12.30am (Night)</option>
-                    <option value="4.0-1.0" data_shift="N">04.00pm - 01.00am (Night)</option>
-                    <option value="4.5-1.5" data_shift="N">04.30pm - 01.30am (Night)</option>
-                    <option value="5.5-2.5" data_shift="N">05.30pm - 02.30am (Night)</option>
-                  </select>
+                  <input type="hidden" name="assign_project_id" id="assign_project_id" type="text" for="assign_project" readonly>
                 </div>
-                <div id="newuser_assign_block">
-                  <button class="newuser_assign_button" type="submit">Assign</button>
-                </div>
-              </form>
-            </div>
 
-            <div id="shift_show_tab" class="shift_show_tab_content">
-              <div class="shift_project_selection" id="show_project">
-                <label for="show_project">Filter</label>
-                <select name="show_project">
-                  <option value="">Select Project</option>
-                  {% for project, values in received_data['employee_projects'].items() %}
-                    {% if values['status'] == 'Active' %}
-                      <option value="{{project}}">{{project}}</option>
-                    {% endif %}
-                  {% endfor %}
-                </select>
-                <button class="newuser_button">New User</button>
-              </div>
-
-              <ul class="project_segment">
-                <li data-attribute="Testing">
-                  <div class="card">
-                    <div class="card-header" role="tab" id="project_head">
-                      <span class="project_counter">19</span>
-                      <div class="cardtop_name_block"><h5>Suspension Connection</h5></div>
-                      <div class="cardtop_shiftnumber_block">
-                        <label>Shifts Filter: </label>
-                        <ul class="shift_eleven">
-                          <li>
-                            <a class="collapsed" data-toggle="collapse" data-parent="#side_menu" href="#Testing_collapse" aria-expanded="false" aria-controls="collapse_{{index}}">10am - 7pm</a>
-                          </li>
-                          <li>
-                            <a class="collapsed" data-toggle="collapse" data-parent="#side_menu" href="#Testing_collapse" aria-expanded="false" aria-controls="collapse_{{index}}">10.30am - 07.30pm</a>
-                          </li>
-                          <li>
-                            <a class="collapsed" data-toggle="collapse" data-parent="#side_menu" href="#Testing_collapse" aria-expanded="false" aria-controls="collapse_{{index}}">10am - 07pm</a>
-                          </li>
-                          <li>
-                            <a class="collapsed" data-toggle="collapse" data-parent="#side_menu" href="#Testing_collapse" aria-expanded="false" aria-controls="collapse_{{index}}">9.30am - 6.30pm</a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="cardtop_showall_block">
-                        <div class="hyper_mode">
-                          <a class="collapsed direct_a" data-toggle="collapse" data-parent="#side_menu" href="#Testing_collapse" aria-expanded="false" aria-controls="collapse_{{index}}">View All</a>
-                        </div>
-                      </div>
-                      <div class="cardtop_redirect_block"><button>Assign</button></div>
-                    </div>
-                    <div id="Testing_collapse" class="collapse" role="tabpanel" aria-labelledby="project_head" data-parent="#side_menu">
-                      <div class="card-body">
-                        <div class="inner_user_block">
-                          <!-- <div class="heads_block">
-                            <span><label>Head</label><b>Satya Naranyanan</b></span>
-                            <span><label>Manager</label><b>Satya Naranyanan</b></span>
-                            <span><label>Lead</label><b>Vetriventhan</b></span>
-                          </div> -->
-                          <table>
-                            <thead>
-                              <th>Employee ID</th>
-                              <th>Username</th>
-                              <th>Designation</th>
-                              <th>Shift Type</th>
-                              <th>Shift</th>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>WCS0280</td>
-                                <td>Karthikeyan</td>
-                                <td>Python Developer</td>
-                                <td>General</td>
-                                <td>10.30 AM - 07.30 PM</td>
-                              </tr>
-                              <tr>
-                                <td>WCS0299</td>
-                                <td>Arrvin Kumar D</td>
-                                <td>Python Developer</td>
-                                <td>General</td>
-                                <td>10.30 AM - 07.30 PM</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-                <li data-attribute="Testing1">
-                  <div class="card">
-                    <div class="card-header" role="tab" id="project_head">
-                      <span class="project_counter">20</span>
-                      <div class="cardtop_name_block"><h5>Suspension Connection</h5></div>
-                      <div class="cardtop_shiftnumber_block">
-                        <label>Shifts Filter: </label>
-                        <ul class="shift_eleven">
-                          <li>
-                            <a class="collapsed" data-toggle="collapse" data-parent="#side_menu" href="#Testing1_collapse" aria-expanded="false" aria-controls="collapse_{{index}}">10am - 7pm</a>
-                          </li>
-                          <li>
-                            <a class="collapsed" data-toggle="collapse" data-parent="#side_menu" href="#Testing1_collapse" aria-expanded="false" aria-controls="collapse_{{index}}">10.30am - 07.30pm</a>
-                          </li>
-                          <li>
-                            <a class="collapsed" data-toggle="collapse" data-parent="#side_menu" href="#Testing1_collapse" aria-expanded="false" aria-controls="collapse_{{index}}">10am - 07pm</a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="cardtop_showall_block">
-                        <div class="hyper_mode">
-                          <a class="collapsed direct_a" data-toggle="collapse" data-parent="#side_menu" href="#Testing1_collapse" aria-expanded="false" aria-controls="collapse_{{index}}">View All</a>
-                        </div>
-                      </div>
-                      <div class="cardtop_redirect_block"><button>Assign</button></div>
-                    </div>
-                    <div id="Testing1_collapse" class="collapse" role="tabpanel" aria-labelledby="project_head" data-parent="#side_menu">
-                      <div class="card-body">
-                        <div class="inner_user_block">
+                <ul class="project_segment">
+                  <li data-attribute="Testing">
+                    <div class="card">
+                      <span class="project_counter">1</span>
+                      <div class="card-header" role="tab" id="project_head">
+                        <div class="upper_card">
+                          <h5>Process Excellence</h5>
                           <div class="heads_block">
                             <span><label>Head</label><b>Satya Naranyanan</b></span>
                             <span><label>Manager</label><b>Satya Naranyanan</b></span>
-                            <span><label>Lead</label><b>Vetriventhan</b></span>
                           </div>
-                          <table>
-                            <thead>
-                              <th>Employee ID</th>
-                              <th>Username</th>
-                              <th>Designation</th>
-                              <th>Shift Type</th>
-                              <th>Shift</th>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>WCS0280</td>
-                                <td>Karthikeyan</td>
-                                <td>Python Developer</td>
-                                <td>General</td>
-                                <td>10.30 AM - 07.30 PM</td>
-                              </tr>
-                              <tr>
-                                <td>WCS0299</td>
-                                <td>Arrvin Kumar D</td>
-                                <td>Python Developer</td>
-                                <td>General</td>
-                                <td>10.30 AM - 07.30 PM</td>
-                              </tr>
-                              <tr>
-                                <td>WCS0299</td>
-                                <td>Arrvin Kumar D</td>
-                                <td>Python Developer</td>
-                                <td>General</td>
-                                <td>10.30 AM - 07.30 PM</td>
-                              </tr>
-                              <tr>
-                                <td>WCS0299</td>
-                                <td>Arrvin Kumar D</td>
-                                <td>Python Developer</td>
-                                <td>General</td>
-                                <td>10.30 AM - 07.30 PM</td>
-                              </tr>
-                            </tbody>
-                          </table>
+                          <select name="sift_timing" class="col-md-4 collapsed">
+                            <option value="">Select Shift</option>
+                            <option value="9.0-6.0" data_shift="G">09.00 AM - 06.00 PM (General)</option>
+                            <option value="9.5-6.5" data_shift="G">09.30 AM - 06.30 PM (General)</option>
+                            <option value="10.0-7.0" data_shift="G">10.00 AM - 07.00 PM (General)</option>
+                            <option value="10.5-7.5" data_shift="G">10.30 AM - 07.30 PM (General)</option>
+                            <option value="11.0-8.0" data_shift="G">11.00 AM - 08.00 PM (General)</option>
+                            <option value="1.5-10.5" data_shift="S">01.30 PM - 10.30 PM (Second)</option>
+                            <option value="2.5-11.5" data_shift="S">02.30 PM - 11.30 PM (Second)</option>
+                            <option value="3.0-12.0" data_shift="N">03.00 PM - 12.00 AM (Night)</option>
+                            <option value="3.5-12.5" data_shift="N">03.30 PM - 12.30 AM (Night)</option>
+                            <option value="4.0-1.0" data_shift="N">04.00 PM - 01.00 AM (Night)</option>
+                            <option value="4.5-1.5" data_shift="N">04.30 PM - 01.30 AM (Night)</option>
+                            <option value="5.5-2.5" data_shift="N">05.30 PM - 02.30 AM (Night)</option>
+                          </select>
+                          <input type="hidden" name="assign_shiftime_id" id="assign_shiftime_id" type="text" for="sift_timing" readonly>
+                        </div>
+                        <div class="lower_card">
+                          <div class="shift_numbers_block">
+                            <label>Available Shifts :</label>
+                            <ul class="col-md-12">
+                              <li class="col-md-5">10.00am to 07.00pm</li>
+                              <li class="col-md-5">10.30am to 07.30pm</li>
+                              <li class="col-md-5">09.30am to 06.30pm</li>
+                              <li class="col-md-5">09.30am to 06.30pm</li>
+                              <li class="col-md-5">09.30am to 06.30pm</li>
+                            </ul>
+                          </div>
+                          <a class="collapsed" data-toggle="collapse" data-parent="#side_menu" href="#Testing_1_collapse" aria-expanded="false" aria-controls="collapse_1">Show Users</a>
+                          <button>Assign</button>
+                        </div>
+                      </div>
+                      <div id="Testing_1_collapse" class="collapse" role="tabpanel" aria-labelledby="project_head" data-parent="#side_menu">
+                        <div class="card-body">
+                          <div class="inner_user_block">
+                            <table>
+                              <thead>
+                                <th>Employee ID</th>
+                                <th>Username</th>
+                                <th>Designation</th>
+                                <th>Shift Type</th>
+                                <th>Shift</th>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>WCS0280</td>
+                                  <td>Karthikeyan</td>
+                                  <td>Python Developer</td>
+                                  <td>General</td>
+                                  <td>
+                                    <select name="sift_timing_for_users">
+                                      <option value="">Select Shift</option>
+                                      <option value="9.0-6.0" data_shift="G">09.00 AM - 06.00 PM</option>
+                                      <option value="9.5-6.5" data_shift="G">09.30 AM - 06.30 PM</option>
+                                      <option value="10.0-7.0" data_shift="G">10.00 AM - 07.00 PM</option>
+                                      <option value="10.5-7.5" data_shift="G">10.30 AM - 07.30 PM</option>
+                                      <option value="11.0-8.0" data_shift="G">11.00 AM - 08.00 PM</option>
+                                      <option value="1.5-10.5" data_shift="S">01.30 PM - 10.30 PM</option>
+                                      <option value="2.5-11.5" data_shift="S">02.30 PM - 11.30 PM</option>
+                                      <option value="3.0-12.0" data_shift="N">03.00 PM - 12.00 AM</option>
+                                      <option value="3.5-12.5" data_shift="N">03.30 PM - 12.30 AM</option>
+                                      <option value="4.0-1.0" data_shift="N">04.00 PM - 01.00 AM</option>
+                                      <option value="4.5-1.5" data_shift="N">04.30 PM - 01.30 AM</option>
+                                      <option value="5.5-2.5" data_shift="N">05.30 PM - 02.30 AM</option>
+                                    </select>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>WCS0299</td>
+                                  <td>Arrvin Kumar D</td>
+                                  <td>Python Developer</td>
+                                  <td>General</td>
+                                  <td>
+                                    <select name="sift_timing_for_users">
+                                      <option value="">Select Shift</option>
+                                      <option value="9.0-6.0" data_shift="G">09.00 AM - 06.00 PM</option>
+                                      <option value="9.5-6.5" data_shift="G">09.30 AM - 06.30 PM</option>
+                                      <option value="10.0-7.0" data_shift="G">10.00 AM - 07.00 PM</option>
+                                      <option value="10.5-7.5" data_shift="G">10.30 AM - 07.30 PM</option>
+                                      <option value="11.0-8.0" data_shift="G">11.00 AM - 08.00 PM</option>
+                                      <option value="1.5-10.5" data_shift="S">01.30 PM - 10.30 PM</option>
+                                      <option value="2.5-11.5" data_shift="S">02.30 PM - 11.30 PM</option>
+                                      <option value="3.0-12.0" data_shift="N">03.00 PM - 12.00 AM</option>
+                                      <option value="3.5-12.5" data_shift="N">03.30 PM - 12.30 AM</option>
+                                      <option value="4.0-1.0" data_shift="N">04.00 PM - 01.00 AM</option>
+                                      <option value="4.5-1.5" data_shift="N">04.30 PM - 01.30 AM</option>
+                                      <option value="5.5-2.5" data_shift="N">05.30 PM - 02.30 AM</option>
+                                    </select>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>WCS0661</td>
+                                  <td>Sneka M</td>
+                                  <td>Python Developer</td>
+                                  <td>Second</td>
+                                  <td>
+                                    <select name="sift_timing_for_users">
+                                      <option value="">Select Shift</option>
+                                      <option value="9.0-6.0" data_shift="G">09.00 AM - 06.00 PM</option>
+                                      <option value="9.5-6.5" data_shift="G">09.30 AM - 06.30 PM</option>
+                                      <option value="10.0-7.0" data_shift="G">10.00 AM - 07.00 PM</option>
+                                      <option value="10.5-7.5" data_shift="G">10.30 AM - 07.30 PM</option>
+                                      <option value="11.0-8.0" data_shift="G">11.00 AM - 08.00 PM</option>
+                                      <option value="1.5-10.5" data_shift="S">01.30 PM - 10.30 PM</option>
+                                      <option value="2.5-11.5" data_shift="S">02.30 PM - 11.30 PM</option>
+                                      <option value="3.0-12.0" data_shift="N">03.00 PM - 12.00 AM</option>
+                                      <option value="3.5-12.5" data_shift="N">03.30 PM - 12.30 AM</option>
+                                      <option value="4.0-1.0" data_shift="N">04.00 PM - 01.00 AM</option>
+                                      <option value="4.5-1.5" data_shift="N">04.30 PM - 01.30 AM</option>
+                                      <option value="5.5-2.5" data_shift="N">05.30 PM - 02.30 AM</option>
+                                    </select>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>WCS0784</td>
+                                  <td>Yenok Edison K</td>
+                                  <td>Python Developer</td>
+                                  <td>Night</td>
+                                  <td>
+                                    <select name="sift_timing_for_users">
+                                      <option value="">Select Shift</option>
+                                      <option value="9.0-6.0" data_shift="G">09.00 AM - 06.00 PM</option>
+                                      <option value="9.5-6.5" data_shift="G">09.30 AM - 06.30 PM</option>
+                                      <option value="10.0-7.0" data_shift="G">10.00 AM - 07.00 PM</option>
+                                      <option value="10.5-7.5" data_shift="G">10.30 AM - 07.30 PM</option>
+                                      <option value="11.0-8.0" data_shift="G">11.00 AM - 08.00 PM</option>
+                                      <option value="1.5-10.5" data_shift="S">01.30 PM - 10.30 PM</option>
+                                      <option value="2.5-11.5" data_shift="S">02.30 PM - 11.30 PM</option>
+                                      <option value="3.0-12.0" data_shift="N">03.00 PM - 12.00 AM</option>
+                                      <option value="3.5-12.5" data_shift="N">03.30 PM - 12.30 AM</option>
+                                      <option value="4.0-1.0" data_shift="N">04.00 PM - 01.00 AM</option>
+                                      <option value="4.5-1.5" data_shift="N">04.30 PM - 01.30 AM</option>
+                                      <option value="5.5-2.5" data_shift="N">05.30 PM - 02.30 AM</option>
+                                    </select>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>WCS0803</td>
+                                  <td>SaiMohan Raj</td>
+                                  <td>Python Developer</td>
+                                  <td>General</td>
+                                  <td>
+                                    <select name="sift_timing_for_users">
+                                      <option value="">Select Shift</option>
+                                      <option value="9.0-6.0" data_shift="G">09.00 AM - 06.00 PM</option>
+                                      <option value="9.5-6.5" data_shift="G">09.30 AM - 06.30 PM</option>
+                                      <option value="10.0-7.0" data_shift="G">10.00 AM - 07.00 PM</option>
+                                      <option value="10.5-7.5" data_shift="G">10.30 AM - 07.30 PM</option>
+                                      <option value="11.0-8.0" data_shift="G">11.00 AM - 08.00 PM</option>
+                                      <option value="1.5-10.5" data_shift="S">01.30 PM - 10.30 PM</option>
+                                      <option value="2.5-11.5" data_shift="S">02.30 PM - 11.30 PM</option>
+                                      <option value="3.0-12.0" data_shift="N">03.00 PM - 12.00 AM</option>
+                                      <option value="3.5-12.5" data_shift="N">03.30 PM - 12.30 AM</option>
+                                      <option value="4.0-1.0" data_shift="N">04.00 PM - 01.00 AM</option>
+                                      <option value="4.5-1.5" data_shift="N">04.30 PM - 01.30 AM</option>
+                                      <option value="5.5-2.5" data_shift="N">05.30 PM - 02.30 AM</option>
+                                    </select>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-
-            <div id="shift_assign_tab" class="shift_assign_tab_content">
-              <form method="POST" action="{{url_for('addon')}}" onsubmit="SetupfinalSubmision(event)">
-                <ul class="project_segment">
-                  {% for project, values in received_data['employee_projects'].items() %}
-                    {% set index = loop.index %}
-                    {% if values['status'] == 'Active' %}
-                      <li data-attribute="{{project}}">
-                        <div class="card">
-                          <span class="project_counter">{{index}}</span>
-                          <div class="card-header" role="tab" id="project_head">
-                            <h5>{{project}}</h5>
-                            <select name="sift_timing" class="col-md-4 collapsed">
-                              <option value="">Select Shift</option>
-                              <option value="9.0-6.0" data_shift="G">09.00 AM - 06.00 PM (General)</option>
-                              <option value="9.5-6.5" data_shift="G">09.30 AM - 06.30 PM (General)</option>
-                              <option value="10.0-7.0" data_shift="G">10.00 AM - 07.00 PM (General)</option>
-                              <option value="10.5-7.5" data_shift="G">10.30 AM - 07.30 PM (General)</option>
-                              <option value="11.0-8.0" data_shift="G">11.00 AM - 08.00 PM (General)</option>
-                              <option value="1.5-10.5" data_shift="S">01.30 PM - 10.30 PM (Second)</option>
-                              <option value="2.5-11.5" data_shift="S">02.30 PM - 11.30 PM (Second)</option>
-                              <option value="3.0-12.0" data_shift="N">03.00 PM - 12.00 AM (Night)</option>
-                              <option value="3.5-12.5" data_shift="N">03.30 PM - 12.30 AM (Night)</option>
-                              <option value="4.0-1.0" data_shift="N">04.00 PM - 01.00 AM (Night)</option>
-                              <option value="4.5-1.5" data_shift="N">04.30 PM - 01.30 AM (Night)</option>
-                              <option value="5.5-2.5" data_shift="N">05.30 PM - 02.30 AM (Night)</option>
-                            </select>
-                            <input type="hidden" name="assign_shiftime_id" id="assign_shiftime_id" type="text" for="sift_timing" readonly>
-                            <a class="collapsed" data-toggle="collapse" data-parent="#side_menu" href="#{{project}} connect_collapse" aria-expanded="false" aria-controls="collapse_{{index}}">Users</a>
-                            <button>Assign</button>
+                  </li>
+                  <li data-attribute="Testing">
+                    <div class="card">
+                      <span class="project_counter">2</span>
+                      <div class="card-header" role="tab" id="project_head">
+                        <div class="upper_card">
+                          <h5>Ace Hardware</h5>
+                          <div class="heads_block">
+                            <span><label>Head</label><b>Vishwanathan</b></span>
+                            <span><label>Manager</label><b>Yaseen</b></span>
                           </div>
-                          <div id="{{project}} connect_collapse" class="collapse" role="tabpanel" aria-labelledby="project_head" data-parent="#side_menu">
-                            <div class="card-body">
-                              <div class="inner_user_block">
-                                <table>
-                                  <thead>
-                                    <th>Employee ID</th>
-                                    <th>Username</th>
-                                    <th>Designation</th>
-                                    <th>Shift Type</th>
-                                    <th>Shift Timing</th>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td>WCS0280</td>
-                                      <td>Karthikeyan</td>
-                                      <td>Python Developer</td>
-                                      <td>General</td>
-                                      <td>
-                                        <select name="sift_timing_for_users">
-                                          <option value="">Select Shift</option>
-                                          <option value="9.0-6.0" data_shift="G">09.00 AM - 06.00 PM</option>
-                                          <option value="9.5-6.5" data_shift="G">09.30 AM - 06.30 PM</option>
-                                          <option value="10.0-7.0" data_shift="G">10.00 AM - 07.00 PM</option>
-                                          <option value="10.5-7.5" data_shift="G">10.30 AM - 07.30 PM</option>
-                                          <option value="11.0-8.0" data_shift="G">11.00 AM - 08.00 PM</option>
-                                          <option value="1.5-10.5" data_shift="S">01.30 PM - 10.30 PM</option>
-                                          <option value="2.5-11.5" data_shift="S">02.30 PM - 11.30 PM</option>
-                                          <option value="3.0-12.0" data_shift="N">03.00 PM - 12.00 AM</option>
-                                          <option value="3.5-12.5" data_shift="N">03.30 PM - 12.30 AM</option>
-                                          <option value="4.0-1.0" data_shift="N">04.00 PM - 01.00 AM</option>
-                                          <option value="4.5-1.5" data_shift="N">04.30 PM - 01.30 AM</option>
-                                          <option value="5.5-2.5" data_shift="N">05.30 PM - 02.30 AM</option>
-                                        </select>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td>WCS0299</td>
-                                      <td>Arrvin Kumar D</td>
-                                      <td>Python Developer</td>
-                                      <td>General</td>
-                                      <td>
-                                        <select name="sift_timing_for_users">
-                                          <option value="">Select Shift</option>
-                                          <option value="9.0-6.0" data_shift="G">09.00 AM - 06.00 PM</option>
-                                          <option value="9.5-6.5" data_shift="G">09.30 AM - 06.30 PM</option>
-                                          <option value="10.0-7.0" data_shift="G">10.00 AM - 07.00 PM</option>
-                                          <option value="10.5-7.5" data_shift="G">10.30 AM - 07.30 PM</option>
-                                          <option value="11.0-8.0" data_shift="G">11.00 AM - 08.00 PM</option>
-                                          <option value="1.5-10.5" data_shift="S">01.30 PM - 10.30 PM</option>
-                                          <option value="2.5-11.5" data_shift="S">02.30 PM - 11.30 PM</option>
-                                          <option value="3.0-12.0" data_shift="N">03.00 PM - 12.00 AM</option>
-                                          <option value="3.5-12.5" data_shift="N">03.30 PM - 12.30 AM</option>
-                                          <option value="4.0-1.0" data_shift="N">04.00 PM - 01.00 AM</option>
-                                          <option value="4.5-1.5" data_shift="N">04.30 PM - 01.30 AM</option>
-                                          <option value="5.5-2.5" data_shift="N">05.30 PM - 02.30 AM</option>
-                                        </select>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td>WCS0661</td>
-                                      <td>Sneka M</td>
-                                      <td>Python Developer</td>
-                                      <td>Second</td>
-                                      <td>
-                                        <select name="sift_timing_for_users">
-                                          <option value="">Select Shift</option>
-                                          <option value="9.0-6.0" data_shift="G">09.00 AM - 06.00 PM</option>
-                                          <option value="9.5-6.5" data_shift="G">09.30 AM - 06.30 PM</option>
-                                          <option value="10.0-7.0" data_shift="G">10.00 AM - 07.00 PM</option>
-                                          <option value="10.5-7.5" data_shift="G">10.30 AM - 07.30 PM</option>
-                                          <option value="11.0-8.0" data_shift="G">11.00 AM - 08.00 PM</option>
-                                          <option value="1.5-10.5" data_shift="S">01.30 PM - 10.30 PM</option>
-                                          <option value="2.5-11.5" data_shift="S">02.30 PM - 11.30 PM</option>
-                                          <option value="3.0-12.0" data_shift="N">03.00 PM - 12.00 AM</option>
-                                          <option value="3.5-12.5" data_shift="N">03.30 PM - 12.30 AM</option>
-                                          <option value="4.0-1.0" data_shift="N">04.00 PM - 01.00 AM</option>
-                                          <option value="4.5-1.5" data_shift="N">04.30 PM - 01.30 AM</option>
-                                          <option value="5.5-2.5" data_shift="N">05.30 PM - 02.30 AM</option>
-                                        </select>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td>WCS0784</td>
-                                      <td>Yenok Edison K</td>
-                                      <td>Python Developer</td>
-                                      <td>Night</td>
-                                      <td>
-                                        <select name="sift_timing_for_users">
-                                          <option value="">Select Shift</option>
-                                          <option value="9.0-6.0" data_shift="G">09.00 AM - 06.00 PM</option>
-                                          <option value="9.5-6.5" data_shift="G">09.30 AM - 06.30 PM</option>
-                                          <option value="10.0-7.0" data_shift="G">10.00 AM - 07.00 PM</option>
-                                          <option value="10.5-7.5" data_shift="G">10.30 AM - 07.30 PM</option>
-                                          <option value="11.0-8.0" data_shift="G">11.00 AM - 08.00 PM</option>
-                                          <option value="1.5-10.5" data_shift="S">01.30 PM - 10.30 PM</option>
-                                          <option value="2.5-11.5" data_shift="S">02.30 PM - 11.30 PM</option>
-                                          <option value="3.0-12.0" data_shift="N">03.00 PM - 12.00 AM</option>
-                                          <option value="3.5-12.5" data_shift="N">03.30 PM - 12.30 AM</option>
-                                          <option value="4.0-1.0" data_shift="N">04.00 PM - 01.00 AM</option>
-                                          <option value="4.5-1.5" data_shift="N">04.30 PM - 01.30 AM</option>
-                                          <option value="5.5-2.5" data_shift="N">05.30 PM - 02.30 AM</option>
-                                        </select>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td>WCS0803</td>
-                                      <td>SaiMohan Raj</td>
-                                      <td>Python Developer</td>
-                                      <td>General</td>
-                                      <td>
-                                        <select name="sift_timing_for_users">
-                                          <option value="">Select Shift</option>
-                                          <option value="9.0-6.0" data_shift="G">09.00 AM - 06.00 PM</option>
-                                          <option value="9.5-6.5" data_shift="G">09.30 AM - 06.30 PM</option>
-                                          <option value="10.0-7.0" data_shift="G">10.00 AM - 07.00 PM</option>
-                                          <option value="10.5-7.5" data_shift="G">10.30 AM - 07.30 PM</option>
-                                          <option value="11.0-8.0" data_shift="G">11.00 AM - 08.00 PM</option>
-                                          <option value="1.5-10.5" data_shift="S">01.30 PM - 10.30 PM</option>
-                                          <option value="2.5-11.5" data_shift="S">02.30 PM - 11.30 PM</option>
-                                          <option value="3.0-12.0" data_shift="N">03.00 PM - 12.00 AM</option>
-                                          <option value="3.5-12.5" data_shift="N">03.30 PM - 12.30 AM</option>
-                                          <option value="4.0-1.0" data_shift="N">04.00 PM - 01.00 AM</option>
-                                          <option value="4.5-1.5" data_shift="N">04.30 PM - 01.30 AM</option>
-                                          <option value="5.5-2.5" data_shift="N">05.30 PM - 02.30 AM</option>
-                                        </select>
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
+                          <select name="sift_timing" class="col-md-4 collapsed">
+                            <option value="">Select Shift</option>
+                            <option value="9.0-6.0" data_shift="G">09.00 AM - 06.00 PM (General)</option>
+                            <option value="9.5-6.5" data_shift="G">09.30 AM - 06.30 PM (General)</option>
+                            <option value="10.0-7.0" data_shift="G">10.00 AM - 07.00 PM (General)</option>
+                            <option value="10.5-7.5" data_shift="G">10.30 AM - 07.30 PM (General)</option>
+                            <option value="11.0-8.0" data_shift="G">11.00 AM - 08.00 PM (General)</option>
+                            <option value="1.5-10.5" data_shift="S">01.30 PM - 10.30 PM (Second)</option>
+                            <option value="2.5-11.5" data_shift="S">02.30 PM - 11.30 PM (Second)</option>
+                            <option value="3.0-12.0" data_shift="N">03.00 PM - 12.00 AM (Night)</option>
+                            <option value="3.5-12.5" data_shift="N">03.30 PM - 12.30 AM (Night)</option>
+                            <option value="4.0-1.0" data_shift="N">04.00 PM - 01.00 AM (Night)</option>
+                            <option value="4.5-1.5" data_shift="N">04.30 PM - 01.30 AM (Night)</option>
+                            <option value="5.5-2.5" data_shift="N">05.30 PM - 02.30 AM (Night)</option>
+                          </select>
+                          <input type="hidden" name="assign_shiftime_id" id="assign_shiftime_id" type="text" for="sift_timing" readonly>
+                        </div>
+                        <div class="lower_card">
+                          <div class="shift_numbers_block">
+                            <label>Available Shifts :</label>
+                            <ul class="col-md-12">
+                              <li class="col-md-5">10.00am to 07.00pm</li>
+                              <li class="col-md-5">10.30am to 07.30pm</li>
+                            </ul>
+                          </div>
+                          <a class="collapsed" data-toggle="collapse" data-parent="#side_menu" href="#Testing_2_collapse" aria-expanded="false" aria-controls="collapse_2">Show Users</a>
+                          <button>Assign</button>
+                        </div>
+                      </div>
+                      <div id="Testing_2_collapse" class="collapse" role="tabpanel" aria-labelledby="project_head" data-parent="#side_menu">
+                        <div class="card-body">
+                          <div class="inner_user_block">
+                            <table>
+                              <thead>
+                                <th>Employee ID</th>
+                                <th>Username</th>
+                                <th>Designation</th>
+                                <th>Shift Type</th>
+                                <th>Shift</th>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>WCS0280</td>
+                                  <td>Karthikeyan</td>
+                                  <td>Python Developer</td>
+                                  <td>General</td>
+                                  <td>
+                                    <select name="sift_timing_for_users">
+                                      <option value="">Select Shift</option>
+                                      <option value="9.0-6.0" data_shift="G">09.00 AM - 06.00 PM</option>
+                                      <option value="9.5-6.5" data_shift="G">09.30 AM - 06.30 PM</option>
+                                      <option value="10.0-7.0" data_shift="G">10.00 AM - 07.00 PM</option>
+                                      <option value="10.5-7.5" data_shift="G">10.30 AM - 07.30 PM</option>
+                                      <option value="11.0-8.0" data_shift="G">11.00 AM - 08.00 PM</option>
+                                      <option value="1.5-10.5" data_shift="S">01.30 PM - 10.30 PM</option>
+                                      <option value="2.5-11.5" data_shift="S">02.30 PM - 11.30 PM</option>
+                                      <option value="3.0-12.0" data_shift="N">03.00 PM - 12.00 AM</option>
+                                      <option value="3.5-12.5" data_shift="N">03.30 PM - 12.30 AM</option>
+                                      <option value="4.0-1.0" data_shift="N">04.00 PM - 01.00 AM</option>
+                                      <option value="4.5-1.5" data_shift="N">04.30 PM - 01.30 AM</option>
+                                      <option value="5.5-2.5" data_shift="N">05.30 PM - 02.30 AM</option>
+                                    </select>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>WCS0299</td>
+                                  <td>Arrvin Kumar D</td>
+                                  <td>Python Developer</td>
+                                  <td>General</td>
+                                  <td>
+                                    <select name="sift_timing_for_users">
+                                      <option value="">Select Shift</option>
+                                      <option value="9.0-6.0" data_shift="G">09.00 AM - 06.00 PM</option>
+                                      <option value="9.5-6.5" data_shift="G">09.30 AM - 06.30 PM</option>
+                                      <option value="10.0-7.0" data_shift="G">10.00 AM - 07.00 PM</option>
+                                      <option value="10.5-7.5" data_shift="G">10.30 AM - 07.30 PM</option>
+                                      <option value="11.0-8.0" data_shift="G">11.00 AM - 08.00 PM</option>
+                                      <option value="1.5-10.5" data_shift="S">01.30 PM - 10.30 PM</option>
+                                      <option value="2.5-11.5" data_shift="S">02.30 PM - 11.30 PM</option>
+                                      <option value="3.0-12.0" data_shift="N">03.00 PM - 12.00 AM</option>
+                                      <option value="3.5-12.5" data_shift="N">03.30 PM - 12.30 AM</option>
+                                      <option value="4.0-1.0" data_shift="N">04.00 PM - 01.00 AM</option>
+                                      <option value="4.5-1.5" data_shift="N">04.30 PM - 01.30 AM</option>
+                                      <option value="5.5-2.5" data_shift="N">05.30 PM - 02.30 AM</option>
+                                    </select>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>WCS0661</td>
+                                  <td>Sneka M</td>
+                                  <td>Python Developer</td>
+                                  <td>Second</td>
+                                  <td>
+                                    <select name="sift_timing_for_users">
+                                      <option value="">Select Shift</option>
+                                      <option value="9.0-6.0" data_shift="G">09.00 AM - 06.00 PM</option>
+                                      <option value="9.5-6.5" data_shift="G">09.30 AM - 06.30 PM</option>
+                                      <option value="10.0-7.0" data_shift="G">10.00 AM - 07.00 PM</option>
+                                      <option value="10.5-7.5" data_shift="G">10.30 AM - 07.30 PM</option>
+                                      <option value="11.0-8.0" data_shift="G">11.00 AM - 08.00 PM</option>
+                                      <option value="1.5-10.5" data_shift="S">01.30 PM - 10.30 PM</option>
+                                      <option value="2.5-11.5" data_shift="S">02.30 PM - 11.30 PM</option>
+                                      <option value="3.0-12.0" data_shift="N">03.00 PM - 12.00 AM</option>
+                                      <option value="3.5-12.5" data_shift="N">03.30 PM - 12.30 AM</option>
+                                      <option value="4.0-1.0" data_shift="N">04.00 PM - 01.00 AM</option>
+                                      <option value="4.5-1.5" data_shift="N">04.30 PM - 01.30 AM</option>
+                                      <option value="5.5-2.5" data_shift="N">05.30 PM - 02.30 AM</option>
+                                    </select>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>WCS0784</td>
+                                  <td>Yenok Edison K</td>
+                                  <td>Python Developer</td>
+                                  <td>Night</td>
+                                  <td>
+                                    <select name="sift_timing_for_users">
+                                      <option value="">Select Shift</option>
+                                      <option value="9.0-6.0" data_shift="G">09.00 AM - 06.00 PM</option>
+                                      <option value="9.5-6.5" data_shift="G">09.30 AM - 06.30 PM</option>
+                                      <option value="10.0-7.0" data_shift="G">10.00 AM - 07.00 PM</option>
+                                      <option value="10.5-7.5" data_shift="G">10.30 AM - 07.30 PM</option>
+                                      <option value="11.0-8.0" data_shift="G">11.00 AM - 08.00 PM</option>
+                                      <option value="1.5-10.5" data_shift="S">01.30 PM - 10.30 PM</option>
+                                      <option value="2.5-11.5" data_shift="S">02.30 PM - 11.30 PM</option>
+                                      <option value="3.0-12.0" data_shift="N">03.00 PM - 12.00 AM</option>
+                                      <option value="3.5-12.5" data_shift="N">03.30 PM - 12.30 AM</option>
+                                      <option value="4.0-1.0" data_shift="N">04.00 PM - 01.00 AM</option>
+                                      <option value="4.5-1.5" data_shift="N">04.30 PM - 01.30 AM</option>
+                                      <option value="5.5-2.5" data_shift="N">05.30 PM - 02.30 AM</option>
+                                    </select>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>WCS0803</td>
+                                  <td>SaiMohan Raj</td>
+                                  <td>Python Developer</td>
+                                  <td>General</td>
+                                  <td>
+                                    <select name="sift_timing_for_users">
+                                      <option value="">Select Shift</option>
+                                      <option value="9.0-6.0" data_shift="G">09.00 AM - 06.00 PM</option>
+                                      <option value="9.5-6.5" data_shift="G">09.30 AM - 06.30 PM</option>
+                                      <option value="10.0-7.0" data_shift="G">10.00 AM - 07.00 PM</option>
+                                      <option value="10.5-7.5" data_shift="G">10.30 AM - 07.30 PM</option>
+                                      <option value="11.0-8.0" data_shift="G">11.00 AM - 08.00 PM</option>
+                                      <option value="1.5-10.5" data_shift="S">01.30 PM - 10.30 PM</option>
+                                      <option value="2.5-11.5" data_shift="S">02.30 PM - 11.30 PM</option>
+                                      <option value="3.0-12.0" data_shift="N">03.00 PM - 12.00 AM</option>
+                                      <option value="3.5-12.5" data_shift="N">03.30 PM - 12.30 AM</option>
+                                      <option value="4.0-1.0" data_shift="N">04.00 PM - 01.00 AM</option>
+                                      <option value="4.5-1.5" data_shift="N">04.30 PM - 01.30 AM</option>
+                                      <option value="5.5-2.5" data_shift="N">05.30 PM - 02.30 AM</option>
+                                    </select>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
                           </div>
                         </div>
-                      </li>
-                    {% endif %}
-                  {% endfor %}
+                      </div>
+                    </div>
+                  </li>
                 </ul>
               </form>
             </div>

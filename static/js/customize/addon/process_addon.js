@@ -1,13 +1,6 @@
 $(document).ready(function($){
     $('[id^="creation_progress"]').css('display', 'none');
     $('.add_more_process, .add_more_tasks').css('display', 'none');
-
-    document.onkeydown = function(e) {
-        if(e.keyCode == 27){
-            $("#acknowModel").fadeOut(1000);
-            window.location.href = '/team_lead';
-        }
-    }
 });
 
 var data_storage = JSON.parse(my_storage);
@@ -403,15 +396,3 @@ function addon_submit(event){
         event.preventDefault();
     }
 }
-
-window.onclick = function(event){
-    if (event.target == document.getElementById("acknowModel")){
-        $('#acknowModel').attr("style","display: none");
-        window.location.href = '/team_lead';
-    }
-}
-
-$('#acknowModel .close').on('click', function(){
-    $('#acknowModel').attr("style","display: none");
-    window.location.href = '/team_lead';
-})

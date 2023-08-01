@@ -47,7 +47,7 @@ myapp = Flask(__name__)
 def check_session():
 	session.permanent = True
 	session.modified = True
-	myapp.permanent_session_lifetime = timedelta(minutes=60)
+	myapp.permanent_session_lifetime = timedelta(minutes=30)
 
 sec_use = URLSafeTimedSerializer('wissendtoken')
 ################################################## Global Content ##################################################
@@ -80,15 +80,10 @@ def login_page():
 		session['datetime_format'] = str(date_time.strftime("%Y-%m-%d %H:%M:%S"))
 		session['wissend_id'] = form_data.get('user_id')
 		session['wissend_password'] = form_data.get('user_pswd')
-		if syst_img_path[0] == 's':
-			morphing_profile_image = "static/images/employee_images/{}.jpg".format(session['wissend_id'])
-		else:	
-			morphing_profile_image = "/var/www/html/webapp/static/images/employee_images/{}.jpg".format(session['wissend_id'])
-		if path.isfile(morphing_profile_image):
+		if path.isfile("/var/www/html/webapp/static/images/employee_images/{}.jpg".format(session['wissend_id'])):
 			session['profile_img'] = "images/employee_images/{}.jpg".format(session['wissend_id'])
 		else:
 			session['profile_img'] = "images/employee_images/user_logo.jpg"
-
 		session['template_image'] = template_images
 		session['template_image_path'] = image_paths
 		session['template_pdf_path'] = pdf_paths
@@ -199,79 +194,7 @@ def confirm_login():
 		return redirect('/logout')
 ################################################## Login Credentials ##################################################
 
-@myapp.route('/team_lead', methods=['GET','POST'])
-def team_lead():
-	try:
-		if request.method == "GET":
-			if session.get('wissend_id', 0) != 0:
-				if session['entry_login'] == 1:
-					try:
-						session['template_image'] = str(int(session['template_image'])+1) if session['template_image'] != 0 else 0
-					except:
-						print("Team Lead - Session Timeout")
-						return redirect('/logout')
-					emp_storage = db_functions.employee_project_data(session)
-					if isinstance(emp_storage, int) == False:
-						if session['emp_type'] in ['ADMIN','TA','TM','TL','TLR','TMR','TBH','TBHR','TQA']:
-							emp_storage['check_key_lead'] = 0
-							if session['wissend_password'] != '0':
-								emp_storage['check_team'] = '1'
-								emp_storage['check_key_lead'] = 0
-								for process_name in emp_storage['employee_projects'].values():
-									if process_name['status'] == 'Active':
-										for process_data in process_name['process'].values():
-											if str(process_data['lead_id']) == str(session['employee_id']) or str(process_data['manager_id']) == str(session['employee_id']) or str(process_data['business_head_id']) == str(session['employee_id']):
-												emp_storage['check_key_lead'] = 1
-								return render_template("team_lead_page.html", received_data=emp_storage)
-							else:
-								return redirect("change_password")
-						else:
-							return redirect('/')
-					else:
-						return render_template_string("error")
-				else:
-					return redirect("confirm_login")
-			else:
-				return redirect('/')
-		else:
-			return redirect('/')
-	except:
-		print(db_functions.traceback.format_exc())
-		return redirect('/logout')
-
-@myapp.route('/employee_page', methods=['GET', 'POST'])
-def employee_page():
-	emp_storage = dict()
-	try:
-		if request.method == 'GET':
-			if session.get('wissend_id', 0) != 0:
-				if session['entry_login'] == 1:
-					try:
-						session['template_image'] = str(int(session['template_image'])+1) if session['template_image'] != 0 else 0
-					except:
-						print("Employee Page - Session Timeout")
-						return redirect('/logout')
-					emp_storage = db_functions.employee_project_data(session)
-					if isinstance(emp_storage, int) == False:
-						if session['emp_type'] in ['ADMIN','TA','TM','TL', 'TLR', 'TMR','TBH','TBHR','TQA']:
-							if session['wissend_password'] != '0':
-								return redirect("team_lead")
-							else:
-								return redirect("change_password")
-						else:
-							return render_template("employee_page.html", received_data=emp_storage)
-					else:
-						return render_template_string("error")
-				else:
-					return redirect("confirm_login")
-			else:
-				return redirect('/')
-		else:
-			return render_template("employee_page.html", received_data=emp_storage)
-	except:
-		print(db_functions.traceback.format_exc())
-		return redirect('/logout')
-
+################################################# Attendance Entries #####################################################
 @myapp.route('/attd_mark', methods=['GET','POST'])
 def attd_mark():
 	try:
@@ -386,18 +309,100 @@ def attd_report():
 	except:
 		print(db_functions.traceback.format_exc())
 		return redirect('/logout')
+################################################# Attendance Entries #####################################################
 
-################################################ Employee Entries ################################################
-@myapp.route('/production', methods=['GET', 'POST'])
-def production():
+
+################################################ Button Setup ################################################
+@myapp.route("/addon", methods=['GET', 'POST'])
+def addon():
+	try:
+		if request.method == "GET":
+			if session.get('wissend_id', 0) != 0:
+				emp_storage = db_functions.employee_project_data(session)
+				if isinstance(emp_storage, int) == False:
+					if session['emp_type'] in ['ADMIN','TA','TM','TL','TLR','TMR','TBH','TBHR','TQA']:
+						if session['wissend_password'] != '0':
+							acknowledgement = ''
+							return render_template("addon_page.html", received_data=emp_storage, acknow_status=acknowledgement)
+						else:
+							return redirect("change_password")
+					else:
+						return redirect('/')
+				else:
+					return render_template_string("error")
+			else:
+				return redirect('/')
+		else:
+			form_data = request.form
+			print(form_data)
+			if session.get('wissend_id', 0) != 0:
+				emp_storage = db_functions.employee_project_data(session)
+				if isinstance(emp_storage, int) == False:
+					if form_data.get('addon_project', 0) != 0:
+						if form_data['addon_type'] == "Task Creation":
+							acknowledgement = db_functions.task_creation_insert(form_data, session)
+							acknowledgement['addon_type'] = 'Task Creation Status' 
+						else:
+							acknowledgement = db_functions.process_creation_insert(form_data, emp_storage)
+							acknowledgement['addon_type'] = 'Process Creation Status'
+						return render_template("addon_page.html", received_data=emp_storage, acknow_status=acknowledgement)
+				else:
+					return render_template_string("error") 
+			else:
+				return redirect('/logout')
+
+	except:
+		print(db_functions.traceback.format_exc())
+		return redirect('/logout')
+
+@myapp.route('/gallery', methods=['GET','POST'])
+def gallery():
 	try:
 		if request.method == "GET":
 			if session.get('wissend_id', 0) != 0:
 				emp_storage = db_functions.employee_project_data(session)
 				if isinstance(emp_storage, int) == False:
 					if session['wissend_password'] != '0':
-						dino = {'projects': [{'name':'Harvey Norman', 'id': '2', 'status': 'Active', 'process' : [{'process_name': 'New Product Upload', 'process_id': '13', 'category_list' : [{'category': 'Camera', 'hour': '1', 'count': '4'}, {'category': 'Cooker and Range Hoods', 'hour': '1', 'count': '4'}, {'category': 'Cookers', 'hour': '1', 'count': '4'}, {'category': 'Desktop', 'hour': '1', 'count': '4'}, {'category': 'Dishwasher', 'hour': '1', 'count': '4'}, {'category': 'Drons', 'hour': '1', 'count': '4'}, {'category': 'Fridge freezer', 'hour': '1', 'count': '4'}, {'category': 'Headphones', 'hour': '1', 'count': '4'}, {'category': 'Hobs', 'hour': '1', 'count': '4'}, {'category': 'Laptop', 'hour': '1', 'count': '4'}, {'category': 'Mobile phones', 'hour': '1', 'count': '4'}, {'category': 'Monitor', 'hour': '1', 'count': '4'}, {'category': 'Others', 'hour': '1', 'count': '4'}, {'category': 'Ovens', 'hour': '1', 'count': '4'}, {'category': 'Printer', 'hour': '1', 'count': '4'}, {'category': 'Projector', 'hour': '1', 'count': '4'}, {'category': 'Smart Home Technology', 'hour': '1', 'count': '4'}, {'category': 'Smart Watch', 'hour': '1', 'count': '4'}, {'category': 'Speaker', 'hour': '1', 'count': '4'}, {'category': 'Stoves & Range Cooker', 'hour': '1', 'count': '4'}, {'category': 'Tablet', 'hour': '1', 'count': '4'}, {'category': 'Tvs', 'hour': '1', 'count': '4'}, {'category': 'Warming Drawer', 'hour': '1', 'count': '4'}, {'category': 'Washing machine', 'hour': '1', 'count': '4'}]}, {'process_name': 'Enrichment', 'process_id': '12', 'category_list' : [{'category': 'Others', 'hour': '0', 'count': '0'}]}]}]}
-						return render_template("production.html", received_data=emp_storage, finialize_access=dino)
+						emp_storage['template_image_path'] = session['template_image_path']
+						emp_storage['template_pdf_path'] = session['template_pdf_path']
+						return render_template("gallery.html", received_data=emp_storage)
+					else:
+						return redirect("change_password")
+				else:
+					return render_template_string("error")
+			else:
+				return redirect('/')
+		else:
+			return render_template("gallery.html", received_data=session)
+	except:
+		print(db_functions.traceback.format_exc())
+		return redirect('/logout')
+
+@myapp.route('/leave_request', methods=['GET','POST'])
+def leave_request():
+	try:
+		if request.method == "GET":
+			if session.get('wissend_id', 0) != 0:
+				emp_storage = db_functions.employee_project_data(session)
+				if isinstance(emp_storage, int) == False:
+					if session['wissend_password'] != '0':
+						leave_status = []
+						leave_data = []
+						leave_balance_data = {}
+						leave_status_result = db_functions.leave_status_pickup(session)
+						if leave_status_result != []:
+							if leave_status_result[0] != []:
+								for each_dict in leave_status_result[0]:
+									leave_data.append({'Apply Date': str(each_dict['apply_date']), 'Emp ID': str(each_dict['wiss_employee_id']), 'Name': str(each_dict['employee_name']), 'Type': str(each_dict['apply_type']), 'From Date': str(each_dict['from_date']), 'To Date': str(each_dict['to_date']), '# Days': str(each_dict['num_days']), '# Hours': str(each_dict['num_hours']), 'Status': str(each_dict['status']), 'Reason': str(each_dict['reason']), 'Image':f"/static/images/employee_images/{str(each_dict['wiss_employee_id'])}.jpg"})
+							if leave_status_result[1] != []:
+								leave_balance_data = {'reporting1': {'name':str(leave_status_result[1]['reporting_1']), 'wiss_id':str(leave_status_result[1]['wiss_report_id_1']), 'emp_id':str(leave_status_result[1]['rep_emp_id1']),'Image': f"/static/images/employee_images/{str(leave_status_result[1]['wiss_report_id_1'])}.jpg"},'reporting2': {'name':str(leave_status_result[1]['reporting_2']), 'wiss_id':str(leave_status_result[1]['wiss_report_id_2']), 'emp_id':str(leave_status_result[1]['rep_emp_id2']),'Image': f"/static/images/employee_images/{str(leave_status_result[1]['wiss_report_id_2'])}.jpg"},
+								'Balance': {'cl':str(leave_status_result[1]['CL']),'sl':str(leave_status_result[1]['SL']),'lop':str(leave_status_result[1]['LOP']),'perm':str(leave_status_result[1]['permission']),'od':str(leave_status_result[1]['od']),'scl':str(leave_status_result[1]['scl'])}}
+							else:
+								leave_balance_data = {'reporting1': {'name':'ADMIN', 'wiss_id':'ADMIN', 'emp_id':'2','Image': ""},'reporting2': {'name':'', 'wiss_id':'', 'emp_id':'','Image': ""},
+								'Balance': {'cl':'0','sl':'0','lop':'0','perm':'0','od':'0','scl':'0'}}
+							leave_status = [leave_data,leave_balance_data]
+							
+						return render_template("leave.html", received_data=emp_storage, leave_status=leave_status)
 					else:
 						return redirect("change_password")
 				else:
@@ -406,11 +411,25 @@ def production():
 				return redirect('/')
 		else:
 			form_data = request.form
-			print(form_data)
+			leave_status = []
+			leave_data = []
+			leave_balance_data = {}
+			emp_storage = db_functions.employee_project_data(session)
+			leave_status_result = db_functions.leave_insert(form_data,session)
+			if leave_status_result != []:
+				if leave_status_result[0] != []:
+					for each_dict in leave_status_result[0]:
+						leave_data.append({'Apply Date': str(each_dict['apply_date']), 'Emp ID': str(each_dict['wiss_employee_id']), 'Name': str(each_dict['employee_name']), 'Type': str(each_dict['apply_type']), 'From Date': str(each_dict['from_date']), 'To Date': str(each_dict['to_date']), '# Days': str(each_dict['num_days']), '# Hours': str(each_dict['num_hours']), 'Status': str(each_dict['status']), 'Reason': str(each_dict['reason']), 'Image':f"/static/images/employee_images/{str(each_dict['wiss_employee_id'])}.jpg"})
+				if leave_status_result[1] != []:
+					leave_balance_data = {'reporting1': {'name':str(leave_status_result[1]['reporting_1']), 'wiss_id':str(leave_status_result[1]['wiss_report_id_1']), 'emp_id':str(leave_status_result[1]['rep_emp_id1']),'Image': f"/static/images/employee_images/{str(leave_status_result[1]['wiss_report_id_1'])}.jpg"},'reporting2': {'name':str(leave_status_result[1]['reporting_2']), 'wiss_id':str(leave_status_result[1]['wiss_report_id_2']), 'emp_id':str(leave_status_result[1]['rep_emp_id2']),'Image': f"/static/images/employee_images/{str(leave_status_result[1]['wiss_report_id_2'])}.jpg"},
+					'Balance': {'cl':str(leave_status_result[1]['CL']),'sl':str(leave_status_result[1]['SL']),'lop':str(leave_status_result[1]['LOP']),'perm':str(leave_status_result[1]['permission']),'od':str(leave_status_result[1]['od']),'scl':str(leave_status_result[1]['scl'])}}
+				leave_status = [leave_data,leave_balance_data]
+			return render_template("leave.html", received_data=emp_storage,leave_status=leave_status)
 	except:
 		print(db_functions.traceback.format_exc())
 		return redirect('/logout')
 
+################################################ Employee Entries
 def hours_getter(hours,minutes):
 	if minutes >= 60:
 		quotient = minutes//60
@@ -419,6 +438,7 @@ def hours_getter(hours,minutes):
 	else:
 		total_hours = str(hours)+'h'+' '+str(minutes)+'m'
 	return total_hours
+
 
 def entries_getter(selected_entry_date, bh_projects_list):
 	project_list = []
@@ -602,7 +622,8 @@ def emp_entry():
 	except:
 		print(db_functions.traceback.format_exc())
 		return redirect('logout')
-################################################# Employee Entries #####################################################
+################################################# Employee Entries
+################################################ Button Setup ################################################
 
 ################################################# Report Content #####################################################
 @myapp.route('/employee_process', methods=['GET', 'POST'])
@@ -663,50 +684,6 @@ def employee_process():
 					return render_template_string("error")
 			else:
 				return redirect('/logout')
-	except:
-		print(db_functions.traceback.format_exc())
-		return redirect('/logout')
-
-@myapp.route("/quality", methods=['GET', 'POST'])
-def quality_page():
-	try:
-		if request.method == "GET":
-			if session.get('wissend_id', 0) != 0:
-				if session['wissend_password'] != '0':
-					emp_storage = db_functions.employee_project_data(session)
-					if isinstance(emp_storage, int) == False:
-						try:
-							emp_storage['project_selected'] = session['project_selected']
-							emp_storage['process_selected'] = session['process_selected']
-							contribute_data = emp_storage['employee_projects'][session['project_selected']]['process'][session['process_selected']]
-							emp_storage['business_head'] = contribute_data['business_head']
-							emp_storage['manager'] = contribute_data['manager']
-							emp_storage['lead'] = contribute_data['lead']
-							emp_storage['selected_project_users'] = emp_storage['project_user_data'][session['project_selected']]
-							return render_template("quality_input.html", received_data=emp_storage)
-						except:
-							print(db_functions.traceback.format_exc())
-							return redirect("employee_page")
-					else:
-						return render_template_string("error")
-				else:
-					return redirect("change_password")
-			else:
-				return redirect('/')
-		else:
-			form_data = request.form
-			emp_storage = db_functions.employee_project_data(session)
-			if isinstance(emp_storage, int) == False:
-				db_functions.quality_data_insert(form_data, session)
-				if session['employee_designation'] not in ['Data Analyst','Senior Data Analyst']:
-					if session['wissend_password'] != '0':
-						return redirect("team_lead")
-					else:
-						return redirect("change_password")
-				else:
-					return redirect("employee_page")
-			else:
-				return render_template_string("error")
 	except:
 		print(db_functions.traceback.format_exc())
 		return redirect('/logout')
@@ -841,6 +818,79 @@ def employee_reports():
 		print(db_functions.traceback.format_exc())
 		return redirect('/logout')
 
+@myapp.route("/kra_report", methods=['GET','POST'])
+def kra_report():
+	try:
+		if request.method == "GET":
+			if session.get('wissend_id', 0) != 0:
+				emp_storage = db_functions.employee_project_data(session)
+				if isinstance(emp_storage, int) == False:
+					if session['emp_type'] in ['ADMIN','TA','TM','TL', 'TLR', 'TMR','TBH','TBHR']:
+						if session['wissend_password'] != '0':
+							emp_storage['kra_user_id'] = session['kra_user_id']
+							emp_storage['kra_report'] = "1"
+							emp_storage['kra_year_selected'] = session['kra_year_selected']
+							emp_storage['kra_month_selected'] = session['kra_month_selected']
+							summary_result = db_functions.kra_report_details(session, emp_storage)
+							return render_template("kra_report.html", received_data=emp_storage, summary_result=summary_result)
+						else:
+							return redirect("change_password")
+					else:
+						return redirect('/')
+				else:
+					return render_template_string("error")
+			else:
+				return redirect('/')
+	except:
+		print(db_functions.traceback.format_exc())
+		return redirect('/logout')
+################################################# Report Content #####################################################
+
+################################################ Input Setup ################################################
+@myapp.route("/quality", methods=['GET', 'POST'])
+def quality_page():
+	try:
+		if request.method == "GET":
+			if session.get('wissend_id', 0) != 0:
+				if session['wissend_password'] != '0':
+					emp_storage = db_functions.employee_project_data(session)
+					if isinstance(emp_storage, int) == False:
+						try:
+							emp_storage['project_selected'] = session['project_selected']
+							emp_storage['process_selected'] = session['process_selected']
+							contribute_data = emp_storage['employee_projects'][session['project_selected']]['process'][session['process_selected']]
+							emp_storage['business_head'] = contribute_data['business_head']
+							emp_storage['manager'] = contribute_data['manager']
+							emp_storage['lead'] = contribute_data['lead']
+							emp_storage['selected_project_users'] = emp_storage['project_user_data'][session['project_selected']]
+							return render_template("quality_input.html", received_data=emp_storage)
+						except:
+							print(db_functions.traceback.format_exc())
+							return redirect("employee_page")
+					else:
+						return render_template_string("error")
+				else:
+					return redirect("change_password")
+			else:
+				return redirect('/')
+		else:
+			form_data = request.form
+			emp_storage = db_functions.employee_project_data(session)
+			if isinstance(emp_storage, int) == False:
+				db_functions.quality_data_insert(form_data, session)
+				if session['employee_designation'] not in ['Data Analyst','Senior Data Analyst']:
+					if session['wissend_password'] != '0':
+						return redirect("team_lead")
+					else:
+						return redirect("change_password")
+				else:
+					return redirect("employee_page")
+			else:
+				return render_template_string("error")
+	except:
+		print(db_functions.traceback.format_exc())
+		return redirect('/logout')
+
 @myapp.route('/kra_input', methods=['GET','POST'])
 def kra_input():
 	try:
@@ -930,149 +980,83 @@ def kra_input():
 	except:
 		print(db_functions.traceback.format_exc())
 		return redirect('/logout')
+################################################ Input Setup ################################################
 
-
-@myapp.route("/kra_report", methods=['GET','POST'])
-def kra_report():
+################################################## Profile Setup ##################################################
+@myapp.route('/team_lead', methods=['GET','POST'])
+def team_lead():
 	try:
 		if request.method == "GET":
 			if session.get('wissend_id', 0) != 0:
-				emp_storage = db_functions.employee_project_data(session)
-				if isinstance(emp_storage, int) == False:
-					if session['emp_type'] in ['ADMIN','TA','TM','TL', 'TLR', 'TMR','TBH','TBHR']:
-						if session['wissend_password'] != '0':
-							emp_storage['kra_user_id'] = session['kra_user_id']
-							emp_storage['kra_report'] = "1"
-							emp_storage['kra_year_selected'] = session['kra_year_selected']
-							emp_storage['kra_month_selected'] = session['kra_month_selected']
-							summary_result = db_functions.kra_report_details(session, emp_storage)
-							return render_template("kra_report.html", received_data=emp_storage, summary_result=summary_result)
+				if session['entry_login'] == 1:
+					try:
+						session['template_image'] = str(int(session['template_image'])+1) if session['template_image'] != 0 else 0
+					except:
+						print("Team Lead - Session Timeout")
+						return redirect('/logout')
+					emp_storage = db_functions.employee_project_data(session)
+					if isinstance(emp_storage, int) == False:
+						if session['emp_type'] in ['ADMIN','TA','TM','TL','TLR','TMR','TBH','TBHR','TQA']:
+							emp_storage['check_key_lead'] = 0
+							if session['wissend_password'] != '0':
+								emp_storage['check_team'] = '1'
+								emp_storage['check_key_lead'] = 0
+								for process_name in emp_storage['employee_projects'].values():
+									if process_name['status'] == 'Active':
+										for process_data in process_name['process'].values():
+											if str(process_data['lead_id']) == str(session['employee_id']) or str(process_data['manager_id']) == str(session['employee_id']) or str(process_data['business_head_id']) == str(session['employee_id']):
+												emp_storage['check_key_lead'] = 1
+								return render_template("team_lead_page.html", received_data=emp_storage)
+							else:
+								return redirect("change_password")
 						else:
-							return redirect("change_password")
+							return redirect('/')
 					else:
-						return redirect('/')
+						return render_template_string("error")
 				else:
-					return render_template_string("error")
-			else:
-				return redirect('/')
-	except:
-		print(db_functions.traceback.format_exc())
-		return redirect('/logout')
-
-################################################ Button Setup ################################################
-@myapp.route("/addon", methods=['GET', 'POST'])
-def addon():
-	try:
-		if request.method == "GET":
-			if session.get('wissend_id', 0) != 0:
-				emp_storage = db_functions.employee_project_data(session)
-				if isinstance(emp_storage, int) == False:
-					if session['emp_type'] in ['ADMIN','TA','TM','TL','TLR','TMR','TBH','TBHR','TQA']:
-						if session['wissend_password'] != '0':
-							acknowledgement = ''
-							return render_template("addon_page.html", received_data=emp_storage, acknow_status=acknowledgement)
-						else:
-							return redirect("change_password")
-					else:
-						return redirect('/')
-				else:
-					return render_template_string("error")
+					return redirect("confirm_login")
 			else:
 				return redirect('/')
 		else:
-			form_data = request.form
-			print(form_data)
+			return redirect('/')
+	except:
+		print(db_functions.traceback.format_exc())
+		return redirect('/logout')
+
+@myapp.route('/employee_page', methods=['GET', 'POST'])
+def employee_page():
+	emp_storage = dict()
+	try:
+		if request.method == 'GET':
 			if session.get('wissend_id', 0) != 0:
-				emp_storage = db_functions.employee_project_data(session)
-				if isinstance(emp_storage, int) == False:
-					if form_data.get('addon_project', 0) != 0:
-						if form_data['addon_type'] == "Task Creation":
-							acknowledgement = db_functions.task_creation_insert(form_data, session)
-							acknowledgement['addon_type'] = 'Task Creation Status' 
+				if session['entry_login'] == 1:
+					try:
+						session['template_image'] = str(int(session['template_image'])+1) if session['template_image'] != 0 else 0
+					except:
+						print("Employee Page - Session Timeout")
+						return redirect('/logout')
+					emp_storage = db_functions.employee_project_data(session)
+					if isinstance(emp_storage, int) == False:
+						if session['emp_type'] in ['ADMIN','TA','TM','TL', 'TLR', 'TMR','TBH','TBHR','TQA']:
+							if session['wissend_password'] != '0':
+								return redirect("team_lead")
+							else:
+								return redirect("change_password")
 						else:
-							acknowledgement = db_functions.process_creation_insert(form_data, emp_storage)
-							acknowledgement['addon_type'] = 'Process Creation Status'
-						return render_template("addon_page.html", received_data=emp_storage, acknow_status=acknowledgement)
-				else:
-					return render_template_string("error") 
-			else:
-				return redirect('/logout')
-
-	except:
-		print(db_functions.traceback.format_exc())
-		return redirect('/logout')
-
-@myapp.route('/gallery', methods=['GET','POST'])
-def gallery():
-	try:
-		if request.method == "GET":
-			if session.get('wissend_id', 0) != 0:
-				emp_storage = db_functions.employee_project_data(session)
-				if isinstance(emp_storage, int) == False:
-					if session['wissend_password'] != '0':
-						emp_storage['template_image_path'] = session['template_image_path']
-						emp_storage['template_pdf_path'] = session['template_pdf_path']
-						return render_template("gallery.html", received_data=emp_storage)
+							return render_template("employee_page.html", received_data=emp_storage)
 					else:
-						return redirect("change_password")
+						return render_template_string("error")
 				else:
-					return render_template_string("error")
+					return redirect("confirm_login")
 			else:
 				return redirect('/')
 		else:
-			return render_template("gallery.html", received_data=session)
+			return render_template("employee_page.html", received_data=emp_storage)
 	except:
 		print(db_functions.traceback.format_exc())
 		return redirect('/logout')
+################################################## Profile Setup ##################################################
 
-@myapp.route('/leave_request', methods=['GET','POST'])
-def leave_request():
-	try:
-		if request.method == "GET":
-			if session.get('wissend_id', 0) != 0:
-				emp_storage = db_functions.employee_project_data(session)
-				if isinstance(emp_storage, int) == False:
-					if session['wissend_password'] != '0':
-						leave_status = []
-						leave_data = []
-						leave_balance_data = {}
-						leave_status_result = db_functions.leave_status_pickup(session)
-						if leave_status_result != []:
-							if leave_status_result[0] != []:
-								for each_dict in leave_status_result[0]:
-									leave_data.append({'Apply Date': str(each_dict['apply_date']), 'Emp ID': str(each_dict['wiss_employee_id']), 'Name': str(each_dict['employee_name']), 'Type': str(each_dict['apply_type']), 'From Date': str(each_dict['from_date']), 'To Date': str(each_dict['to_date']), '# Days': str(each_dict['num_days']), '# Hours': str(each_dict['num_hours']), 'Status': str(each_dict['status']), 'Reason': str(each_dict['reason']), 'Image':f"/static/images/employee_images/{str(each_dict['wiss_employee_id'])}.jpg"})
-							if leave_status_result[1] != []:
-								leave_balance_data = {'reporting1': {'name':str(leave_status_result[1]['reporting_1']), 'wiss_id':str(leave_status_result[1]['wiss_report_id_1']), 'emp_id':str(leave_status_result[1]['rep_emp_id1']),'Image': f"/static/images/employee_images/{str(leave_status_result[1]['wiss_report_id_1'])}.jpg"},'reporting2': {'name':str(leave_status_result[1]['reporting_2']), 'wiss_id':str(leave_status_result[1]['wiss_report_id_2']), 'emp_id':str(leave_status_result[1]['rep_emp_id2']),'Image': f"/static/images/employee_images/{str(leave_status_result[1]['wiss_report_id_2'])}.jpg"},
-								'Balance': {'cl':str(leave_status_result[1]['CL']),'sl':str(leave_status_result[1]['SL']),'lop':str(leave_status_result[1]['LOP']),'perm':str(leave_status_result[1]['permission']),'od':str(leave_status_result[1]['od']),'scl':str(leave_status_result[1]['scl'])}}
-							leave_status = [leave_data,leave_balance_data]
-							
-						return render_template("leave.html", received_data=emp_storage, leave_status=leave_status)
-					else:
-						return redirect("change_password")
-				else:
-					return render_template_string("error")
-			else:
-				return redirect('/')
-		else:
-			form_data = request.form
-			leave_status = []
-			leave_data = []
-			leave_balance_data = {}
-			emp_storage = db_functions.employee_project_data(session)
-			leave_status_result = db_functions.leave_insert(form_data,session)
-			if leave_status_result != []:
-				if leave_status_result[0] != []:
-					for each_dict in leave_status_result[0]:
-						leave_data.append({'Apply Date': str(each_dict['apply_date']), 'Emp ID': str(each_dict['wiss_employee_id']), 'Name': str(each_dict['employee_name']), 'Type': str(each_dict['apply_type']), 'From Date': str(each_dict['from_date']), 'To Date': str(each_dict['to_date']), '# Days': str(each_dict['num_days']), '# Hours': str(each_dict['num_hours']), 'Status': str(each_dict['status']), 'Reason': str(each_dict['reason']), 'Image':f"/static/images/employee_images/{str(each_dict['wiss_employee_id'])}.jpg"})
-				if leave_status_result[1] != []:
-					leave_balance_data = {'reporting1': {'name':str(leave_status_result[1]['reporting_1']), 'wiss_id':str(leave_status_result[1]['wiss_report_id_1']), 'emp_id':str(leave_status_result[1]['rep_emp_id1']),'Image': f"/static/images/employee_images/{str(leave_status_result[1]['wiss_report_id_1'])}.jpg"},'reporting2': {'name':str(leave_status_result[1]['reporting_2']), 'wiss_id':str(leave_status_result[1]['wiss_report_id_2']), 'emp_id':str(leave_status_result[1]['rep_emp_id2']),'Image': f"/static/images/employee_images/{str(leave_status_result[1]['wiss_report_id_2'])}.jpg"},
-					'Balance': {'cl':str(leave_status_result[1]['CL']),'sl':str(leave_status_result[1]['SL']),'lop':str(leave_status_result[1]['LOP']),'perm':str(leave_status_result[1]['permission']),'od':str(leave_status_result[1]['od']),'scl':str(leave_status_result[1]['scl'])}}
-				leave_status = [leave_data,leave_balance_data]
-			return render_template("leave.html", received_data=emp_storage,leave_status=leave_status)
-	except:
-		print(db_functions.traceback.format_exc())
-		return redirect('/logout')
-################################################ Button Setup ################################################
 
 ################################################# Additional Process #####################################################
 @myapp.route("/change_password", methods=['GET', 'POST'])

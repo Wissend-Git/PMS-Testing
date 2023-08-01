@@ -422,16 +422,17 @@
               <div class="col-md-5 announcement_content">
                 <div class="announcement_block">
                   <div class="row">
-                    <h6><i class="fa fa-cutlery"></i> Order Lunch from Office</h6>
+                    <h6>AI - Explore Contest</h6>
                     <div class="click_order">
                       <ul>
-                        <li>&#10687; No need to carry lunch anymore!!</li>
-                        <li>&#10687; Delicious Vegetarian food is  available at our cafeteria based on your preference.</li>
-                        <li>&#10687; Please select the 'food option' of your choice from the 'food form' available at PMT.</li>
-                        <li>&#10687; The form is open between 11.15am to 12.15pm. for lunch everyday.</li>
-                        <li>&#10687; Payment will be through UPI. (vendor's scanner)</li>
+                        <li>&#10687; Refer to our meeting yesterday on AI exploration ideas.</li>
+                        <li>&#10687; Click the link below to submit your ideas.</li>
+                        <li>&#10687; This will be open till 28th July 2023 till 6.00pm</li>
                       </ul>
-                      <a target="_blank" id="tooltip" href="https://docs.google.com/forms/d/e/1FAIpQLSeOW1t4cJlqH-w3hrd17ubVh4AVTzEkyfgLHa3J2R9Y-2rMjQ/viewform?usp=sf_link">Order Now →</a>
+                      <a target="_blank" id="tooltip" href="https://docs.google.com/forms/d/e/1FAIpQLSfirw66dFJvm8VdfV6oDowhFhVoVrZfE0ZUIOGL0Qgm2_PquQ/viewform">Form Link →</a>
+                      {% for pdf_source in received_data['template_pdf_path']['Contest'] %}
+                        <a target="_blank" href="{{pdf_source[0]}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="padding-right: 5px"></i> View PDF</a>
+                      {% endfor %}
                     </div>
                   </div>
                 </div>
