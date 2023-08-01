@@ -119,19 +119,86 @@
                   </div>
                 </div>
               </div>
-
-              <div class="card production_card">
-                <div class="card-header" role="tab" id="head_11">
-                  <a data-toggle="collapse" data-parent="#side_menu" href="{{url_for('production')}}" aria-expanded="false" aria-controls="collapse_11">
-                    <h6><i class="fa fa-tasks" aria-hidden="true"></i>Production</h6>
+              
+              <div class="card">
+                <div class="card-header" role="tab" id="head_2" >
+                  <a class="collapsed"  data-toggle="collapse" data-parent="#side_menu" href="#collapse_2" aria-expanded="false" aria-controls="collapse_2">
+                    <h6>
+                      <i class="fa fa-database" aria-hidden="true"></i>Production
+                    </h6>
                   </a>
                 </div>
-                <div id="collapse_11" class="collapsed" style="display: none;" role="tabpanel" aria-labelledby="head_11" data-parent="#side_menu">
+
+                <div id="collapse_2" class="collapse" role="tabpanel" aria-labelledby="head_2" data-parent="#side_menu">
                   <div class="card-body">
+                    <div class="mt-1 text-center" id="project_filter">
+                      <form method="POST" action="{{url_for('employee_process')}}">
+                        <ul>
+                          <li id="project_selected_user">
+                            <select name="project_selected" id="production_project">
+                              <option value="" >Select Project</option>
+                              {% for project, values in received_data['employee_projects'].items() %}
+                                {% if values['status'] == 'Active' %}
+                                <option value="{{project}}" {{ 'selected="selected"' if received_data['project_selected'] == project else "" }}>{{project}}</option>
+                                {% endif %}
+                              {% endfor %}
+                            </select>
+                          </li>
+                          <li id="process_selected_user">
+                            <select name="process_selected" id="production_process">
+                              <option value="">Select Process</option>
+                              {% for project, values in received_data['employee_projects'].items() %}
+                                {% if values['status'] == 'Active' %}
+                                  {% for process_list, data_list in values.items() %}
+                                    {% if process_list != 'project_id' and process_list != 'project_short_name' and process_list != 'status'  %}
+                                      {% for process, data in data_list.items() %}
+                                        <option value="{{project}}_{{process}}" {% if received_data['process_selected'] == process %} selected="selected"{% endif %}>{{process}}</option>
+                                      {% endfor %}
+                                    {% endif %}
+                                    {% endfor %}
+                                  {% endif %}
+                              {% endfor %}
+                            </select>
+                          </li>
+                          <li>
+                            <button id="project_submit_user" type="submit" >Submit</button>
+                          </li>
+                        </ul>
+                        <p id="project_error_text_user" class="text-danger font-weight-bold"></p>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
-
+              <div class="card">
+                <div class="card-header" role="tab" id="head_9">
+                  <a class="collapsed" data-toggle="collapse" data-parent="#side_menu" href="#collapse_9" aria-expanded="false" aria-controls="collapse_9">
+                    <h6><i class="fa fa-calendar-check-o"></i>Attendance Report</h6>
+                  </a>
+                </div>
+                <div id="collapse_9" class="collapse" role="tabpanel" aria-labelledby="head_9" data-parent="#side_menu">
+                  <div class="card-body">
+                    <form method="POST" action="{{url_for('attd_report')}}">
+                      <ul>
+                        <li id="attd_date_range">
+                            <div class="input-daterange input-group" id="datepicker" >
+                              <div class="justify-content-center">
+                                  <div class="input-group input-daterange">
+                                    <input type="text" class="form-control" id="attd_from_date" name="attd_from_date" placeholder="From Date" {{ "value="+received_data['attd_from_date'] if received_data['attd_from_date'] != "" else '' }} readonly>
+                                    <input type="text" class="form-control" id="attd_to_date" name="attd_to_date" placeholder="To Date" {{ "value="+received_data['attd_to_date'] if received_data['attd_to_date'] != "" else '' }} readonly>
+                                  </div>
+                              </div>
+                            </div>
+                        </li>
+                        <li>
+                          <p id="attd_error_text" class="text-danger font-weight-bold"></p>
+                          <button id="attd_submit" name="report" type="submit">Submit</button>
+                        </li>
+                      </ul> 
+                    </form>
+                  </div>
+                </div>
+              </div>
               <div class="card">
                 <div class="card-header" role="tab" id="head_3">
                   <a class="collapsed" data-toggle="collapse" data-parent="#side_menu" href="#collapse_3" aria-expanded="false" aria-controls="collapse_3">
@@ -321,37 +388,6 @@
                 </div>
               </div>
               
-              <div class="card">
-                <div class="card-header" role="tab" id="head_9">
-                  <a class="collapsed" data-toggle="collapse" data-parent="#side_menu" href="#collapse_9" aria-expanded="false" aria-controls="collapse_9">
-                    <h6><i class="fa fa-calendar-check-o"></i>Attendance Report</h6>
-                  </a>
-                </div>
-                <div id="collapse_9" class="collapse" role="tabpanel" aria-labelledby="head_9" data-parent="#side_menu">
-                  <div class="card-body">
-                    <form method="POST" action="{{url_for('attd_report')}}">
-                      <ul>
-                        <li id="attd_date_range">
-                            <div class="input-daterange input-group" id="datepicker" >
-                              <div class="justify-content-center">
-                                  <div class="input-group input-daterange">
-                                    <input type="text" class="form-control" id="attd_from_date" name="attd_from_date" placeholder="From Date" {{ "value="+received_data['attd_from_date'] if received_data['attd_from_date'] != "" else '' }} readonly>
-                                    <input type="text" class="form-control" id="attd_to_date" name="attd_to_date" placeholder="To Date" {{ "value="+received_data['attd_to_date'] if received_data['attd_to_date'] != "" else '' }} readonly>
-                                  </div>
-                              </div>
-                            </div>
-                        </li>
-                        <li>
-                          <p id="attd_error_text" class="text-danger font-weight-bold"></p>
-                          <button id="attd_submit" name="report" type="submit">Submit</button>
-                        </li>
-                      </ul> 
-                    </form>
-                  </div>
-                </div>
-              </div>
-              
-              
               {% if received_data['emp_type'] in ["ADMIN","TA","TM","TL","TMR","TLR",'TBH','TBHR'] %}
                 <div class="card">
                   <div class="card-header" role="tab" id="head_4" >
@@ -521,16 +557,17 @@
               <div class="col-md-5 announcement_content">
                 <div class="announcement_block">
                   <div class="row">
-                    <h6><i class="fa fa-cutlery"></i> Order Lunch from Office</h6>
+                    <h6>AI - Explore Contest</h6>
                     <div class="click_order">
                       <ul>
-                        <li>&#10687; No need to carry lunch anymore!!</li>
-                        <li>&#10687; Delicious Vegetarian food is  available at our cafeteria based on your preference.</li>
-                        <li>&#10687; Please select the 'food option' of your choice from the 'food form' available at PMT.</li>
-                        <li>&#10687; The form is open between 11.15am to 12.15pm. for lunch everyday.</li>
-                        <li>&#10687; Payment will be through UPI. (vendor's scanner)</li>
+                        <li>&#10687; Refer to our meeting yesterday on AI exploration ideas.</li>
+                        <li>&#10687; Click the link below to submit your ideas.</li>
+                        <li>&#10687; This will be open till 28th July 2023 till 6.00pm</li>
                       </ul>
-                      <a target="_blank" id="tooltip" href="https://docs.google.com/forms/d/e/1FAIpQLSeOW1t4cJlqH-w3hrd17ubVh4AVTzEkyfgLHa3J2R9Y-2rMjQ/viewform?usp=sf_link">Order Now →</a>
+                      <a target="_blank" id="tooltip" href="https://docs.google.com/forms/d/e/1FAIpQLSfirw66dFJvm8VdfV6oDowhFhVoVrZfE0ZUIOGL0Qgm2_PquQ/viewform">Form Link →</a>
+                      {% for pdf_source in received_data['template_pdf_path']['Contest'] %}
+                        <a target="_blank" href="{{pdf_source[0]}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="padding-right: 5px"></i> View PDF</a>
+                      {% endfor %}
                     </div>
                   </div>
                 </div>

@@ -33,6 +33,7 @@
 .profile_img_content{
     height: 250px;
     width: 180px;
+    background-color: #2eafb3;
     text-align: center;
     margin: 10px 0px;
     background-position: center;
@@ -42,7 +43,7 @@
 
 .profile_img{
 /*    background-image: linear-gradient(to bottom right, #01adb1, #01d6da);*/
-/*    background: #01adb1;*/
+    background: #01adb1;
     border-radius: 3px;
 }
 
@@ -61,8 +62,7 @@
     width: 200px;
     height: auto;
     margin: 1rem 0rem;
-    border-radius: 10px;
-    box-shadow: 6px 6px 12px 1px #c5c5c5, -6px -6px 12px #fff;
+    border-radius: 10px; 
 }
 
 .profile_info ul{

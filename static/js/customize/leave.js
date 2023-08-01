@@ -18,8 +18,8 @@ $(document).ready(function(){
   $('.permission_status_table').css('display', 'none');
   // defult - status color
   status_and_approval_color()
-  PermissionTrack()
   LeaveBalanceAndSelection()
+  PermissionTrack()
   // defult - status bar selection
   $('.status_bar_graph').css('display', 'none');
 
@@ -42,8 +42,7 @@ $(".od_block_segment").datepicker({"dateFormat" : "mm/dd/yyyy", 'autoclose': tru
 /* #################################### Alert Module */
 $('.alert_modal_close').on('click', function(){
   $('#alert_modal').fadeOut(1000);
-  cancel_execution()
-  // window.location.href = '/leave_request';
+  window.location.href = '/leave_request';
 });
 
 /* #################################### Alert Module */
@@ -119,8 +118,6 @@ $('.leave_application .apply_for select').on('change', function(){
       $('.availablities .balance').css('display', 'none');
     }
     CurrentSelected_LeaveType = application_type
-    DateAndSession_Clear()
-    availablities_clear()
 });
 
 // #################################### inputs validation ####################################
@@ -266,8 +263,6 @@ $('.leave_date_and_session input#fromDate').on('change', function(){
   let from_selected_to_date = $('.leave_date_and_session input#toDate').val()
   let fromchange_days = DateDiffernce(from_selected_from_date, from_selected_to_date)
   applydays_for_date = applydays_for_date+fromchange_days
-  console.log(from_selected_from_date, from_selected_to_date)
-  console.log(applydays_for_date)
   if(from_selected_from_date == from_selected_to_date){
     $('.session_block [name="from_session_type"]').val("1.0").change();
     $('.session_block [name="to_session_type"]').val("1.0").change();
@@ -423,8 +418,8 @@ function availablities_clear(){
 }
 
 function DateAndSession_Clear(){
-  // $('#leave_apply_tab #fromDate').val('')
-  // $('#leave_apply_tab #toDate').val('')
+  $('#leave_apply_tab #fromDate').val('')
+  $('#leave_apply_tab #toDate').val('')
   $('.session_block [name="from_session_type"]').val('').change()
   $('.session_block [name="to_session_type"]').val('').change()
 

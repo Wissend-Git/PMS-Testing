@@ -2481,19 +2481,31 @@ finally:
 		return result
 	def leave_status_pickup(session_data):
 		result = []
+		# report_result = []
 		try:
+			print(session_data)
 			employee_id = session_data['employee_id']
-			att_status_query = f"""SELECT leave_requests.`apply_date`,leave_requests.`apply_type`,leave_requests.`from_date`,leave_requests.`to_date`,leave_requests.`num_days`,leave_requests.`num_hours`,leave_requests.`status`,leave_requests.`reason`,leave_requests.`reporting_id_1`,leave_requests.`reporting_id_2`,leave_requests.`approver_id`,employees_info.wiss_employee_id,employees_info.employee_name FROM leave_requests
-			INNER JOIN employees_info ON employees_info.employee_id = leave_requests.employee_id
-			WHERE leave_requests.modified_status = 'N' AND leave_requests.employee_id = {employee_id} OR leave_requests.reporting_id_1 = {employee_id} OR leave_requests.reporting_id_2 = {employee_id} AND month(leave_requests.`apply_date`) = month({session_data['db_date']}) AND year(leave_requests.`apply_date`) = year({session_data['db_date']})"""
+			emp_type_id = session_data['emp_type']
+			print(type(emp_type_id))
+			print(employee_id)
+			print(emp_type_id)
+			if str(emp_type_id) in ('TA','ADMIN'):
+				print('Yes')
+				att_status_query = f"""SELECT leave_requests.`apply_date`,leave_requests.`apply_type`,leave_requests.`from_date`,	leave_requests.`to_date`,leave_requests.`num_days`,leave_requests.`num_hours`,leave_requests.`status`,leave_requests.`reason`,leave_requests.`reporting_id_1`,leave_requests.`reporting_id_2`,leave_requests.`approver_id`,employees_info.	wiss_employee_id,employees_info.employee_name FROM leave_requests
+				INNER JOIN employees_info ON employees_info.employee_id = leave_requests.employee_id
+				WHERE leave_requests.modified_status = 'N' AND month(leave_requests.`apply_date`) = month('{session_data['db_date']}') AND year(leave_requests.`apply_date`) = year('{session_data['db_date']}')"""
+			else:
+				att_status_query = f"""SELECT leave_requests.`apply_date`,leave_requests.`apply_type`,leave_requests.`from_date`,leave_requests.`to_date`,leave_requests.`num_days`,leave_requests.`num_hours`,leave_requests.`status`,leave_requests.`reason`,leave_requests.`reporting_id_1`,leave_requests.`reporting_id_2`,leave_requests.`approver_id`,employees_info.wiss_employee_id,employees_info.employee_name FROM leave_requests
+				INNER JOIN employees_info ON employees_info.employee_id = leave_requests.employee_id
+				WHERE (leave_requests.employee_id = {employee_id} OR leave_requests.reporting_id_1 = {employee_id} OR leave_requests.reporting_id_2 = {employee_id}) AND leave_requests.modified_status = 'N' AND month(leave_requests.`apply_date`) = month('{session_data['db_date']}') AND year(leave_requests.`apply_date`) = year('{session_data['db_date']}')"""
+			reporting_query = f"""SELECT emp_tbl.employee_name,emp_tbl.wiss_employee_id,rep_tbl1.employee_name as reporting_1,rep_tbl1.	employee_id as rep_emp_id1,rep_tbl1.wiss_employee_id as wiss_report_id_1,rep_tbl2.employee_name as reporting_2,rep_tbl2.employee_id AS rep_emp_id2,rep_tbl2.wiss_employee_id as wiss_report_id_2,lv_trc.casual_leave as CL,lv_trc.sick_leave as SL,lv_trc.permission,lv_trc.loss_of_pay as LOP,lv_trc.on_duty AS od,lv_trc.spl_cat_leave AS scl FROM leave_tracker AS lv_trc 
+				INNER JOIN employees_info as emp_tbl ON emp_tbl.employee_id = lv_trc.employee_id
+				INNER JOIN employees_info AS rep_tbl1 ON rep_tbl1.employee_id = lv_trc.reporting_id_1
+				INNER JOIN employees_info AS rep_tbl2 ON rep_tbl2.employee_id = lv_trc.reporting_id_2
+				WHERE lv_trc.employee_id = {employee_id} AND emp_tbl.status = 'Active' AND month(lv_trc.updated_date) = month('{session_data['db_date']}') AND year(lv_trc.updated_date) = year('{session_data['db_date']}')"""
 			dict_cursor = database_reconnection(cur="dict")
 			dict_cursor.execute(att_status_query)
 			leave_result = dict_cursor.fetchall()
-			reporting_query = f"""SELECT emp_tbl.employee_name,emp_tbl.wiss_employee_id,rep_tbl1.employee_name as reporting_1,rep_tbl1.employee_id as rep_emp_id1,rep_tbl1.wiss_employee_id as wiss_report_id_1,rep_tbl2.employee_name as reporting_2,rep_tbl2.employee_id AS rep_emp_id2,rep_tbl2.wiss_employee_id as wiss_report_id_2,lv_trc.casual_leave as CL,lv_trc.sick_leave as SL,lv_trc.permission,lv_trc.loss_of_pay as LOP,lv_trc.on_duty AS od,lv_trc.spl_cat_leave AS scl FROM leave_tracker AS lv_trc 
-			INNER JOIN employees_info as emp_tbl ON emp_tbl.employee_id = lv_trc.employee_id
-			INNER JOIN employees_info AS rep_tbl1 ON rep_tbl1.employee_id = lv_trc.reporting_id_1
-			INNER JOIN employees_info AS rep_tbl2 ON rep_tbl2.employee_id = lv_trc.reporting_id_2
-			WHERE lv_trc.employee_id = {employee_id} AND emp_tbl.status = 'Active' AND month(lv_trc.updated_date) = month('{session_data['db_date']}') AND year(lv_trc.updated_date) = year('{session_data['db_date']}')"""
 			dict_cursor = database_reconnection(cur="dict")
 			dict_cursor.execute(reporting_query)
 			report_result = dict_cursor.fetchall()
@@ -2626,6 +2638,7 @@ finally:
 					from_sess_type = "NULL"
 					to_sess_type = "NULL"
 				insert_query = f"""INSERT INTO `leave_requests`(`employee_id`, `apply_date`, `apply_type`, `from_date`, `to_date`, `reason`, `modified_status`, `num_days`,`num_hours`,`status`,`approver_id`,`reporting_id_1`,`reporting_id_2`,`from_session`,`to_session`)VALUES ({employee_id},'{form_data['apply_date']}','{apply_type}','{from_date}','{to_date}','{form_data['reason']}','N','{form_data['#_days']}','{form_data['#_hours']}','{form_data['final_confirm']}','{session_data['employee_id']}','{report1_id}','{report2_id}','{from_sess_type}','{to_sess_type}')"""
+			print(insert_query)
 			if check_exist_data == 0:
 				dict_cursor = database_reconnection(cur="dict")
 				dict_cursor.execute(insert_query)

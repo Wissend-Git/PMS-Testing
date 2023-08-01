@@ -7,10 +7,6 @@ body{
 }
 
 .body_bckgrnd{
-/*    background-color: #d8010112;*/
-/*    background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);*/
-/*    background-image: linear-gradient(140deg, #c3cfe2 2%, #f5f7fa 100%);*/
-/*    background-image: linear-gradient(to right, #d9dcdf, #f5f7fa);*/
     background: #f4f4f4;
     position: relative;
     padding-top: 0px;
@@ -425,7 +421,7 @@ body{
 }
 
 .menu_active{
-    background-color: #f1efef !important;
+    background-color: #f8f8f8 !important;
 }
 
 .menu_active h6{
@@ -574,10 +570,8 @@ input.custom-control-label{
 
 .card div[data-parent="#side_menu"]{
 /*    background-color: #d8010112;*/
-/*    background-color: #d9dcdfba;*/
-    background-color: hsla(0,0%,100%,.6);
+    background: #f4f4f490;
 }
-
 
 #today_date{
     text-align: left;
