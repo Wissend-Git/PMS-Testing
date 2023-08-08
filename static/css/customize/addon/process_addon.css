@@ -1,37 +1,29 @@
-.wrap_label label, .wrap_label_input label{
-    display: block;
-    margin-bottom: 1px;
-    color: black;
-    font-size: 11px;
+#addon_creation .wrap_label{
+    display: inline-flex;
 }
 
-/*.addon_content form ul.creation_type li select{
-    width: 200px;
-    border-radius: 3px;
-    padding: 3px;
-    outline: none;
-    color: #fff;
-    background-color: #52c3c7;
-    border: 1px solid #52c3c7;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-}*/
+.wrap_label label, .wrap_label_input label{
+    padding: 5px;
+    margin: 5px;
+}
 
 .creation_type #addon_type{
     margin-left: 10px;
 }
 
 .add_more_tasks, .add_more_process{
-    background-color: #0099e6;
-    color: #fff;
-    border-radius: 3px;
-    font-size: 12px;
+    margin: 5px 15px;
+    border: none;
+    width: 100%;
+    font-size: 13px;
     font-weight: 600;
-    padding: 2px 10px;
+    border-radius: 3px;
+    padding: 5px;
+    background: #0587eb;
+    border: 0;
+    color: #fff;
     outline: none;
-    margin-left: 10px;
-    border: 1px solid #00abad;
+    box-shadow: 0px 3px 5px -3px #cccccc;
 }
 
 .addon_content form ul{
@@ -54,11 +46,11 @@
     font-size: 12px;
     color: #222222;
     width: 200px;
-    height: 25px;
+    height: 30px;
     padding: 0px 7px;
     font-weight: 600;
     border-radius: 3px;
-    border: 1px solid #00abad;
+    border: 1px solid #8c8c8c;
 }
 
 .addon_content form ul[id^="creation_progress"]{
@@ -103,42 +95,43 @@ span#remove_data{
 }
 
 /*##########################################################*/
-.multiuser_btn{
-    background-color: #ffffff;
-    color: #00abad;
-    border: 1px solid #00abad;
-    border-radius: 50px;
+.multiuser_btn, .alluser_btn{
+    margin: 5px;
+    border: none;
+    width: 10rem;
     font-size: 13px;
     font-weight: 600;
-    padding: 2px 14px;
-    margin-left: 10px;
-    margin-right: 5px;
+    border-radius: 3px;
+    padding: 5px;
+    background: #457b9d;
+    color: #fff;
+    outline: none;
+    box-shadow: 0px 3px 5px -3px #cccccc;
+    height: 30px;
 }
 
-.alluser_btn, .clear_btn{
-    background-color: #ffffff;
-    color: #00abad;
-    border: 1px solid #00abad;
-    border-radius: 50px;
+/*.alluser_btn, .clear_btn{*/
+.clear_btn{
+    background-color: #7d8597;
+    color: #fff;
+    border: 0;
+    border-radius: 5px;
     font-size: 13px;
     font-weight: 600;
-    padding: 2px 14px;
+    padding: 2px 15px;
     margin-right: 10px;
     margin-left: 5px;
 }
+.clear_btn:hover{background-color: #7d8597ba;}
 
-.multiuser_btn i, .alluser_btn i{
-    margin-right: 5px;
-}
-
-.multiuser_btn:hover, .alluser_btn:hover, .clear_btn:hover{
-    background-color: #00abad;
+.multiuser_btn:hover, .alluser_btn:hover{
+    background-color: #457b9dba;
     color: #ffffff;
 }
 
 [class*="multiuser_content"]{
     background: #ffffff;
-    color: #00abad;
+    color: #457b9d;
     position: absolute;
     width: 200px;
     height: 250px;
@@ -160,7 +153,7 @@ span.drop_users input{
 span.drop_users label{
     position: absolute;
     margin-left: 8px;
-    color: #00abad !important;
+    color: #457b9d !important;
     font-size: 11px !important;
     width: auto !important;
     padding: 5px !important;
@@ -182,10 +175,10 @@ span.drop_users label{
 }
 
 [class^="mapped_users"] input[name^="final_users_count"]{
-    background-color: #00abad;
+    background-color: #ffb703;
     color: #ffffff;
     width: 30px; height: 30px;
-    border-radius: 50%;
+    border-radius: 5px;
     font-size: 13px;
     font-weight: 600;
     text-align: center;
@@ -196,11 +189,11 @@ span.drop_users label{
 [class^="mapped_users"] textarea[name^="final_user_select"]{
     background-color: #ffffff;
     color: #222222;
-    width: 300px; height: 60px;
+    width: 300px; height: 50px;
     font-size: 12px;
     font-weight: 600;
     margin-bottom: -20px;
-    border-color: #00abad;
+    border-color: #222222;
     resize: none;
 }
 

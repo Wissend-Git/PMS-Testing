@@ -463,16 +463,21 @@
               {% endif %}
               
 
-            {% if received_data['emp_type'] in ["ADMIN","TA","TM","TL","TMR","TLR",'TBH','TBHR'] %}
+            {% if received_data['emp_type'] not in ['PU'] %}
               <div class="card addon_card">
                 <div class="card-header" role="tab" id="head_6">
                   <a data-toggle="collapse" data-parent="#side_menu" href="{{url_for('addon')}}" aria-expanded="false" aria-controls="collapse_6">
                     <h6><i class="fa fa-plus-square" aria-hidden="true"></i>Add-On</h6>
                   </a>
                 </div>
-                <div id="collapse_6" class="collapsed" style="display: none;" role="tabpanel" aria-labelledby="head_1" data-parent="#side_menu">
-                  <div class="card-body">
-                  </div>
+              </div>
+            {% endif %}
+            {% if received_data['emp_type'] in ['ADMIN','TA', 'TBH', 'TBHR', 'TM', 'TMR'] %}
+              <div class="card shift_card">
+                <div class="card-header" role="tab" id="head_11">
+                  <a data-toggle="collapse" data-parent="#side_menu" href="{{url_for('workshift')}}" aria-expanded="false" aria-controls="collapse_11">
+                    <h6><i class="fa fa-briefcase" aria-hidden="true"></i>Shift Assign</h6>
+                  </a>
                 </div>
               </div>
             {% endif %}

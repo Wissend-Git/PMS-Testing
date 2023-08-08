@@ -7,10 +7,10 @@ import json, random
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
  
 ################################################## Global Content ##################################################
-# syst_img_path = "/var/www/html/webapp/static/images/template/"
-# syst_pdf_path = "/var/www/html/webapp/static/pdf/"
-syst_img_path = "static/images/template/"
-syst_pdf_path = "static/pdf/"
+syst_img_path = "/var/www/html/webapp/static/images/template/"
+syst_pdf_path = "/var/www/html/webapp/static/pdf/"
+# syst_img_path = "static/images/template/"
+# syst_pdf_path = "static/pdf/"
 
 image_paths = {}
 pdf_paths = {}
@@ -47,7 +47,7 @@ myapp = Flask(__name__)
 def check_session():
 	session.permanent = True
 	session.modified = True
-	myapp.permanent_session_lifetime = timedelta(minutes=30)
+	myapp.permanent_session_lifetime = timedelta(minutes=60)
 
 sec_use = URLSafeTimedSerializer('wissendtoken')
 ################################################## Global Content ##################################################
@@ -311,6 +311,43 @@ def attd_report():
 		return redirect('/logout')
 ################################################# Attendance Entries #####################################################
 
+################################################ Shift Block ################################################
+@myapp.route("/workshift", methods=['GET', 'POST'])
+def workshift():
+	try:
+		if request.method == "GET":
+			if session.get('wissend_id', 0) != 0:
+				emp_storage = db_functions.employee_project_data(session)
+				if isinstance(emp_storage, int) == False:
+					project_list = []
+					for projects_key,projects_data in emp_storage['employee_projects'].items():
+						if projects_data['status'] == "Active":
+							project_list.append(projects_data['project_id'])
+					if session['emp_type'] in ['ADMIN','TA','TM','TL','TLR','TMR','TBH','TBHR','TQA']:
+						if session['wissend_password'] != '0':
+							session['project_list'] = project_list
+							workshift_data = db_functions.shift_status_pickup(session)
+							return render_template("workshift_page.html", received_data=emp_storage, workshift_data=workshift_data)
+						else:
+							return redirect("change_password")
+					else:
+						return redirect('/')
+				else:
+					return render_template_string("error")
+			else:
+				return redirect('/')
+		else:
+			form_data = request.form
+			if form_data.get("assign_project_id",0) != 0:
+				db_functions.shift_project_user_insert(session,form_data)
+			else:
+				db_functions.shift_new_user_insert(session,form_data)
+			return redirect('/workshift')
+	except:
+		print(db_functions.traceback.format_exc())
+		return redirect('/logout')
+################################################ Shift Block ################################################
+
 
 ################################################ Button Setup ################################################
 @myapp.route("/addon", methods=['GET', 'POST'])
@@ -323,7 +360,8 @@ def addon():
 					if session['emp_type'] in ['ADMIN','TA','TM','TL','TLR','TMR','TBH','TBHR','TQA']:
 						if session['wissend_password'] != '0':
 							acknowledgement = ''
-							return render_template("addon_page.html", received_data=emp_storage, acknow_status=acknowledgement)
+							status_result = db_functions.shift_status_pickup(session)
+							return render_template("addon_page.html", received_data=emp_storage, acknow_status=acknowledgement,shift_data=status_result)
 						else:
 							return redirect("change_password")
 					else:
@@ -333,6 +371,7 @@ def addon():
 			else:
 				return redirect('/')
 		else:
+			acknowledgement = ""
 			form_data = request.form
 			print(form_data)
 			if session.get('wissend_id', 0) != 0:
@@ -341,11 +380,15 @@ def addon():
 					if form_data.get('addon_project', 0) != 0:
 						if form_data['addon_type'] == "Task Creation":
 							acknowledgement = db_functions.task_creation_insert(form_data, session)
-							acknowledgement['addon_type'] = 'Task Creation Status' 
+							acknowledgement['addon_type'] = 'Task Creation Status'
 						else:
 							acknowledgement = db_functions.process_creation_insert(form_data, emp_storage)
 							acknowledgement['addon_type'] = 'Process Creation Status'
+						print("Found")
 						return render_template("addon_page.html", received_data=emp_storage, acknow_status=acknowledgement)
+					elif form_data.get("assign_project_id",0) != 0:
+						db_functions.shift_data_insert(session,form_data)
+					return render_template("addon_page.html", received_data=emp_storage, acknow_status=acknowledgement)
 				else:
 					return render_template_string("error") 
 			else:
@@ -1253,6 +1296,46 @@ def log_report():
 		print(db_functions.traceback.format_exc())
 		return redirect('/logout')
 ################################################# Additional Process #####################################################
+
+################################################ Shift Assign ################################################
+@myapp.route("/shift/status", methods=['GET', 'POST'])
+def shift_status():
+	try:
+		data_set = {"projects":[],"all_shifts":[],"project_new_users":[]}
+		project_dict = []
+		
+		if request.method == "GET":
+			status_result = db_functions.shift_status_pickup(session)
+			if status_result != []:
+				print('Coming inv')
+				for each_status_result in status_result:
+					user_dict = {
+								"employee_name":str(each_status_result["employee_name"]),
+								"employee_id":str(each_status_result["employee_id"]),
+								"wiss_employee_id":str(each_status_result["wiss_employee_id"]),
+								"designation":str(each_status_result["designation"]),
+								"shift_name":str(each_status_result["shift_name"]),
+								}
+					# print("user_dict",user_dict)
+					# print("Shift",each_status_result)
+					if data_set.get("projects",0) != 0:
+						if not any(d['project_name'] == str(each_status_result['project_name']) for d in data_set["projects"]):
+							user_list = []
+							user_list.append(user_dict)
+							data_set["projects"].append({"project_name":str(each_status_result['project_name']),"project_id":str(each_status_result['project_id']),"users":user_list})
+						else:
+							print("Else Part",data_set["projects"])
+					# break
+			if data_set.get("projects",0) != 0:
+				data_set["projects"].append(project_dict)
+			print(data_set)
+			# data_set = "Hai"
+			return render_template_string(str(data_set))
+		else:
+			return render_template_string("Shift assign POST")
+	except:
+		return redirect('/logout')
+################################################ Shift Assign ################################################
 
 
 @myapp.route("/logout")

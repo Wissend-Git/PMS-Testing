@@ -1,0 +1,587 @@
+/*p{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 10rem;
+}*/
+
+/* ############################################## Shift - Assign Block ############################################## */
+#shift_assign_tab{
+    display: flex;
+    margin: 15px 5px;
+    padding: 3px;
+}
+#shift_assign_tab button.backshift_button{
+    position: absolute;
+    right: 10px;
+    margin: -1px 15px;
+    border: none;
+    width: 10%;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 3px;
+    padding: 5px;
+    background: #0587eb;
+    color: #fff;
+    outline: none;
+    box-shadow: 0px 3px 5px -3px #cccccc;
+}
+#shift_assign_tab button.backshift_button:hover{background: #0587ebba;}
+#shift_assign_tab form{
+    text-align: center;
+    margin-top: 3rem;
+}
+/* ################ Card - Top Contents ################ */
+#shift_assign_tab ul.project_segment{
+    list-style-type: none;
+    border-radius: 3px;
+}
+#shift_assign_tab ul.project_segment li{
+    display: inline-flex;
+    width: 80%;
+}
+#shift_assign_tab ul.project_segment span.project_counter{
+    position: absolute;
+    left: -35px;
+    top: 5px;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 0.5rem;
+    width: 35px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background: #ff9900AA;
+    color: #fff;
+    text-align: center;
+    height: 35px;
+    box-shadow: 1px 1px 2px 0px #898989;
+}
+#shift_assign_tab .card{
+    background: transparent;
+    border-radius: 5px;
+    width: 100%;
+}
+#shift_assign_tab .card #project_head{
+    background: #fff;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    justify-content: space-evenly;
+    display: inline-flex;
+    width: 100%;
+    padding: 5px !important;
+}
+#shift_assign_tab .card #project_head h5{
+    color: black;
+    font-size: 14px;
+    font-weight: bolder;
+    cursor: pointer;
+    padding: 5px;
+    margin: 5px;
+    width: 50%;
+    text-align: center;
+    border-radius: 3px;
+    background: #00abad20;
+}
+#shift_assign_tab .card #project_head button{
+    border: none;
+    width: 10%;
+    height: 30px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 5px;
+    background: #00b1b3ba;
+    color: #fff;
+    transition: all .30s ease-in;
+    outline: none;
+    box-shadow: 0px 5px 10px -3px #cccccc;
+}
+#shift_assign_tab .card #project_head button:hover{
+    color: #fff;
+    background: #00b1b3;
+}
+#shift_assign_tab .card #project_head a{
+    width: 10%;
+    text-decoration: none;
+    font-size: 12px;
+    padding: 7px;
+    margin: 5px;
+    vertical-align: middle;
+    text-align: center;
+    transition: transform .7s ease-in-out;
+    height: 30px;
+    background: #457b9d;
+    color: #fff;
+    border-radius: 3px;
+    box-shadow: 0px 5px 10px -3px #cccccc;
+}
+#shift_assign_tab .card #project_head a:hover{
+    background: #457b9dba;
+}
+#shift_assign_tab .card #project_head i{
+    font-size: 15px;
+    padding: 7px;
+    color: #666666;
+}
+
+/* ################ Card - Inner Contents ################ */
+#shift_assign_tab .card [id*="collapse"]{background: #fff;}
+#shift_assign_tab .card .inner_user_block{
+    margin: 5px;
+    padding: 5px;
+}
+#shift_assign_tab .card .inner_user_block table{
+    width: 100%;
+    margin: 5px 0px;
+}
+#shift_assign_tab .card .inner_user_block table th{
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    width: 12%;
+    background: #457b9dba;
+    border: 2px solid #fff;
+    color: #fff;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+#shift_assign_tab .card .inner_user_block table tr{background: #457b9d10;}
+#shift_assign_tab .card .inner_user_block table td:nth-child(5){width: 20%;}
+#shift_assign_tab .card .inner_user_block table td{
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    color: #5a5a5a;
+    width: 15%;
+}
+#shift_assign_tab .card .inner_user_block table td select{
+    color: #5a5a5a;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 3px;
+    width: 100%;
+    height: 25px;
+    margin: 3px 0px;
+    padding: 2px;
+    outline: none;
+    border: 1px solid #5a5a5a;
+}
+#shift_assign_tab .card .inner_user_block table td select option{
+    text-align: left !important;
+    font-size: 11px !important;
+    background: #457b9d10 !important;
+}
+#shift_assign_tab .card .inner_user_block table td button{
+    border: none;
+    width: 100%;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 3px;
+    padding: 5px;
+    background: #666666AA;
+    color: #fff;
+    outline: none;
+    box-shadow: 0px 3px 5px -3px #cccccc;
+}
+#shift_assign_tab .card .inner_user_block table td button:hover{
+    color: #fff;
+    background: #00b1b3;
+}
+#shift_assign_tab .card .inner_user_block table td[data-attribute="modified"]:nth-child(6){
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    color: #41966d;
+    background: #dbf8e9;
+    border-radius: 5px;
+    border: 3px solid #fff;
+}
+#shift_assign_tab .card .inner_user_block table td[data-attribute="static"]:nth-child(6){
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    color: #d6a867;
+    background: #fdf5e4;
+    border-radius: 5px;
+    border: 3px solid #fff;
+}
+/* ############################################## Shift - Assign Block ############################################## */
+
+
+/* ############################################## Shift - New Users Block ############################################## */
+#newuser_station_tab button.backshift_button{
+    position: absolute;
+    right: 10px;
+    top: 40%;
+    margin: 5px 15px;
+    border: none;
+    width: 10%;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 3px;
+    padding: 5px;
+    background: #0587eb;
+    color: #fff;
+    outline: none;
+    box-shadow: 0px 3px 5px -3px #cccccc;
+}
+#newuser_station_tab button.backshift_button:hover{background: #0587ebba;}
+
+#newuser_station_tab{
+    padding: 3px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    width: 100%;
+    display: block;
+    height: 5rem;
+    justify-content: start;
+    align-items: center;
+    transition: all .30s ease-in;
+}
+#newuser_station_tab form{
+    display: inline-flex;
+}
+#newuser_station_tab #multiuser_selection, #newuser_station_tab #newuser_selection_shift, #newuser_station_tab #newuser_assign_block{
+    text-align: center;
+    padding: 3px;
+    margin: 5px;
+    display: inline-flex;
+}
+#newuser_station_tab .multiselect_btn{
+    margin: 5px;
+    border: none;
+    width: 10rem;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 3px;
+    padding: 5px;
+    background: #457b9d;
+    color: #fff;
+    outline: none;
+    box-shadow: 0px 3px 5px -3px #cccccc;
+    height: 30px;
+}
+#newuser_station_tab button.multiselect_btn:hover{
+    background: #457b9dba;
+}
+#newuser_station_tab select{
+    width: 15rem;
+}
+#newuser_station_tab #newuser_assign_block button{
+    border: none;
+    width: 100px;
+    height: 30px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 5px;
+    outline: none;
+    transition: all .30s ease-in;
+    box-shadow: 0px 5px 10px -3px #cccccc;
+    cursor: pointer;
+    color: #fff;
+}
+#newuser_station_tab #newuser_assign_block button.newuser_assign_button{background: #00b1b3ba;}
+#newuser_station_tab #newuser_assign_block button.newuser_clear_button{background: #7d8597;}
+#newuser_station_tab #newuser_assign_block button.newuser_assign_button:hover{background: #00b1b3;}
+#newuser_station_tab #newuser_assign_block button.newuser_clear_button:hover{background: #7d8597ba;}
+
+/* multiselect - programing */
+.multiselect_content{
+    background: #ffffff;
+    color: #00abad;
+    position: absolute;
+    top: 70%;
+    width: 20%;
+    height: 250px;
+    font-size: 12px;
+    font-weight: 600;
+    padding-top: 5px;
+    z-index: 200;
+    margin-top: 5px;
+    margin-left: 5px;
+    overflow-x: hidden;
+    text-align: left;
+}
+span.newuser_drop_users input{
+    width: 15px !important;
+    cursor: pointer;
+}
+span.newuser_drop_users label{
+    position: absolute;
+    margin: 5px;
+    color: #457b9d !important;
+    font-size: 11px !important;
+    width: auto !important;
+    padding: 5px !important;
+    cursor: pointer;
+}
+.newuser_menu-option{
+    padding-left: 8px;
+    padding-right: 8px;
+}
+/* ############################################## Shift - New Users Block ############################################## */
+
+
+/* ############################################## Shift - Show Block ############################################## */
+#shift_show_tab{
+    display: flex;
+    margin: 15px 5px;
+    padding: 3px;
+}
+/* Selection project content */
+.shift_project_selection{display: inline-flex;}
+.shift_project_selection label{padding: 10px 5px;width: 20%;}
+.shift_project_selection select{width: 15rem;box-shadow: 1px 2px 10px -2px #cccccc;}
+/* New User Execution */
+.shift_project_selection button.newuser_button{
+    position: absolute;
+    right: 0;
+    margin: 5px 15px;
+    border: none;
+    width: 10%;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 3px;
+    padding: 5px;
+    background: #0587eb;
+    color: #fff;
+    outline: none;
+    box-shadow: 0px 3px 5px -3px #cccccc;
+}
+.shift_project_selection button.newuser_button:hover{background: #0587ebba;}
+
+/* ################ report segments ################ */
+#shift_show_tab ul.project_segment{
+    list-style-type: none;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 3px;
+}
+#shift_show_tab ul.project_segment li[data-attribute]{
+    display: flex;
+    margin: 10px 3%;
+    padding: 5px;
+    width: 100%;
+    text-align: center;
+}
+#shift_show_tab .card{
+    background: transparent;
+    border-radius: 5px;
+    width: 100%;
+}
+
+
+/* ################ Card - Top Contents ################ */
+#shift_show_tab ul.project_segment span.project_counter{
+    position: absolute;
+    left: -35px;
+    top: 5px;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 0.5rem;
+    width: 35px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background: #ff9900AA;
+    color: #fff;
+    text-align: center;
+    height: 35px;
+    box-shadow: 1px 1px 2px 0px #898989;
+}
+#shift_show_tab .card #project_head{
+    background: #fff;
+    padding: 3px !important;
+    width: 100%;
+    height: 3rem;
+    display: inline-flex;
+}
+#shift_show_tab .card #project_head [class^="cardtop"]{padding: 3px;margin: 3px;}
+#shift_show_tab .card #project_head .cardtop_name_block{width: 25%;}
+#shift_show_tab .card #project_head .cardtop_shiftnumber_block{width: 75%;display: inline-flex;}
+#shift_show_tab .card #project_head .cardtop_showall_block, #shift_show_tab .card #project_head .cardtop_redirect_block{width: 10%;margin: 5px;text-align: center;}
+#shift_show_tab .card #project_head .cardtop_shiftnumber_block label{width: 15%}
+
+#shift_show_tab .card #project_head .cardtop_name_block h5{
+    color: black;
+    font-size: 14px;
+    font-weight: bolder;
+    cursor: pointer;
+    padding: 5px;
+    width: 100%;
+    text-align: center;
+    border-radius: 3px;
+    background: #00abad50;
+    height: 30px;
+}
+#shift_show_tab .card #project_head .cardtop_shiftnumber_block ul{
+    display: inline-flex;
+    justify-content: start;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 85%;
+}
+#shift_show_tab .card #project_head .cardtop_shiftnumber_block ul li{
+    padding: 4px 3px;
+    margin: 3px;
+    font-size: 70%;
+    width: 24%;
+    text-align: center;
+    height: 1.5rem;
+    vertical-align: middle;
+    background: #a8dadc50;
+    border-radius: 4px;
+    transition: .3s;
+    box-shadow: 0px 1px 2px 0px #898989;
+    cursor: pointer;
+}
+#shift_show_tab .card #project_head .cardtop_shiftnumber_block ul li a{
+    text-decoration: none;
+    color: #000;
+}
+#shift_show_tab .card #project_head .cardtop_shiftnumber_block ul li:hover{
+    background: #00b1b3;
+    color: #fff;
+}
+
+#shift_show_tab .card #project_head .cardtop_showall_block .hyper_mode{
+    background: #457b9d;
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+    border-radius: 4px;
+    text-align: center;
+    transition: .3s;
+    height: 30px;
+    padding: 5px;
+    box-shadow: 0px 5px 10px -3px #cccccc;
+}
+#shift_show_tab .card #project_head .cardtop_showall_block .hyper_mode a{
+    text-decoration: none;
+    color: #fff;   
+}
+#shift_show_tab .card #project_head .cardtop_showall_block .hyper_mode:hover{background: #457b9dba;}
+
+#shift_show_tab .card #project_head .cardtop_redirect_block button{
+    border: none;
+    width: 100%;
+    height: 30px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 5px;
+    padding: 5px;
+    background: #00b1b3ba;
+    color: #fff;
+    transition: all .30s ease-in;
+    outline: none;
+    box-shadow: 0px 5px 10px -3px #cccccc;
+}
+#shift_show_tab .card #project_head .cardtop_redirect_block button:hover{background: #00b1b3;}
+
+/* ################ Card - Inner Contents ################ */
+#shift_show_tab .card .inner_user_block .heads_block{
+    text-align: center;
+    margin: 2px;
+}
+#shift_show_tab .card .inner_user_block .heads_block label{
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 2px;
+    padding: 3px 10px;
+    color: #00b1b3;
+}
+#shift_show_tab .card .inner_user_block .heads_block b{
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 2px;
+    padding: 5px;
+    color: #000;
+}
+#shift_show_tab .card [id*="collapse"]{background: #fff;}
+#shift_show_tab .card .inner_user_block{
+    margin: 5px;
+    padding: 5px;
+}
+#shift_show_tab .card .inner_user_block table{
+    width: 100%;
+    margin: 5px 0px;
+}
+#shift_show_tab .card .inner_user_block table th{
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    width: 12%;
+    background: #457b9dba;
+    border: 2px solid #fff;
+    color: #fff;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+#shift_show_tab .card .inner_user_block table tr{background: #457b9d10;}
+#shift_show_tab .card .inner_user_block table td:nth-child(5){width: 20%;}
+#shift_show_tab .card .inner_user_block table td{
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    color: #5a5a5a;
+    width: 15%;
+    height: 30px;
+}
+#shift_show_tab .card .inner_user_block table td select{
+    color: #5a5a5a;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 3px;
+    width: 100%;
+    height: 25px;
+    margin: 3px 0px;
+    padding: 2px;
+    outline: none;
+    border: 1px solid #5a5a5a;
+}
+#shift_show_tab .card .inner_user_block table td select option{
+    text-align: left !important;
+    font-size: 11px !important;
+    background: #e5e5e5 !important;
+}
+#shift_show_tab .card .inner_user_block table td button{
+    border: none;
+    width: 100%;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 3px;
+    padding: 5px;
+    background: #666666AA;
+    color: #fff;
+    outline: none;
+    box-shadow: 0px 3px 5px -3px #cccccc;
+}
+#shift_show_tab .card .inner_user_block table td button:hover{
+    color: #fff;
+    background: #00b1b3;
+}
+#shift_show_tab .card .inner_user_block table td[data-attribute="modified"]:nth-child(6){
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    color: #41966d;
+    background: #dbf8e9;
+    border-radius: 5px;
+    border: 3px solid #fff;
+}
+#shift_show_tab .card .inner_user_block table td[data-attribute="static"]:nth-child(6){
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    color: #d6a867;
+    background: #fdf5e4;
+    border-radius: 5px;
+    border: 3px solid #fff;
+}

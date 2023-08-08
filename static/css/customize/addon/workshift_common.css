@@ -1,0 +1,303 @@
+.workshift_content{
+    background-color: #ffffff;
+    margin: 1rem 0rem;
+    padding-bottom: 1rem;
+    border-radius: 3px;
+}
+
+.workshift_content .workshift_head{
+    display: block;
+    list-style: none;
+    color: #00abad;
+    font-weight: 600;
+    font-size: 22px;
+    padding: 7px 5px 0px;
+    margin: 5px;
+    text-align: center;
+}
+
+/*########################################################## [General Tab] ##########################################################*/
+.workshift_tab{
+  display: flex;
+  border-bottom: 1px solid #ccc;
+}
+
+.workshift_tab button{
+    background: #e5e5e5;
+    border: none;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 15px;
+    margin-right: 1px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.workshift_tab button:hover{
+    background-color: #f1f1f1;
+}
+
+/*########################################################## [Unique Elements - Styles] ##########################################################*/
+/************************** General Tag - Settings **************************/
+.workshift_content select{
+    font-size: 12px;
+    font-weight: 600;
+    margin: 5px;
+    padding: 5px;
+    text-align: left;
+    outline: none;
+    border-radius: 5px;
+    color: #5a5a5a;
+    border: 1px solid #5a5a5a;
+    width: 100%;
+    height: 30px;
+}
+
+.workshift_content select option{
+    background: #00abad30;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.workshift_content label{
+    font-size: 12px;
+    font-weight: 600;
+    margin: 2px;
+    padding: 5px;
+    text-align: center;
+    color: #5a5a5a;
+}
+
+.workshift_content input{
+    font-size: 13px;
+    font-weight: 600;
+    color: #5a5a5a;
+    margin: 3px 5px;
+    padding: 5px;
+    text-align: center;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #5a5a5a;
+    height: 30px;
+}
+
+
+.workshift_content input::placeholder{
+    color: #c0bfbf;
+    font-size: 12px;
+    text-align: center;
+}
+
+span.custom_required{
+    color: red;
+    padding: 0px 3px;
+}
+
+/************************** Close & Reset - Settings **************************/
+span.custom_close{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    padding: 5px;
+    color: #222222ba;
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform .7s ease-in-out;
+    text-align: center;
+}
+span.custom_close:hover{
+    color: darkred;
+    transform: rotate(180deg);
+}
+
+/************************** Add & Clear - Settings **************************/
+.workshift_content button.custom_clear_button{
+    height: 30px;
+    width: 100px;
+    border: 0;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 5px;
+    transition: all .30s ease-In;
+    z-index: 20px;
+    outline: none;
+    background-color: #b7b6b6;
+    color: #fff;
+}
+.workshift_content button.custom_clear_button:hover{
+    background-color: #b7b6b6ba;
+    box-shadow: 0px 1px 3px 0px #8c8c8c;
+}
+.workshift_content button.custom_add_button{
+    height: 30px;
+    width: 100px;
+    border: 0;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 5px;
+    transition: all .30s ease-In;
+    z-index: 20px;
+    outline: none;
+    background-color: #0587eb;
+    color: #fff;
+}
+.workshift_content button.custom_add_button:hover{
+    background-color: #0587ebba;
+    box-shadow: 0px 1px 3px 0px #8c8c8c;
+}
+
+
+/************************** Error Block - Settings **************************/
+.workshift_content .error_block{
+    display: none;
+    margin-top: 1rem;
+    text-align: left;
+}
+.workshift_content .error_block p{
+    font-size: 13px;
+    font-weight: 600;
+    color: #f76a60;
+    margin: 0;
+}
+
+/*.workshift_content button[type="submit"]{
+    display: inline-flex;
+    height: 30px;
+    width: 100px;
+    border: 0;
+    margin-top: 3rem;
+    margin-left: 90%;
+    color: #fff;
+    background: #00abad;
+    font-size: 13px;
+    font-weight: 600;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 3px;
+    position: relative;
+    transition: all .30s ease-In;
+    z-index: 20px;
+    outline: none;
+}
+.workshift_content button[type="submit"]:hover{
+    box-shadow: 0px 1px 3px 0px #8c8c8c;
+    background-color: #6f9e44ba;
+}*/
+/*########################################################## [Unique Elements - Styles] ##########################################################*/
+
+/*########################################################## [Acknowledgement] ##########################################################*/
+.modal{
+    display: block;
+    position: fixed;
+    z-index: 100;
+    left: 0; top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    animation-name: fadeIn;
+    animation-duration: 0.4s
+}
+
+.modal-content{
+    position: fixed;
+    bottom: 0;
+    left: 32%;
+    background-color: #fefefe;
+    width: 50%;
+    animation-name: slideIn;
+    animation-duration: 0.4s;
+    margin-left: -5px;
+    text-align: center;
+}
+
+.close{
+    color: #000;
+    float: right;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus{
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header{
+    background-color: #00abad;
+    color: white;
+    font-size: 15px;
+    height: 40px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-right: 10px;
+    padding-left: 40%;
+    margin: -1px;
+}
+
+.modal-footer{
+    background-color: #00abad;
+    color: white;
+    font-size: 15px;
+    height: 40px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-right: 265px;
+    padding-left: 280px;
+    margin: -1px;
+}
+
+.modal-body{
+    padding: 15px;
+    height: 100px;
+}
+
+.modal-body p{
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 2px;
+    color: #3e8e3e;
+}
+
+.modal-header h2{
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    margin: 5px;
+}
+
+.modal-footer h2{
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    margin: 5px;
+}
+
+
+@-webkit-keyframes slideIn{
+    from {bottom: -300px; opacity: 0} 
+    to {bottom: 0; opacity: 1}
+}
+
+@keyframes slideIn{
+    from {bottom: -300px; opacity: 0}
+    to {bottom: 0; opacity: 1}
+}
+
+@-webkit-keyframes fadeIn{
+    from {opacity: 0} 
+    to {opacity: 1}
+}
+
+@keyframes fadeIn{
+    from {opacity: 0} 
+    to {opacity: 1}
+}
+/*########################################################## [Acknowledgement] ##########################################################*/

@@ -1,9 +1,20 @@
+var data_storage = JSON.parse(my_storage);
+var acknow_level = JSON.parse(acknow_state);
+
 $(document).ready(function($){
+    document.onkeydown = function(e){
+        if(e.keyCode == 27){
+            $("#acknowModel").fadeOut(1000);
+            window.location.href = '/team_lead';
+        }
+    }
+
+    $('#addon_creation').css('display','block');
+    $('button.process_tab_link').css({'color':'#fff','background-color': '#00b1b3', 'font-size': '14px', 'font-weight': '600'})
+
     $('[id^="creation_progress"]').css('display', 'none');
     $('.add_more_process, .add_more_tasks').css('display', 'none');
 });
-
-var data_storage = JSON.parse(my_storage);
 
 function ul_tag_count(){
     var ul_tag_count = ''
@@ -151,7 +162,7 @@ function multiprocess_adding(){
         }
         let added_data = added_data_list.join("");
         $("#add_more_creation").append(
-            '<ul id="creation_progress_'+ul_tag_count+'"><li id="process_creation_'+ul_tag_count+'"><label for="process_creation_'+ul_tag_count+'">Process Name</label><input name="process_creation_'+ul_tag_count+'" type="text" placeholder="Type new process here..."></li><li><div id="multiuser_container_'+ul_tag_count+'"><button class="multiuser_btn" type="button" style="outline: none !important;" onclick="users_drop(event)"><i class="fa fa-user-plus"></i>Map Selective Users</button><div class="multiuser_content_'+ul_tag_count+' d-none shadow rounded menu">'+added_data+'</div><div class="d-none" id="multiuserDropdown_'+ul_tag_count+'" onclick="users_drop_hide(event)"></div></div></li><li><h6 style="color: #595959; font-size: 12px; font-weight: 600;">OR</h6></li><li><div id="allusers_container_'+ul_tag_count+'"><button class="alluser_btn" type="button" style="outline: none !important;" onclick="allusers_drop(event)"><i class="fa fa-users"></i>Map All Users</button></div></li><li><div class="mapped_users_'+ul_tag_count+'"><textarea name="final_user_select_'+ul_tag_count+'" type="text" readonly></textarea><input name="final_users_count_'+ul_tag_count+'" type="text" value="0" readonly><button class="clear_btn" type="button" style="outline: none !important;" onclick="clear_data(event)">Clear</button></div></li><span id="remove_data" onclick="remove_target_data(this,'+ul_tag_count+')">X</span></ul>'
+            '<ul id="creation_progress_'+ul_tag_count+'"><li id="process_creation_'+ul_tag_count+'"><label for="process_creation_'+ul_tag_count+'">Process Name</label><input name="process_creation_'+ul_tag_count+'" type="text" placeholder="Type new process here..."></li><li><div id="multiuser_container_'+ul_tag_count+'"><button class="multiuser_btn" type="button" style="outline: none !important;" onclick="users_drop(event)">Map Selective Users</button><div class="multiuser_content_'+ul_tag_count+' d-none shadow rounded menu">'+added_data+'</div><div class="d-none" id="multiuserDropdown_'+ul_tag_count+'" onclick="users_drop_hide(event)"></div></div></li><li><h6 style="color: #595959; font-size: 12px; font-weight: 600;">OR</h6></li><li><div id="allusers_container_'+ul_tag_count+'"><button class="alluser_btn" type="button" style="outline: none !important;" onclick="allusers_drop(event)">Map All Users</button></div></li><li><div class="mapped_users_'+ul_tag_count+'"><textarea name="final_user_select_'+ul_tag_count+'" type="text" readonly></textarea><input name="final_users_count_'+ul_tag_count+'" type="text" value="0" readonly><button class="clear_btn" type="button" style="outline: none !important;" onclick="clear_data(event)">Clear</button></div></li><span id="remove_data" onclick="remove_target_data(this,'+ul_tag_count+')">X</span></ul>'
         );
     }
 }
@@ -396,3 +407,15 @@ function addon_submit(event){
         event.preventDefault();
     }
 }
+
+window.onclick = function(event){
+    if (event.target == document.getElementById("acknowModel")){
+        $('#acknowModel').attr("style","display: none");
+        window.location.href = '/team_lead';
+    }
+}
+
+$('#acknowModel .close').on('click', function(){
+    $('#acknowModel').attr("style","display: none");
+    window.location.href = '/team_lead';
+})

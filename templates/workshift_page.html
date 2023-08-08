@@ -2,33 +2,29 @@
 <html>
 <head>
   <title>Wissend</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
   <link rel="stylesheet" href="{{url_for('static', filename= 'css/bootstrap.min.css')}}">
   <link rel="stylesheet" href="{{url_for('static', filename= 'css/font-awesome.min.css')}}">
   <link rel="stylesheet" href="{{url_for('static', filename= 'css/montserrat.css')}}">
   <link rel="stylesheet" href="{{url_for('static', filename= 'css/poppins.css')}}">
-  <link rel="stylesheet" href="{{url_for('static', filename= 'css/bootstrap-datepicker.css')}}">
-  <link rel="stylesheet" href="{{url_for('static', filename= 'css/jquery-ui.css')}}">
-  <link rel="stylesheet" href="{{url_for('static', filename= 'css/customize/main_css.css')}}">
-  <link rel="stylesheet" href="{{url_for('static', filename= 'css/customize/header_page.css')}}">
-  <link rel="stylesheet" href="{{url_for('static', filename= 'css/customize/employee_reports.css')}}">
-  <link rel="stylesheet" href="{{url_for('static', filename= 'css/nightly.jquery.dataTables.css')}}">
-  <link rel="stylesheet" href="{{url_for('static', filename= 'css/customize/multi-select_table.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename= 'css/bootstrap-datepicker.css')}}"/>
+  <link rel="stylesheet" href="{{url_for('static', filename='css/customize/main_css.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename='css/customize/header_page.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename='css/customize/addon/workshift_common.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename='css/customize/addon/workshift.css')}}">
   <link rel="icon" href="{{url_for('static', filename='images/icons/wissend_black_icon_40X40.png')}}">
-  
   <script>
-    window.addEventListener('load', function () {
+    window.addEventListener('load', function (){
         $('body').addClass('loaded');
+        let block_height = $("#right_block .profile_content").height();
+        $("#right_block .announcement_content .announcement_block").css("height",(block_height/2)+"px");
     })
   </script>
-   
 </head>
-
-<body oncontextmenu ="return false;">
+<body oncontextmenu="return false;">
   <div class="loader_wrapper">
     <div class="loader"></div>
   </div>
-  
   <section id="tool_header">
     <div class="container-fluid">
       <div class="row header_block">
@@ -74,7 +70,7 @@
       <div class="row">
         <div class="col-md-2 left_side_block">
           <p class="col-md-12" id="today_date"></p>
-          <div class="text-center" id="project_filter">
+          <div class="mt-1 text-center" id="project_filter">
             <div class="accordion md-accordion" id="side_menu" role="tablist" aria-multiselectable="true">
               <div class="card">
                 <div class="card-header" role="tab" id="head_1">
@@ -83,9 +79,9 @@
                   {% else %}
                     <a data-toggle="collapse" data-parent="#side_menu" href="{{url_for('team_lead')}}" aria-expanded="false" aria-controls="collapse_1">
                   {% endif %}
-                    <h6>
-                      <i class="fa fa-address-card" aria-hidden="true"></i>Profile
-                    </h6>
+                      <h6>
+                        <i class="fa fa-address-card" aria-hidden="true"></i>Profile
+                      </h6>
                   </a>
                 </div>
                 <div id="collapse_1" class="collapse" style="display: none;" role="tabpanel" aria-labelledby="head_1" data-parent="#side_menu">
@@ -93,9 +89,10 @@
                   </div>
                 </div>
               </div>
+              
               <div class="card">
                 <div class="card-header" role="tab" id="head_2" >
-                  <a class="collapsed"  data-toggle="collapse" data-parent="#side_menu" href="#collapse_2" aria-expanded="true" aria-controls="collapse_2">
+                  <a class="collapsed"  data-toggle="collapse" data-parent="#side_menu" href="#collapse_2" aria-expanded="false" aria-controls="collapse_2">
                     <h6>
                       <i class="fa fa-database" aria-hidden="true"></i>Production
                     </h6>
@@ -111,7 +108,7 @@
                               <option value="" >Select Project</option>
                               {% for project, values in received_data['employee_projects'].items() %}
                                 {% if values['status'] == 'Active' %}
-                                  <option value="{{project}}" {{ 'selected="selected"' if received_data['project_selected'] == project else "" }}>{{project}}</option>
+                                <option value="{{project}}" {{ 'selected="selected"' if received_data['project_selected'] == project else "" }}>{{project}}</option>
                                 {% endif %}
                               {% endfor %}
                             </select>
@@ -122,13 +119,13 @@
                               {% for project, values in received_data['employee_projects'].items() %}
                                 {% if values['status'] == 'Active' %}
                                   {% for process_list, data_list in values.items() %}
-                                    {% if process_list != 'project_id' and process_list != 'project_short_name' and process_list != 'status' %}
+                                    {% if process_list != 'project_id' and process_list != 'project_short_name' and process_list != 'status'  %}
                                       {% for process, data in data_list.items() %}
                                         <option value="{{project}}_{{process}}" {% if received_data['process_selected'] == process %} selected="selected"{% endif %}>{{process}}</option>
                                       {% endfor %}
                                     {% endif %}
-                                  {% endfor %}
-                                {% endif %}
+                                    {% endfor %}
+                                  {% endif %}
                               {% endfor %}
                             </select>
                           </li>
@@ -145,7 +142,7 @@
               <div class="card">
                 <div class="card-header" role="tab" id="head_9">
                   <a class="collapsed" data-toggle="collapse" data-parent="#side_menu" href="#collapse_9" aria-expanded="false" aria-controls="collapse_9">
-                    <h6><i class="fa fa-hand-o-up"></i>Attendance Report</h6>
+                    <h6><i class="fa fa-calendar-check-o"></i>Attendance Report</h6>
                   </a>
                 </div>
                 <div id="collapse_9" class="collapse" role="tabpanel" aria-labelledby="head_9" data-parent="#side_menu">
@@ -239,7 +236,7 @@
                               <option value="All" {{ 'selected="selected"' if received_data['process_selected'] == "All" else ""}}>All</option>
                               {% for project, values in received_data['employee_projects'].items() %}
                                 {% for process_list, data_list in values.items() %}
-                                  {% if process_list != 'project_id' and process_list != 'project_short_name'  and process_list != 'status' %}
+                                  {% if process_list != 'project_id' and process_list != 'project_short_name' and process_list != 'status' %}
                                     {% for process, data in data_list.items() %}
                                       <option value="{{project}}_{{process}}" {% if received_data['process_selected'] == process %} selected="selected"{% endif %}>{{process}}</option>
                                     {% endfor %}
@@ -248,28 +245,11 @@
                               {% endfor %}
                             </select>
                           </li>
-                          {% if received_data['emp_type'] in ['PU']%}
                           <li id="check_team_user">
                             <div class="custom-checkbox custom-control">
                               <ul>
                                 <li>
-                                  <input name="check_project" type="checkbox" id="check_project" class="custom-control-input" checked onclick="return false">
-                                  <label class="custom-control-label" for="check_project">Project</label>
-                                </li>
-                                <li>
-                                  <input name="check_process" type="checkbox" id="check_process" class="custom-control-input" {{'checked="checked"' if received_data['check_process'] == '1' else ""}}>
-                                  <label class="custom-control-label" for="check_process">Process</label>
-                                </li>
-                              </ul>
-                            </div>
-                          </li>
-                          {% endif %}
-                          {% if received_data['emp_type'] not in ['PU']%}
-                          <li id="check_team_user">
-                            <div class="custom-checkbox custom-control">
-                              <ul>
-                                <li>
-                                  <input name="check_project" type="checkbox" id="check_project" class="custom-control-input" checked onclick="return false">
+                                  <input name="check_project" type="checkbox" id="check_project" class="custom-control-input" {{'checked="checked"' if received_data['check_project'] == '1' else ""}} checked onclick="return false">
                                   <label class="custom-control-label" for="check_project">Project</label>
                                 </li>
                                 <li>
@@ -298,12 +278,12 @@
                                 {% endfor %}
                             </select>
                           </li>
-                          {% endif %}
                           <li>
                             <div class="input-daterange input-group" id="datepicker" >
                               <div class="justify-content-center">
                                   <div class="input-group input-daterange">
-                                    <input type="text" class="form-control" id="from_date" name="from_date" placeholder="From Date" {{ "value="+received_data['from_date'] if received_data['from_date'] != "" else '' }} readonly> <input type="text" class="form-control" id="to_date" name="to_date" placeholder="To Date" {{ "value="+received_data['to_date'] if received_data['to_date'] != "" else '' }} readonly>
+                                    <input type="text" class="form-control" id="from_date" name="from_date" placeholder="From Date" {{ "value="+received_data['from_date'] if received_data['from_date'] != "" else '' }} readonly>
+                                    <input type="text" class="form-control" id="to_date" name="to_date" placeholder="To Date" {{ "value="+received_data['to_date'] if received_data['to_date'] != "" else '' }} readonly>
                                   </div>
                               </div>
                             </div>
@@ -397,31 +377,33 @@
                                 <option value="All" {{ 'selected="selected"' if received_data['kra_user_selected'] == "All" else ""}}>All</option>
                               {% endif %}
                               {% for project, values in received_data['employee_projects'].items() %}
-                                {% for process_list, data_list in values.items() %}
-                                  {% if process_list != 'project_id' and process_list != 'project_short_name' and process_list != 'status' %}
-                                    {% for process, data in data_list.items() %}
-                                      {% if received_data['emp_type'] in ["TL","TLR"] %}
-                                        {% if data['lead_id'] == received_data['employee_id'] %}
-                                          <option value="{{data['lead_id']}}" {% if received_data['kra_user_id'] == data['lead_id']|string %} selected="selected"{% endif %}>{{data['lead']}} - {{data['lead_wiss_id']}}</option>
+                                {% if values['status'] == 'Active' %}
+                                  {% for process_list, data_list in values.items() %}
+                                    {% if process_list != 'project_id' and process_list != 'project_short_name' and process_list != 'status' %}
+                                      {% for process, data in data_list.items() %}
+                                        {% if received_data['emp_type'] in ["TL","TLR"] %}
+                                          {% if data['lead_id'] == received_data['employee_id'] %}
+                                            <option value="{{data['lead_id']}}" {% if received_data['kra_user_id'] == data['lead_id']|string %} selected="selected"{% endif %}>{{data['lead']}} - {{data['lead_wiss_id']}}</option>
+                                          {% endif %}
+                                        {% elif received_data['emp_type'] in ["TM","TMR"] %}
+                                          {% if data['lead_id'] != data['business_head_id'] %}
+                                            <option value="{{data['lead_id']}}" {% if received_data['kra_user_id'] == data['lead_id']|string %} selected="selected"{% endif %}>{{data['lead']}} - {{data['lead_wiss_id']}}</option>
+                                          {% endif %}
+                                          {% if data['manager_id'] == received_data['employee_id'] and data['manager_id'] != data['business_head_id'] %}
+                                            <option value="{{data['manager_id']}}" {% if received_data['kra_user_id'] == data['manager_id']|string %} selected="selected"{% endif %}>{{data['manager']}} - {{data['manager_wiss_id']}}</option>
+                                          {% endif %}
+                                        {% else %}
+                                          {% if data['lead_id'] != data['business_head_id'] %}
+                                            <option value="{{data['lead_id']}}" {% if received_data['kra_user_id'] == data['lead_id']|string %} selected="selected"{% endif %}>{{data['lead']}} - {{data['lead_wiss_id']}}</option>
+                                          {% endif %}
+                                          {% if data['manager_id'] != data['business_head_id'] %}
+                                            <option value="{{data['manager_id']}}" {% if received_data['kra_user_id'] == data['manager_id']|string  %} selected="selected"{% endif %}>{{data['manager']}} - {{data['manager_wiss_id']}}</option>
+                                          {% endif %}
                                         {% endif %}
-                                      {% elif received_data['emp_type'] in ["TM","TMR"] %}
-                                        {% if data['lead_id'] != data['business_head_id'] %}
-                                          <option value="{{data['lead_id']}}" {% if received_data['kra_user_id'] == data['lead_id']|string %} selected="selected"{% endif %}>{{data['lead']}} - {{data['lead_wiss_id']}}</option>
-                                        {% endif %}
-                                        {% if data['manager_id'] == received_data['employee_id'] and data['manager_id'] != data['business_head_id'] %}
-                                          <option value="{{data['manager_id']}}" {% if received_data['kra_user_id'] == data['manager_id']|string %} selected="selected"{% endif %}>{{data['manager']}} - {{data['manager_wiss_id']}}</option>
-                                        {% endif %}
-                                      {% else %}
-                                        {% if data['lead_id'] != data['business_head_id'] %}
-                                          <option value="{{data['lead_id']}}" {% if received_data['kra_user_id'] == data['lead_id']|string %} selected="selected"{% endif %}>{{data['lead']}} - {{data['lead_wiss_id']}}</option>
-                                        {% endif %}
-                                        {% if data['manager_id'] != data['business_head_id'] %}
-                                          <option value="{{data['manager_id']}}" {% if received_data['kra_user_id'] == data['manager_id']|string  %} selected="selected"{% endif %}>{{data['manager']}} - {{data['manager_wiss_id']}}</option>
-                                        {% endif %}
-                                      {% endif %}
-                                    {% endfor %}
-                                  {% endif %}
-                                {% endfor %}
+                                      {% endfor %}
+                                    {% endif %}
+                                  {% endfor %}
+                                {% endif %}
                               {% endfor %}
                             </select>
                           </li>
@@ -479,7 +461,7 @@
                 </div>
               {% endif %}
               
-            
+
             {% if received_data['emp_type'] not in ['PU'] %}
               <div class="card addon_card">
                 <div class="card-header" role="tab" id="head_6">
@@ -490,7 +472,7 @@
               </div>
             {% endif %}
             {% if received_data['emp_type'] in ['ADMIN','TA', 'TBH', 'TBHR', 'TM', 'TMR'] %}
-              <div class="card shift_card">
+              <div class="card menu_active shift_card">
                 <div class="card-header" role="tab" id="head_11">
                   <a data-toggle="collapse" data-parent="#side_menu" href="{{url_for('workshift')}}" aria-expanded="false" aria-controls="collapse_11">
                     <h6><i class="fa fa-briefcase" aria-hidden="true"></i>Shift Assign</h6>
@@ -500,7 +482,7 @@
             {% endif %}
 
             {% if received_data['emp_type'] in ['ADMIN','TA','TBH','TBHR'] %}
-              <div class="card gallery_card menu_active">
+              <div class="card gallery_card">
                 <div class="card-header" role="tab" id="head_8">
                   <a data-toggle="collapse" data-parent="#side_menu" href="{{url_for('emp_entry')}}" aria-expanded="false" aria-controls="collapse_8">
                     <h6><i class="fa fa-users"></i>Employees Entry</h6>
@@ -514,385 +496,143 @@
             {% endif %}
 
               <div class="card gallery_card">
-                <div class="card-header" role="tab" id="head_7">
-                  <a data-toggle="collapse" data-parent="#side_menu" href="{{url_for('gallery')}}" aria-expanded="false" aria-controls="collapse_7">
-                    <h6><i class="fa fa-picture-o" aria-hidden="true"></i>Gallery</h6>
-                  </a>
-                </div>
-                <div id="collapse_7" class="collapsed" style="display: none;" role="tabpanel" aria-labelledby="head_1" data-parent="#side_menu">
-                  <div class="card-body">
-                  </div>
-                </div>
-              </div>
+	            <div class="card-header" role="tab" id="head_7">
+	              <a data-toggle="collapse" data-parent="#side_menu" href="{{url_for('gallery')}}" aria-expanded="false" aria-controls="collapse_7">
+	                <h6><i class="fa fa-picture-o" aria-hidden="true"></i>Gallery</h6>
+	              </a>
+	            </div>
+	            <div id="collapse_7" class="collapsed" style="display: none;" role="tabpanel" aria-labelledby="head_1" data-parent="#side_menu">
+	              <div class="card-body">
+	              </div>
+	            </div>
+	          </div>
 
-              <div class="card leave_card">
-                <div class="card-header" role="tab" id="head_10">
-                  <a data-toggle="collapse" data-parent="#side_menu" href="{{url_for('leave_request')}}" aria-expanded="false" aria-controls="collapse_10">
-                    <h6><i class="fa fa-calendar-minus-o" aria-hidden="true"></i>Leave</h6>
-                  </a>
-                </div>
-                <div id="collapse_10" class="collapsed" style="display: none;" role="tabpanel" aria-labelledby="head_1" data-parent="#side_menu">
-                  <div class="card-body">
-                  </div>
-                </div>
-              </div>
-              
             </div>
           </div>
         </div>
-        
+
         <div class="col-md-10 offset-md-2 body_bckgrnd">
-          <div class="col-md-12 entry_content">
-            <h5>Employees Entries</h5>
-            <form method="POST" action="{{url_for('emp_entry')}}" class="date_form">
-              <div class="input-daterange input-group">
-                <div class="justify-content-center">
-                  <div class="input-group input-daterange">
-                    <label>Date </label>
-                    <input type="text" class="form-control" id="entry_today_date" name="entry_today_date" readonly placeholder="Date" value="{{entry_date[1]}}">
-                    <button type="submit">Submit</button>
-                  </div>
-                </div>
-              </div>
-            </form>
-            <div class="col-md-12 entries_summary">
-              <ul class="row">
-                  <li class="col">
-                      <label># of Projects</label>
-                      <span class="entries_projects"><p>0</p></span>
-                  </li>
-                  <li class="col">
-                      <label># of Employees</label>
-                      <span class="overall_entries"><p>0</p></span>
-                  </li>
-                  <li class="col">
-                      <label>Entered</label>
-                      <span class="active_entries"><p>0</p></span>
-                  </li>
-                  <li class="col">
-                    <label>Partial</label>
-                    <span class="partial_entries"><p>0</p></span>
-                  </li>
-                  <li class="col">
-                      <label>Not-Entered</label>
-                      <span class="deactive_entries"><p>0</p></span>
-                  </li>
-              </ul>
+          <div class="col-md-12 workshift_content">
+            <ul class="workshift_head"><li>Shift Schedules</li></ul>
+
+            <div class="tab workshift_tab">
+              <button class="shift_show_tab_link" onclick="moveReport(event, 'workshift_shift_show')"><b>Show Shifts</b></button>
+              <button class="shift_assign_tab_link" onclick="moveReport(event, 'workshift_shift_assign')" hidden><b>Shift Assign</b></button>
+              <button class="newuser_tab_link" onclick="moveReport(event, 'workshift_newuser')" hidden><b>Shift New Users</b></button>
             </div>
 
-            <div class="col-md-12 report_summary">
-              <h6>Overall Summary</h6>
-              <div id="report_table">
-                <ul class="row summary_headers">
-                  <li class="col-md-2">Group</li>
-                  <li class="col-md-4"># of Project</li>
-                  <li class="col"># of Employees</li>
-                  <li class="col">Entered</li>
-                  <li class="col">Partial</li>
-                  <li class="col">Not-Entered</li>
-                </ul>
-                <ul class="report_datas">
-                  {% for report_key, report_val in total_report.items() %}
-                    <li class="report_selected_rows">
-                      {% set index = loop.index %}
-                          <ul class="row report_summaries" data-attribute="{{report_key}}">
-                            {% if report_val[0] == 0 %}
-                            <li class="col-md-2" style="display: none;">{{report_key}}</li>
-                            <li class="col-md-4" style="display: none;">{{report_val[0]}}</li>
-                            <li class="col" style="display: none;">{{report_val[1]}}</li>
-                            <li class="col" style="display: none;">{{report_val[2]}}</li>
-                            <li class="col" style="display: none;">{{report_val[3]}}</li>
-                            <li class="col" style="display: none;">{{report_val[4]}}</li>
-                            {% else %}
-                            <li class="col-md-2">{{report_key}}</li>
-                            <li class="col-md-4">{{report_val[0]}}</li>
-                            <li class="col">{{report_val[1]}}</li>
-                            <li class="col">{{report_val[2]}}</li>
-                            <li class="col">{{report_val[3]}}</li>
-                            <li class="col">{{report_val[4]}}</li>
-                            {% endif %}
-                          </ul>
-                    </li>
-                  {% endfor %}
-                </ul>
-              </div>
+            <div id="newuser_station_tab">
+              <button class="backshift_button" onclick="BackToShifts()">Back to Shifts</button>
+              <form method="POST" action="{{url_for('workshift')}}" onsubmit="NewUser_finalSubmision(event)">
+                <div id="multiuser_selection">
+                  <button class="multiselect_btn" type="button">Show Users</button>
+                  <div class="multiselect_content d-none shadow rounded menu">
+                    <span class="d-block newuser_menu-option newuser_drop_users">
+                      <input name="multiselect_username_all_all" id="multiselect_username_all" type="checkbox" value="all">
+                      <label for="multiselect_username_all">All</label>
+                    </span>
+                    {% for newusers_list_data in workshift_data["project_new_users"] %}
+                      <span class="d-block newuser_menu-option newuser_drop_users">
+                        <input name="multiselect_username_{{newusers_list_data['employee_id']}}_{{newusers_list_data['newuser_desig_id']}}" id="multiselect_username_{{newusers_list_data['employee_id']}}" type="checkbox" value="{{newusers_list_data['employee_id']}}">
+                        <label for="multiselect_username_{{newusers_list_data['employee_id']}}">{{newusers_list_data['employee_name']}}</label>
+                      </span>
+                    {% endfor %}
+                  </div>
+                </div>
+                <div id="newuser_selection_shift">
+                  <select name="newuser_project_id">
+                    <option value="">Select Project</option>
+                    {% for pdc in workshift_data["projects"] %}
+                      <option value="{{pdc['project_id']}}|{{pdc['manager_id']}}|{{pdc['head_id']}}">{{pdc["project_name"]}}</option>
+                    {% endfor %}
+                  </select>
+                  <select name="newuser_selection_shift_id">
+                    <option value="">Select Shift</option>
+                    {% for entrire_shifts in workshift_data["all_shifts"] %}
+                      <option value="{{entrire_shifts['shift_id']}}" data_shift="{{entrire_shifts['shift_name']}}">{{entrire_shifts["shift_timings"]}} - ({{entrire_shifts['shift_name']}})</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div id="newuser_assign_block">
+                  <button class="newuser_assign_button" type="submit">Assign</button>
+                  <button class="newuser_clear_button" type="button" onclick="NewUser_ClearCache(event)">Clear</button>
+                </div>
+              </form>
+              <div class="error_block"><p></p></div>
             </div>
-            
-            {% if received_data['emp_type'] in ['ADMIN','TA'] %}
-              <div class="col-md-12 bh_report_summary">
-                <h6>Head Wise Summary</h6>
-                <div id="bh_report_table">
-                  <ul class="row summary_headers">
-                    <li class="col-md-2">Business Head</li>
-                    <li class="col-md-4"># of Project</li>
-                    <li class="col"># of Employees</li>
-                    <li class="col">Entered</li>
-                    <li class="col">Partial</li>
-                    <li class="col">Not-Entered</li>
-                  </ul>
-                  <ul class="report_datas">
-                    {% for bh_key, bh_val in bh_report.items() %}
-                      <li class="bh_selected_rows">
-                        {% set index = loop.index %}
-                            <ul class="row bh_summaries" data-attribute="{{bh_key}}">
-                              <li class="col-md-2">{{bh_key}}</li>
-                              <li class="col-md-4">{{bh_val[0][0]}}</li>
-                              <li class="col">{{bh_val[0][1]}}</li>
-                              <li class="col">{{bh_val[0][2]}}</li>
-                              <li class="col">{{bh_val[0][3]}}</li>
-                              <li class="col">{{bh_val[0][4]}}</li>
-                            </ul>
-                      </li>
-                    {% endfor %}
-                  </ul>
-                </div>
+
+            <div id="shift_assign_tab" class="shift_assign_tab_content">
+              <button class="backshift_button" onclick="BackToShifts()">Back to Shifts</button>
+              <form method="POST" action="{{url_for('workshift')}}" onsubmit="ShiftAssing_FinalSubmission(event)">
+                <ul class="project_segment"></ul>
+              </form>
+              <div class="error_block"><p></p></div>
+            </div>
+
+            <div id="shift_show_tab" class="shift_show_tab_content">
+              <div class="shift_project_selection" id="show_project">
+                <label for="show_project">Filter</label>
+                <select name="show_project">
+                  <option value="">Select Project</option>
+                  {% for pdc in workshift_data["projects"] %}
+                    <option value="{{pdc['project_id']}}">{{pdc["project_name"]}}</option>
+                  {% endfor %}
+                </select>
+                <button class="newuser_button" onclick="MoveToNew()">New User</button>
               </div>
-            
-              <div class="col-md-12 project_entries_summary">
-                <h6>Project Wise Summary</h6>
-                <div id="project_summary_table">
-                  <ul class="row summary_headers">
-                    <li class="col-md-2">Business Head</li>
-                    <li class="col-md-4">Project</li>
-                    <li class="col"># of Employees</li>
-                    <li class="col">Entered</li>
-                    <li class="col">Partial</li>
-                    <li class="col">Not-Entered</li>
-                  </ul>
-                  <ul class="summary_datas">
-                    {% for entries_key, entries_val in entries_summary.items() %}
-                      <li class="project_selected_rows">
-                        {% set index = loop.index %}
-                          {% for consume_data in entries_val['status'] %}
-                            <ul class="row row_summaries" data-attribute="{{entries_key}}">
-                              <li class="col-md-2">{{entries_val['business_head']}}</li>
-                              {% if entries_key in freelancer_project_list %}
-                              <li class="col-md-4">{{entries_key}}<i class="fa fa-star freeicon" aria-hidden="true"><span class="tooltiptext">Freelancer</span></i></li>
-                              {% else %}
-                              <li class="col-md-4">{{entries_key}}</li>
-                              {% endif %}
-                              <li class="col">{{consume_data[3]}}</li>
-                              <li class="col">{{consume_data[0]}}</li>
-                              <li class="col">{{consume_data[1]}}</li>
-                              <li class="col">{{consume_data[2]}}</li>
-                            </ul>
-                          {% endfor %}
-                      </li>
-                    {% endfor %}
-                  </ul>
-                </div>
-              </div>
-            {% else %}
-              <div class="col-md-12 project_entries_summary">
-                <h6>Project Summary</h6>
-                <div id="project_summary_table">
-                  <ul class="row summary_headers">
-                    <li class="col-md-1">Date</li>
-                    <li class="col-md-4">Project</li>
-                    <li class="col"># of Employees</li>
-                    <li class="col">Entered</li>
-                    <li class="col">Partial</li>
-                    <li class="col">Not-Entered</li>
-                  </ul>
-                  <ul class="summary_datas">
-                    {% for entries_key, entries_val in entries_summary.items() %}
-                      <li class="project_selected_rows">
-                        {% set index = loop.index %}
-                          {% for consume_data in entries_val['status'] %}
-                            <ul class="row row_summaries" data-attribute="{{entries_key}}">
-                              <li class="col-md-1">{{entry_date[0]}}</li>
-                              {% if entries_key in freelancer_project_list %}
-                              <li class="col-md-4">{{entries_key}}<i class="fa fa-star freeicon" aria-hidden="true"><span class="tooltiptext">Freelancer</span></i></li>
-                              {% else %}
-                              <li class="col-md-4">{{entries_key}}</li>
-                              {% endif %}
-                              <li class="col">{{consume_data[3]}}</li>
-                              <li class="col">{{consume_data[0]}}</li>
-                              <li class="col">{{consume_data[1]}}</li>
-                              <li class="col">{{consume_data[2]}}</li>
-                            </ul>
-                          {% endfor %}
-                      </li>
-                    {% endfor %}
-                  </ul>
-                </div>
-              </div>
-            {% endif %}
-            <div id="popup_user_entries">
-              <div class="popup_entry_list">
-                <span class="close popup_entries_close" title="Close Projects List">&times;</span>
-                <h3 class="entry_users_count"></h3><label class="tag_label">Users</label>
-                <h6>Users Entries</h6>
-                {% for entries_key, entries_val in entries_summary.items() %}
-                  <header data-value="{{entries_key}}">{{entries_key}}</header>
-                  {% for consume_data in entries_val['users_entry'] %}
-                    <div class="row entry_details" data-attribute="{{entries_key}}">
-                      <div class="col entry_users">
-                        <h6>Entered</h6>
-                        {% for entry_data in consume_data[0] %}
-                          {% set en_index = loop.index %}
-                            <ul class="row user_columns">
-                              {% if (entry_data.split('|')[0]).startswith('WFL') %}
-                                <li class="col-md-3 flncr">{{entry_data.split('|')[0]}}</li>
-                                <li class="col flncr">{{entry_data.split('|')[1]}}</li>
-                                <li class="col-md-3 flncr">{{entry_data.split('|')[2]}}</li>
-                              {% else %}
-                                <li class="col-md-3">{{entry_data.split('|')[0]}}</li>
-                                <li class="col">{{entry_data.split('|')[1]}}</li>
-                                <li class="col-md-3">{{entry_data.split('|')[2]}}</li>
-                              {% endif %}
-                            </ul>
-                        {% endfor %}
+              <ul class="project_segment">
+                {% for pdc in workshift_data["projects"] %}
+                  {% set index = loop.index %}
+                  <li class="show_project_lister" data-attribute="{{pdc['project_name']}}" data-id="{{pdc['project_id']}}">
+                    <div class="card">
+                      <div class="card-header" role="tab" id="project_head">
+                        <span class="project_counter">{{index}}</span>
+                        <div class="cardtop_name_block"><h5>{{pdc['project_name']}}</h5></div>
+                        <div class="cardtop_shiftnumber_block">
+                          <label>Shifts Filter: </label>
+                          <ul class="shift_eleven"></ul>
+                        </div>
+                        <div class="cardtop_showall_block">
+                          <div class="hyper_mode">
+                            <a class="collapsed direct_a" data-toggle="collapse" data-parent="#side_menu" href="#{{pdc['project_name']}} store_collapse" aria-expanded="false" aria-controls="collapse_{{index}}">Show Users</a>
+                          </div>
+                        </div>
+                        <div class="cardtop_redirect_block"><button type="button" onclick="MoveToAssign('{{pdc["project_id"]}}|{{pdc["project_name"]}}')">Assign</button></div>
                       </div>
-                      <div class="col pentry_users">
-                        <h6>Partial</h6>
-                        {% for partialentry_data in consume_data[1] %}
-                          {% set partialen_index = loop.index %}
-                            <ul class="row user_columns">
-                              {% if (partialentry_data.split('|')[0]).startswith('WFL') %}
-                                <li class="col-md-3 flncr">{{partialentry_data.split('|')[0]}}</li>
-                                <li class="col flncr">{{partialentry_data.split('|')[1]}}</li>
-                                <li class="col-md-3 flncr">{{partialentry_data.split('|')[2]}}</li>
-                              {% else %}
-                                <li class="col-md-3">{{partialentry_data.split('|')[0]}}</li>
-                                <li class="col">{{partialentry_data.split('|')[1]}}</li>
-                                <li class="col-md-3">{{partialentry_data.split('|')[2]}}</li>
-                              {% endif %}
-                            </ul>
-                        {% endfor %}
-                      </div>
-                      <div class="col nonentry_users">
-                        <h6>Not-Entered</h6>
-                        {% for notentry_data in consume_data[2] %}
-                          {% set noten_index = loop.index %}
-                            <ul class="row user_columns">
-                              {% if (notentry_data.split('|')[0]).startswith('WFL') %}
-                                <li class="col-md-3 flncr" >{{notentry_data.split('|')[0]}}</li>
-                                <li class="col flncr" >{{notentry_data.split('|')[1]}}</li>
-                                <li class="col-md-3 flncr" >{{notentry_data.split('|')[2]}}</li>
-                              {% else %}
-                                <li class="col-md-3">{{notentry_data.split('|')[0]}}</li>
-                                <li class="col">{{notentry_data.split('|')[1]}}</li>
-                                <li class="col-md-3">{{notentry_data.split('|')[2]}}</li>
-                              {% endif %}
-                            </ul>
-                        {% endfor %}
+                      <div id="{{pdc['project_name']}} store_collapse" class="collapse" role="tabpanel" aria-labelledby="project_head" data-parent="#side_menu">
+                        <div class="card-body">
+                          <div class="inner_user_block">
+                            <table>
+                              <thead>
+                                <th>Employee ID</th>
+                                <th>Username</th>
+                                <th>Designation</th>
+                                <th>Shift Type</th>
+                                <th>Shift</th>
+                              </thead>
+                              <tbody>
+                                {% for pdc_users in pdc['users'] %}
+                                  <tr>
+                                    <td>{{pdc_users["wiss_employee_id"]}}</td>
+                                    <td>{{pdc_users["employee_name"]}}</td>
+                                    <td>{{pdc_users["designation"]}}</td>
+                                    <td>{{pdc_users["shift_name"]}}</td>
+                                    <td shift-data="{{pdc_users['shift_timings']}}">{{pdc_users["shift_timings"]}}</td>
+                                  </tr>
+                                {% endfor %}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  {% endfor %}
+                  </li>
                 {% endfor %}
-                <div class="note">
-                  <div class="freebox"></div>
-                  <div class="freetext">Freelancer</div>
-                </div>
-              </div>
+              </ul>
             </div>
-            
-            <button type="button" class="emp_export"><i class="fa fa-download" aria-hidden="true" ></i> Export</button>
-            
-            
-            <table id="dup_table" hidden></table>
-            {% if received_data['emp_type'] in ['ADMIN','TA'] %}
-            <table id="ms_table" class="display nowrap" width="100%">
-              <thead>
-                <tr>
-                  {% for entry_data in entry_report[0].keys() %}
-                    {% if entry_data == 'Hours' or entry_data == 'Minutes'  %}
-                    <th style="display: none;">{{entry_data}}</th>
-                    {% else %}    
-                    <th>{{entry_data}}</th>
-                    {% endif %}
-                  {% endfor %}
-                </tr>
-                <tr>
-                  {% for entry_data in entry_report[0].keys() %}
-                    {% if entry_data == 'Hours' or entry_data == 'Minutes'  %}
-                    <td style="display: none;"></td>
-                    {% else %}    
-                      <td></td>
-                    {% endif %}
-                  {% endfor %}
-                </tr>
-              </thead>
-              
-              <tbody>
-                {% for entry_data in entry_report %}
-                {% set datalen = entry_data|length %}
-                <tr>
-                  {% for entry_key,entry_val in entry_data.items() %}
-                    {% if entry_key == 'Hours' or entry_key == 'Minutes' %}
-                    <td style="display: none;">{{entry_val}}</td>
-                    {% else %}
-                        {% if loop.index == (datalen) - 2 %}
-                          {% if entry_val == 0 %}
-                            <td style="color:#de0625">Not-Entered</td>
-                          {% elif entry_val >= 480 %}
-                            <td style="color:   #31962f;">Entered</td>
-                          {% else %}
-                            <td style="color:  #e46c06">Partially-Entered</td>
-                          {% endif %}
-                        {% else %}
-                          <td>{{entry_val}}</td>
-                        {% endif %}
-                    {% endif %}
-                  {% endfor %}
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-
-            {% else %}
-
-            <table id="ms_table" class="display nowrap" width="100%">
-              <thead>
-                <tr>
-                  {% for entry_data in entry_report[0].keys() %}
-                    {% if entry_data == 'Hours' or entry_data == 'Minutes' %}
-                    <th style="display: none;">{{entry_data}}</th>
-                    {% else %}
-                    <th>{{entry_data}}</th>
-                    {% endif %}
-                  {% endfor %}
-                </tr>
-                <tr>
-                  {% for entry_data in entry_report[0].keys() %}
-                    {% if entry_data == 'Hours' or entry_data == 'Minutes' %}
-                    <td style="display: none;"></td>
-                    {% else %}
-                    <td></td>
-                    {% endif %}
-                  {% endfor %}
-                </tr>
-              </thead>
-              
-              <tbody>
-                {% for entry_data in entry_report %}
-                {% set datalen = entry_data|length %}
-                <tr>
-                  {% for entry_key,entry_val in entry_data.items() %}
-                    {% if entry_key == 'Hours' or entry_key == 'Minutes'%}
-                    <td style="display: none;">{{entry_valdd}}</td>
-                    {% else %}
-                      {% if loop.index == (datalen) -2 %}
-                        {% if entry_val == 0 %}
-                          <td style="color:#de0625">Not-Entered</td>
-                        {% elif entry_val >= 480 %}
-                          <td style="color:   #31962f;">Entered</td>
-                        {% else %}
-                          <td style="color:  #e46c06">Partially-Entered</td>
-                        {% endif %}
-                      {% else %}
-                        <td>{{entry_val}}</td>
-                      {% endif %}
-                    {% endif %}
-                  {% endfor %}
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-            {% endif %}
           </div>
         </div>
+          
       </div>
     </div>
   </section>
@@ -903,19 +643,14 @@
   </section>
   <script type="text/javascript">
     var my_storage = '{{received_data|tojson}}';
+    var workshift_store = '{{workshift_data|tojson}}';
   </script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/jquery.min.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/jquery-1.12.4.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/jquery-ui.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/bootstrap.bundle.min.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/nightly.jquery.dataTables.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/dataTables.fixedHeader.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/customize/multi-select_table.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/popper.min.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/bootstrap-datepicker.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/customize/main_js.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/customize/emp_entry.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/js_custom/tabletoExcel.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/customize/export_emp.js')}}"></script>
+  <script src="{{url_for('static', filename= 'js/jquery.min.js')}}"></script>
+  <script src="{{url_for('static', filename= 'js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{url_for('static', filename= 'js/popper.min.js')}}"></script>
+  <script src="{{url_for('static', filename= 'js/bootstrap-datepicker.js')}}"></script>
+  <script src="{{url_for('static', filename= 'js/customize/main_js.js')}}"></script>
+  <script src="{{url_for('static', filename= 'js/customize/addon/shift_addon.js')}}"></script>
+  <!-- <script src="{{url_for('static', filename= 'js/customize/addon/workshift_common.js')}}"></script> -->
 </body>
 </html>
