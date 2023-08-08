@@ -220,8 +220,8 @@ $('#project_filter .card a').on('click', function(){
             window.location.href = '/team_lead';
         }
     }
-    if (a_tag.includes("Production")){
-        window.location.href = '/production';
+    if (a_tag.includes("Shift Assign")){
+        window.location.href = '/workshift';
     }
     if (a_tag.includes("Add-On")){
         window.location.href = '/addon';

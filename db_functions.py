@@ -15,8 +15,8 @@ from pytz import timezone
 
 
 try:
-	# db_test = connect(host="3.21.6.232", user="db_root", password="^^Wi$$$$ROOT$$2022^^", database="wissend_db", port=3306)
-	db_test = connect(host="localhost", user="root", password="", database="wissend_db", port=3306)
+	db_test = connect(host="3.21.6.232", user="db_root", password="^^Wi$$$$ROOT$$2022^^", database="wissend_db", port=3306)
+	# db_test = connect(host="localhost", user="root", password="", database="wissend_db", port=3306)
 	# list_cursor = db_test.cursor()
 	# file_test_cursor = db_test.cursor()
 	# dict_cursor = db_test.cursor(dictionary=True)
@@ -40,8 +40,8 @@ finally:
 				result = db_test.cursor(dictionary=True)
 		except:
 			try:
-				# db_test = connect(host="3.21.6.232", user="db_root", password="^^Wi$$$$ROOT$$2022^^", database="wissend_db", port=3306)
-				db_test = connect(host="localhost", user="root", password="", database="wissend_db", port=3306)
+				db_test = connect(host="3.21.6.232", user="db_root", password="^^Wi$$$$ROOT$$2022^^", database="wissend_db", port=3306)
+				# db_test = connect(host="localhost", user="root", password="", database="wissend_db", port=3306)
 				print("\n********** Re-connected to Database **********\n")
 			except Error as conn_err:
 				if conn_err.errno == errorcode.ER_BAD_DB_ERROR:
@@ -2350,8 +2350,8 @@ finally:
 		result = 0
 		try:
 			try:
-				# log_test = connect(host="3.21.6.232", user="db_root", password="^^Wi$$$$ROOT$$2022^^", database="wissend_db", port=3306)
-				log_test = connect(host="localhost", user="root", password="", database="wissend_db", port=3306)
+				log_test = connect(host="3.21.6.232", user="db_root", password="^^Wi$$$$ROOT$$2022^^", database="wissend_db", port=3306)
+				# log_test = connect(host="localhost", user="root", password="", database="wissend_db", port=3306)
 				# log_cursor = db_test.cursor()
 				log_dict_cursor = log_test.cursor(dictionary=True)
 				print("\n********** Connected to Database **********\n")
@@ -2481,19 +2481,31 @@ finally:
 		return result
 	def leave_status_pickup(session_data):
 		result = []
+		# report_result = []
 		try:
+			print(session_data)
 			employee_id = session_data['employee_id']
-			att_status_query = f"""SELECT leave_requests.`apply_date`,leave_requests.`apply_type`,leave_requests.`from_date`,leave_requests.`to_date`,leave_requests.`num_days`,leave_requests.`num_hours`,leave_requests.`status`,leave_requests.`reason`,leave_requests.`reporting_id_1`,leave_requests.`reporting_id_2`,leave_requests.`approver_id`,employees_info.wiss_employee_id,employees_info.employee_name FROM leave_requests
-			INNER JOIN employees_info ON employees_info.employee_id = leave_requests.employee_id
-			WHERE leave_requests.modified_status = 'N' AND leave_requests.employee_id = {employee_id} OR leave_requests.reporting_id_1 = {employee_id} OR leave_requests.reporting_id_2 = {employee_id} AND month(leave_requests.`apply_date`) = month({session_data['db_date']}) AND year(leave_requests.`apply_date`) = year({session_data['db_date']})"""
+			emp_type_id = session_data['emp_type']
+			print(type(emp_type_id))
+			print(employee_id)
+			print(emp_type_id)
+			if str(emp_type_id) in ('TA','ADMIN'):
+				print('Yes')
+				att_status_query = f"""SELECT leave_requests.`apply_date`,leave_requests.`apply_type`,leave_requests.`from_date`,	leave_requests.`to_date`,leave_requests.`num_days`,leave_requests.`num_hours`,leave_requests.`status`,leave_requests.`reason`,leave_requests.`reporting_id_1`,leave_requests.`reporting_id_2`,leave_requests.`approver_id`,employees_info.	wiss_employee_id,employees_info.employee_name FROM leave_requests
+				INNER JOIN employees_info ON employees_info.employee_id = leave_requests.employee_id
+				WHERE leave_requests.modified_status = 'N' AND month(leave_requests.`apply_date`) = month('{session_data['db_date']}') AND year(leave_requests.`apply_date`) = year('{session_data['db_date']}')"""
+			else:
+				att_status_query = f"""SELECT leave_requests.`apply_date`,leave_requests.`apply_type`,leave_requests.`from_date`,leave_requests.`to_date`,leave_requests.`num_days`,leave_requests.`num_hours`,leave_requests.`status`,leave_requests.`reason`,leave_requests.`reporting_id_1`,leave_requests.`reporting_id_2`,leave_requests.`approver_id`,employees_info.wiss_employee_id,employees_info.employee_name FROM leave_requests
+				INNER JOIN employees_info ON employees_info.employee_id = leave_requests.employee_id
+				WHERE (leave_requests.employee_id = {employee_id} OR leave_requests.reporting_id_1 = {employee_id} OR leave_requests.reporting_id_2 = {employee_id}) AND leave_requests.modified_status = 'N' AND month(leave_requests.`apply_date`) = month('{session_data['db_date']}') AND year(leave_requests.`apply_date`) = year('{session_data['db_date']}')"""
+			reporting_query = f"""SELECT emp_tbl.employee_name,emp_tbl.wiss_employee_id,rep_tbl1.employee_name as reporting_1,rep_tbl1.	employee_id as rep_emp_id1,rep_tbl1.wiss_employee_id as wiss_report_id_1,rep_tbl2.employee_name as reporting_2,rep_tbl2.employee_id AS rep_emp_id2,rep_tbl2.wiss_employee_id as wiss_report_id_2,lv_trc.casual_leave as CL,lv_trc.sick_leave as SL,lv_trc.permission,lv_trc.loss_of_pay as LOP,lv_trc.on_duty AS od,lv_trc.spl_cat_leave AS scl FROM leave_tracker AS lv_trc 
+				INNER JOIN employees_info as emp_tbl ON emp_tbl.employee_id = lv_trc.employee_id
+				INNER JOIN employees_info AS rep_tbl1 ON rep_tbl1.employee_id = lv_trc.reporting_id_1
+				INNER JOIN employees_info AS rep_tbl2 ON rep_tbl2.employee_id = lv_trc.reporting_id_2
+				WHERE lv_trc.employee_id = {employee_id} AND emp_tbl.status = 'Active' AND month(lv_trc.updated_date) = month('{session_data['db_date']}') AND year(lv_trc.updated_date) = year('{session_data['db_date']}')"""
 			dict_cursor = database_reconnection(cur="dict")
 			dict_cursor.execute(att_status_query)
 			leave_result = dict_cursor.fetchall()
-			reporting_query = f"""SELECT emp_tbl.employee_name,emp_tbl.wiss_employee_id,rep_tbl1.employee_name as reporting_1,rep_tbl1.employee_id as rep_emp_id1,rep_tbl1.wiss_employee_id as wiss_report_id_1,rep_tbl2.employee_name as reporting_2,rep_tbl2.employee_id AS rep_emp_id2,rep_tbl2.wiss_employee_id as wiss_report_id_2,lv_trc.casual_leave as CL,lv_trc.sick_leave as SL,lv_trc.permission,lv_trc.loss_of_pay as LOP,lv_trc.on_duty AS od,lv_trc.spl_cat_leave AS scl FROM leave_tracker AS lv_trc 
-			INNER JOIN employees_info as emp_tbl ON emp_tbl.employee_id = lv_trc.employee_id
-			INNER JOIN employees_info AS rep_tbl1 ON rep_tbl1.employee_id = lv_trc.reporting_id_1
-			INNER JOIN employees_info AS rep_tbl2 ON rep_tbl2.employee_id = lv_trc.reporting_id_2
-			WHERE lv_trc.employee_id = {employee_id} AND emp_tbl.status = 'Active' AND month(lv_trc.updated_date) = month('{session_data['db_date']}') AND year(lv_trc.updated_date) = year('{session_data['db_date']}')"""
 			dict_cursor = database_reconnection(cur="dict")
 			dict_cursor.execute(reporting_query)
 			report_result = dict_cursor.fetchall()
@@ -2626,6 +2638,7 @@ finally:
 					from_sess_type = "NULL"
 					to_sess_type = "NULL"
 				insert_query = f"""INSERT INTO `leave_requests`(`employee_id`, `apply_date`, `apply_type`, `from_date`, `to_date`, `reason`, `modified_status`, `num_days`,`num_hours`,`status`,`approver_id`,`reporting_id_1`,`reporting_id_2`,`from_session`,`to_session`)VALUES ({employee_id},'{form_data['apply_date']}','{apply_type}','{from_date}','{to_date}','{form_data['reason']}','N','{form_data['#_days']}','{form_data['#_hours']}','{form_data['final_confirm']}','{session_data['employee_id']}','{report1_id}','{report2_id}','{from_sess_type}','{to_sess_type}')"""
+			print(insert_query)
 			if check_exist_data == 0:
 				dict_cursor = database_reconnection(cur="dict")
 				dict_cursor.execute(insert_query)
@@ -2641,3 +2654,279 @@ finally:
 			print(traceback.format_exc())
 			pass
 		return result
+	
+	def shift_status_pickup(session):
+		data_set = {}
+		try:
+			data_set = {"projects":[],"all_shifts":[],"project_new_users":[],'project_shifts':[]}
+			project_dict = []
+			proj_list = []
+			emp_type = session['emp_type']
+			emp_id  = session['employee_id']
+			if emp_type not in ['ADMIN','TA']:
+				shift_query = f'''SELECT shift_assign_records.`employee_id`, shift_assign_records.`designation_id`, shift_assign_records.`project_id`, shift_assign_records.`manager_id`, shift_assign_records.`bh_head_id`, shift_assign_records.`shift_id`,projects_info.project_name,employees_info.wiss_employee_id,employees_info.employee_name,designation_info.designation,shift_timings_info.shift_name,shift_timings_info.shift_time_in,shift_timings_info.shift_time_off,CONCAT(
+					DATE_FORMAT(shift_time_in, '%h:%i %p'),
+					' - ',
+					DATE_FORMAT(shift_time_off, '%h:%i %p')
+				) as shift_timings
+				FROM `shift_assign_records`
+				INNER JOIN projects_info ON projects_info.project_id = shift_assign_records.project_id
+				INNER JOIN employees_info ON employees_info.employee_id = shift_assign_records.employee_id
+				INNER JOIN designation_info ON designation_info.designation_id = shift_assign_records.designation_id
+				INNER JOIN shift_timings_info ON shift_timings_info.shift_id = shift_assign_records.shift_id
+				WHERE (shift_assign_records.manager_id = {emp_id} OR shift_assign_records.bh_head_id = {emp_id}) AND projects_info.project_status = "Active" and shift_assign_records.is_updated = "N" order by projects_info.project_name,employees_info.employee_name'''
+			else:
+				shift_query = '''SELECT shift_assign_records.`employee_id`, shift_assign_records.`designation_id`, shift_assign_records.`project_id`, shift_assign_records.`manager_id`, shift_assign_records.`bh_head_id`, shift_assign_records.`shift_id`,projects_info.project_name,employees_info.wiss_employee_id,employees_info.employee_name,designation_info.designation,shift_timings_info.shift_name,shift_timings_info.shift_time_in,shift_timings_info.shift_time_off,CONCAT(
+					DATE_FORMAT(shift_time_in, '%h:%i %p'),
+					' - ',
+					DATE_FORMAT(shift_time_off, '%h:%i %p')
+				) as shift_timings
+				FROM `shift_assign_records`
+				INNER JOIN projects_info ON projects_info.project_id = shift_assign_records.project_id
+				INNER JOIN employees_info ON employees_info.employee_id = shift_assign_records.employee_id
+				INNER JOIN designation_info ON designation_info.designation_id = shift_assign_records.designation_id
+				INNER JOIN shift_timings_info ON shift_timings_info.shift_id = shift_assign_records.shift_id
+				WHERE projects_info.project_status = "Active" and shift_assign_records.is_updated = "N" order by projects_info.project_name,employees_info.employee_name'''
+			dict_cursor = database_reconnection(cur="dict")
+			dict_cursor.execute(shift_query)
+			shift_result = dict_cursor.fetchall()
+			new_set_dict = {}
+			if shift_result != []:
+				proj_shift_dict = {}
+				for each_status_result in shift_result:
+					user_dict = {
+								"employee_name":str(each_status_result["employee_name"]),
+								"employee_id":str(each_status_result["employee_id"]),
+								"wiss_employee_id":str(each_status_result["wiss_employee_id"]),
+								"designation":str(each_status_result["designation"]),
+								"designation_id":str(each_status_result["designation_id"]),
+								"shift_name":str(each_status_result["shift_name"]),
+								"shift_id":str(each_status_result["shift_id"]),
+								"shift_timings":str(each_status_result["shift_timings"]),
+								}
+					project_name = each_status_result['project_name']
+					if project_name not in new_set_dict:
+						user_list = []
+						user_list.append(user_dict)
+						new_set_dict[project_name] = {
+							"project_name":str(each_status_result['project_name']),
+							"project_id":str(each_status_result['project_id']),
+							"manager_id":each_status_result['manager_id'],
+							"head_id":each_status_result['bh_head_id'],
+							"users":[],
+							"project_shifts":[]
+						}
+						# data_set['projects'].append(data_set_dict)
+						proj_list.append(str(each_status_result['project_id']))
+					new_set_dict[project_name]['users'].append(user_dict)
+					if project_name not in proj_shift_dict:
+						proj_shift_dict[project_name]= {each_status_result["shift_name"]:{"shift_name":str(each_status_result["shift_name"]),"shift_id":str(each_status_result["shift_id"]),"shift_timings":str(each_status_result["shift_timings"])}}
+						new_set_dict[project_name]['project_shifts'].append({"shift_name":str(each_status_result["shift_name"]),"shift_id":str(each_status_result["shift_id"]),"shift_timings":str(each_status_result["shift_timings"])})
+					else:
+						if each_status_result["shift_name"] not in proj_shift_dict[project_name]:
+							proj_shift_dict[project_name][each_status_result["shift_name"]] = {"shift_name":str(each_status_result["shift_name"]),"shift_id":str(each_status_result["shift_id"]),"shift_timings":str(each_status_result["shift_timings"])}
+							new_set_dict[project_name]['project_shifts'].append({"shift_name":str(each_status_result["shift_name"]),"shift_id":str(each_status_result["shift_id"]),"shift_timings":str(each_status_result["shift_timings"])})
+					# if data_set['projects'] == []:
+						
+					# 	user_list = []
+					# 	print("aaaa",each_status_result['shift_timings'], each_status_result["employee_name"])
+					# 	user_list.append(user_dict)
+					# 	data_set_dict = {
+					# 		"project_name":str(each_status_result['project_name']),
+					# 		"project_id":str(each_status_result['project_id']),
+					# 		"manager_id":each_status_result['manager_id'],
+					# 		"head_id":each_status_result['bh_head_id'],
+					# 		"users":user_list,
+					# 		"project_shifts":[{"shift_name":str(each_status_result["shift_name"]),"shift_id":str(each_status_result["shift_id"]),"shift_timings":str(each_status_result["shift_timings"])}]
+					# 	}
+					# 	data_set['projects'].append(data_set_dict)
+					# 	proj_list.append(str(each_status_result['project_id']))
+					# else:
+					# 	for data_project in data_set["projects"]:
+					# 		if data_project['project_name'] == str(each_status_result['project_name']):
+					# 			print("\n",data_project['project_name'])
+					# 			data_project['users'].append(user_dict)
+					# 			for proj_shift in data_project['project_shifts']:
+					# 				if str(proj_shift['shift_id']) != str(each_status_result["shift_id"]):
+					# 					print(data_project['project_name'], proj_shift, str(each_status_result))
+					# 					print("matched")
+					# 					data_project['project_shifts'].append({"shift_name":str(each_status_result["shift_name"]),"shift_id":str(each_status_result["shift_id"]),"shift_timings":str(each_status_result["shift_timings"])})
+
+					# break
+			data_set = {"projects":list(new_set_dict.values())}
+			all_shift_query = """
+			SELECT 
+				shift_name as shift_name,
+				shift_id as shift_id,
+				CONCAT(
+					DATE_FORMAT(shift_time_in, '%h:%i %p'),
+					' - ',
+					DATE_FORMAT(shift_time_off, '%h:%i %p')
+				) as shift_timings 
+			FROM 
+				`shift_timings_info`;
+			"""
+			dict_cursor = database_reconnection(cur="dict")
+			dict_cursor.execute(all_shift_query)
+			shift_result = dict_cursor.fetchall()
+			if shift_result != []:
+				data_set['all_shifts']=shift_result
+			if emp_type not in ['ADMIN','TA']:
+				new_user_query = """
+				SELECT DISTINCT ei.employee_name, ei.employee_id, ei.wiss_employee_id, di.designation_id as newuser_desig_id, di.designation as newuser_desig
+				FROM employee_process_info as epi
+				LEFT JOIN shift_assign_records as sar ON epi.employee_id = sar.employee_id
+				INNER JOIN employees_info as ei on ei.employee_id = epi.employee_id
+                INNER JOIN designation_info as di on ei.designation_id = di.designation_id
+				WHERE sar.employee_id IS NULL and epi.project_id in ({}) and epi.status = "Active" and ei.wiss_employee_id not in ("Vellai","Raj")
+				ORDER BY ei.employee_name;
+				""".format(",".join(proj_list))
+			else:
+				new_user_query = """
+				SELECT DISTINCT ei.employee_name, ei.employee_id, ei.wiss_employee_id, di.designation_id as newuser_desig_id, di.designation as newuser_desig
+				FROM employee_process_info as epi
+				LEFT JOIN shift_assign_records as sar ON epi.employee_id = sar.employee_id
+				INNER JOIN employees_info as ei on ei.employee_id = epi.employee_id
+                INNER JOIN designation_info as di on ei.designation_id = di.designation_id
+				WHERE sar.employee_id IS NULL and epi.status = "Active" and ei.wiss_employee_id not in ("Vellai","Raj")
+				ORDER BY ei.employee_name;
+				"""
+			dict_cursor = database_reconnection(cur="dict")
+			dict_cursor.execute(new_user_query)
+			shift_result = dict_cursor.fetchall()
+			if shift_result != []:
+				data_set['project_new_users'] = shift_result
+		except:
+			print(traceback.format_exc())
+		return data_set
+	
+	def shift_project_user_insert(session_data, form_data):
+		shift_result = []
+		try:
+			db_date = session_data['db_date']
+			project_id = ""
+			manager_id = ""
+			head_id = ""
+			shift_id = ""
+			shift_update = ""
+			shift_check = 0
+			update_check = 0
+			selected_shift_data = []
+			all_shift_data = []
+			emp_list = []
+			for data_k, data_v in form_data.items():
+				if project_id == "":
+					project_id = form_data['assign_project_id']
+				elif manager_id == "":
+					manager_id = form_data['manager_id']
+				elif head_id == "":
+					head_id = form_data['head_id']
+				elif shift_id == "":
+					shift_id = form_data['shift_timing_id'].split("|")[-1]
+					# shift_update = form_data['shift_timing_id'].split("|")[0]
+				if project_id != "":
+					if "shift_timing_for_users" in data_k  and data_v != "":
+						shift_update = data_v.split("|")[0]
+						user_data = data_k.split("_")
+						user_id = user_data[-2]
+						desig_id = user_data[-1]
+						if shift_update == "U":
+							emp_list.append(user_id)
+							if shift_id == "":
+								shift_id = data_v.split("|")[1]
+							update_check = 1
+							selected_shift_data.append("('{}',{},{},{},{},{},{},{})".format(db_date,user_id,desig_id,project_id,manager_id,head_id,shift_id,session_data['employee_id']))
+						all_shift_data.append("('{}',{},{},{},{},{},{},{})".format(db_date,user_id,desig_id,project_id,manager_id,head_id,shift_id,session_data['employee_id']))
+			if update_check == 0:
+				query_input = ", ".join(all_shift_data)
+				select_query = ""
+			else:
+				select_query = " employee_id in ({}) AND ".format(", ".join(emp_list))
+				query_input = ", ".join(selected_shift_data)
+			get_shift_query = """
+			SELECT * FROM `shift_assign_records`
+			WHERE
+				{}	project_id = {} and is_updated = "N";
+			""".format(select_query,project_id)
+			dict_cursor = database_reconnection(cur="dict")
+			dict_cursor.execute(get_shift_query)
+			shift_results = dict_cursor.fetchall()
+			# if shift_results != []:
+				# for shift_result in shift_results:
+				# 	if str(shift_result['shift_id']) == str(shift_id) and shift_result['is_updated'] == "N":
+				# 		shift_check = 1
+			if shift_check == 0:
+				update_exist_status_query = """
+				UPDATE `shift_assign_records`
+				SET
+					is_updated = "Y"
+				WHERE
+					{} project_id = {};
+				""".format(select_query,project_id)
+				dict_cursor = database_reconnection(cur="dict")
+				dict_cursor.execute(update_exist_status_query)
+				db_test.commit()
+				insert_shift_query = """
+				INSERT INTO
+					`shift_assign_records`
+					(`updated_date`, `employee_id`, `designation_id`, `project_id`, `manager_id`, `bh_head_id`, `shift_id`, `id_modified`)
+				VALUES
+					{};
+				""".format(query_input)
+				dict_cursor = database_reconnection(cur="dict")
+				dict_cursor.execute(insert_shift_query)
+				shift_result = dict_cursor.fetchall()
+				db_test.commit()
+		except:
+			print(traceback.format_exc())
+		return shift_result
+	
+	def shift_new_user_insert(session_data, form_data):
+		shift_result = []
+		try:
+			db_date = session_data['db_date']
+			emp_id  = session_data['employee_id']
+			user_list_desi = []
+			desi_list = []
+			project_id = 0
+			shift_id = 0
+			if form_data.get("multiselect_username_all_all",0) != 0:
+				if form_data.get("newuser_project_id",0) != 0:
+					pro_split = str(form_data["newuser_project_id"]).strip().split("|")
+					if pro_split != []:
+						project_id = pro_split[0]
+						manager_id = pro_split[1]
+						buss_head_id = pro_split[2]
+				if form_data.get("newuser_selection_shift_id",0) != 0:
+					shift_id = form_data["newuser_selection_shift_id"]
+				for each_key,each_val in form_data.items():
+					if str(each_key).lower().strip().startswith("multiselect_username"):
+						if str(each_val).strip() != 'all':
+							desi_split = str(each_key).strip().split("_")
+							if desi_split != []:
+								user_list_desi.append("('{}', '{}', '{}', {}, {}, {}, {}, 'N', '{}')".format(db_date,desi_split[-2],desi_split[-1],project_id,manager_id,buss_head_id,shift_id,emp_id))
+			else:
+				if form_data.get("newuser_project_id",0) != 0:
+					pro_split = str(form_data["newuser_project_id"]).strip().split("|")
+					if pro_split != []:
+						project_id = pro_split[0]
+						manager_id = pro_split[1]
+						buss_head_id = pro_split[2]
+				if form_data.get("newuser_selection_shift_id",0) != 0:
+					shift_id = form_data["newuser_selection_shift_id"]
+				for each_key,each_val in form_data.items():
+					if str(each_key).lower().strip().startswith("multiselect_username"):
+						if str(each_val).strip() != 'all':
+							desi_split = str(each_key).strip().split("_")
+							if desi_split != []:
+								user_list_desi.append("('{}', '{}', '{}', {}, {}, {}, {}, 'N', '{}')".format(db_date,desi_split[-2],desi_split[-1],project_id,manager_id,buss_head_id,shift_id,emp_id))
+								# user_list_desi.append([db_date,desi_split[-2],desi_split[-1],project_id,manager_id,buss_head_id,shift_id,'N',shift_id])
+			query_data = ",".join(user_list_desi)
+			shift_assign_insert_query = """INSERT INTO `shift_assign_records`(`updated_date`, `employee_id`, `designation_id`, `project_id`, `manager_id`, `bh_head_id`, `shift_id`, `is_updated`, `id_modified`) VALUES {};""".format(query_data)
+			dict_cursor = database_reconnection(cur="dict")
+			dict_cursor.execute(shift_assign_insert_query)
+			shift_result = dict_cursor.fetchall()
+			db_test.commit()
+		except:
+			print(traceback.format_exc())
+		return shift_result

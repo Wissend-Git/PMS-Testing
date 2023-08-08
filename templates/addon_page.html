@@ -10,9 +10,8 @@
   <link rel="stylesheet" href="{{url_for('static', filename= 'css/bootstrap-datepicker.css')}}"/>
   <link rel="stylesheet" href="{{url_for('static', filename='css/customize/main_css.css')}}">
   <link rel="stylesheet" href="{{url_for('static', filename='css/customize/header_page.css')}}">
-  <link rel="stylesheet" href="{{url_for('static', filename= 'css/nightly.jquery.dataTables.css')}}">
-  <link rel="stylesheet" href="{{url_for('static', filename= 'css/customize/multi-select_table.css')}}">
-  <link rel="stylesheet" href="{{url_for('static', filename='css/customize/addon.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename='css/customize/addon/addon_common.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename='css/customize/addon/process_addon.css')}}">
   <link rel="icon" href="{{url_for('static', filename='images/icons/wissend_black_icon_40X40.png')}}">
   <script>
     window.addEventListener('load', function (){
@@ -91,18 +90,55 @@
                 </div>
               </div>
               
-              <div class="card production_card">
-                <div class="card-header" role="tab" id="head_11">
-                  <a data-toggle="collapse" data-parent="#side_menu" href="{{url_for('production')}}" aria-expanded="false" aria-controls="collapse_11">
-                    <h6><i class="fa fa-tasks" aria-hidden="true"></i>Production</h6>
+              <div class="card">
+                <div class="card-header" role="tab" id="head_2" >
+                  <a class="collapsed"  data-toggle="collapse" data-parent="#side_menu" href="#collapse_2" aria-expanded="false" aria-controls="collapse_2">
+                    <h6>
+                      <i class="fa fa-database" aria-hidden="true"></i>Production
+                    </h6>
                   </a>
                 </div>
-                <div id="collapse_11" class="collapsed" style="display: none;" role="tabpanel" aria-labelledby="head_11" data-parent="#side_menu">
+                <div id="collapse_2" class="collapse" role="tabpanel" aria-labelledby="head_2" data-parent="#side_menu">
                   <div class="card-body">
+                    <div class="mt-1 text-center" id="project_filter">
+                      <form method="POST" action="{{url_for('employee_process')}}">
+                        <ul>
+                          <li id="project_selected_user">
+                            <select name="project_selected" id="production_project">
+                              <option value="" >Select Project</option>
+                              {% for project, values in received_data['employee_projects'].items() %}
+                                {% if values['status'] == 'Active' %}
+                                <option value="{{project}}" {{ 'selected="selected"' if received_data['project_selected'] == project else "" }}>{{project}}</option>
+                                {% endif %}
+                              {% endfor %}
+                            </select>
+                          </li>
+                          <li id="process_selected_user">
+                            <select name="process_selected" id="production_process">
+                              <option value="">Select Process</option>
+                              {% for project, values in received_data['employee_projects'].items() %}
+                                {% if values['status'] == 'Active' %}
+                                  {% for process_list, data_list in values.items() %}
+                                    {% if process_list != 'project_id' and process_list != 'project_short_name' and process_list != 'status'  %}
+                                      {% for process, data in data_list.items() %}
+                                        <option value="{{project}}_{{process}}" {% if received_data['process_selected'] == process %} selected="selected"{% endif %}>{{process}}</option>
+                                      {% endfor %}
+                                    {% endif %}
+                                    {% endfor %}
+                                  {% endif %}
+                              {% endfor %}
+                            </select>
+                          </li>
+                          <li>
+                            <button id="project_submit_user" type="submit" >Submit</button>
+                          </li>
+                        </ul>
+                        <p id="project_error_text_user" class="text-danger font-weight-bold"></p>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
-              
               <div class="card">
                 <div class="card-header" role="tab" id="head_9">
                   <a class="collapsed" data-toggle="collapse" data-parent="#side_menu" href="#collapse_9" aria-expanded="false" aria-controls="collapse_9">
@@ -114,12 +150,12 @@
                     <form method="POST" action="{{url_for('attd_report')}}">
                       <ul>
                         <li id="attd_date_range">
-                            <div class="input-daterange input-group" id="datepicker">
+                            <div class="input-daterange input-group" id="datepicker" >
                               <div class="justify-content-center">
-                                <div class="input-group input-daterange">
-                                  <input type="text" class="form-control" id="attd_from_date" name="attd_from_date" placeholder="From Date" {{ "value="+received_data['attd_from_date'] if received_data['attd_from_date'] != "" else '' }} readonly>
-                                  <input type="text" class="form-control" id="attd_to_date" name="attd_to_date" placeholder="To Date" {{ "value="+received_data['attd_to_date'] if received_data['attd_to_date'] != "" else '' }} readonly>
-                                </div>
+                                  <div class="input-group input-daterange">
+                                    <input type="text" class="form-control" id="attd_from_date" name="attd_from_date" placeholder="From Date" {{ "value="+received_data['attd_from_date'] if received_data['attd_from_date'] != "" else '' }} readonly>
+                                    <input type="text" class="form-control" id="attd_to_date" name="attd_to_date" placeholder="To Date" {{ "value="+received_data['attd_to_date'] if received_data['attd_to_date'] != "" else '' }} readonly>
+                                  </div>
                               </div>
                             </div>
                         </li>
@@ -132,7 +168,6 @@
                   </div>
                 </div>
               </div>
-              
               <div class="card">
                 <div class="card-header" role="tab" id="head_3">
                   <a class="collapsed" data-toggle="collapse" data-parent="#side_menu" href="#collapse_3" aria-expanded="false" aria-controls="collapse_3">
@@ -426,17 +461,21 @@
                 </div>
               {% endif %}
               
-
-            {% if received_data['emp_type'] in ["ADMIN","TA","TM","TL","TMR","TLR",'TBH','TBHR'] %}
+            {% if received_data['emp_type'] not in ['PU'] %}
               <div class="card menu_active addon_card">
                 <div class="card-header" role="tab" id="head_6">
                   <a data-toggle="collapse" data-parent="#side_menu" href="{{url_for('addon')}}" aria-expanded="false" aria-controls="collapse_6">
                     <h6><i class="fa fa-plus-square" aria-hidden="true"></i>Add-On</h6>
                   </a>
                 </div>
-                <div id="collapse_6" class="collapsed" style="display: none;" role="tabpanel" aria-labelledby="head_1" data-parent="#side_menu">
-                  <div class="card-body">
-                  </div>
+              </div>
+            {% endif %}
+            {% if received_data['emp_type'] in ['ADMIN','TA', 'TBH', 'TBHR', 'TM', 'TMR'] %}
+              <div class="card shift_card">
+                <div class="card-header" role="tab" id="head_11">
+                  <a data-toggle="collapse" data-parent="#side_menu" href="{{url_for('workshift')}}" aria-expanded="false" aria-controls="collapse_11">
+                    <h6><i class="fa fa-briefcase" aria-hidden="true"></i>Shift Assign</h6>
+                  </a>
                 </div>
               </div>
             {% endif %}
@@ -473,22 +512,12 @@
 
         <div class="col-md-10 offset-md-2 body_bckgrnd">
           <div class="col-md-12 addon_content">
-            <ul class="addon_head">
-              <li>Add-On Process</li>
-            </ul>
+            <ul class="addon_head"><li>Add-On Process</li></ul>
 
             <div class="tab addon_tab">
-              <button class="process_tab_link" onclick="moveReport(event, 'addon_process')"><i class="fa fa-plus-square" aria-hidden="true"></i>
-                <b>Process Creation</b>
-              </button>
-              <button class="category_setup_tablink" onclick="moveReport(event, 'addon_category_setup')"><i class="fa fa-list-alt" aria-hidden="true"></i>
-                <b>Category Setup</b>
-              </button>
-              <button class="task_status_tab_link" onclick="moveReport(event, 'addon_task_status')"><i class="fa fa-bar-chart" aria-hidden="true"></i>
-                <b>Status</b>
-              </button>
+              <button class="process_tab_link" onclick="moveReport(event, 'addon_process')"><b>Process Creation</b></button>
             </div>
-
+            
             <div id="addon_creation">
               <form method="POST" action="{{url_for('addon')}}" onsubmit="addon_submit(event)">
                 <ul class="creation_type">
@@ -508,7 +537,7 @@
                   </li>
                   <li id="addon_type">
                     <div class="wrap_label">
-                      <label for="addon_type">Add-On Type</label>
+                      <label for="addon_type">Type</label>
                       <select name="addon_type">
                         <option value="">Select Type</option>
                         <option value="Process Creation">Process Creation</option>
@@ -517,8 +546,8 @@
                     </div>
                   </li>
                   <li>
-                    <button class="add_more_process" type="button"  onclick="multiprocess_adding()">+ more process</button>
-                    <button class="add_more_tasks" type="button"  onclick="multitasks_adding()">+ more task</button>
+                    <button class="add_more_process" type="button"  onclick="multiprocess_adding()">Add Process</button>
+                    <button class="add_more_tasks" type="button"  onclick="multitasks_adding()">Add Task</button>
                   </li>
                 </ul>
                 <ul id="creation_progress_1">
@@ -526,10 +555,9 @@
                     <label for="process_creation_1">Process Name</label>
                     <input name="process_creation_1" type="text" placeholder="Type new process here...">
                   </li>
-
                   <li>
                     <div id="multiuser_container_1">
-                      <button class="multiuser_btn" type="button" style="outline: none !important;" onclick="users_drop(event)"><i class="fa fa-user-plus"></i>Map Selective Users</button>
+                      <button class="multiuser_btn" type="button" style="outline: none !important;" onclick="users_drop(event)">Map Selective Users</button>
                       <div class="multiuser_content_1 d-none shadow rounded menu">
                         {% for project_name, process_data in received_data['project_user_data'].items() %}
                           {% if project_name != "All" %}
@@ -553,7 +581,7 @@
                   <li><h6>OR</h6></li>
                   <li>
                     <div id="allusers_container_1">
-                      <button class="alluser_btn" type="button" style="outline: none !important;" onclick="allusers_drop(event)"><i class="fa fa-users"></i>Map All Users</button>
+                      <button class="alluser_btn" type="button" style="outline: none !important;" onclick="allusers_drop(event)">Map All Users</button>
                     </div>
                   </li>
                   <li>
@@ -618,80 +646,6 @@
               {% endif %}
             </div>
 
-            <div id="addon_category_setup" class="category_setup_tab_content" style="padding: 10px;">
-              <form method="POST" action="{{url_for('addon')}}" onsubmit="SetupfinalSubmision(event)">
-                <ul class="creation_type">
-                  <li id="category_project">
-                    <label for="category_project">Project</label>
-                    <select name="category_project">
-                      <option value="">Select Project</option>
-                      {% for project, values in received_data['employee_projects'].items() %}
-                        {% if values['status'] == 'Active' %}
-                          <option value="{{project}}">{{project}}</option>
-                        {% endif %}
-                      {% endfor %}
-                    </select> 
-                    <input style="display: none;" name="category_project_id" id="category_project_id" type="text" for="category_project" readonly>
-                  </li>
-                </ul>
-
-                <div id="category_creation_1" class="row col-md-12" data-row="1">
-                  <!-- <span class="close setup_close" onclick="SetupRemoving(this)">&times;</span> -->
-                  <div class="col-md-4 addon_process_setup_block" id="addon_process">
-                    <label for="addon_process">Process</label>
-                    <input style="display: none;" name="addon_process_id" id="addon_process_id" type="text" for="addon_process" readonly>
-                  </div>
-                  <div class="col-md-3 addon_category_setup_block">
-                    <label>Category/Task</label>
-                    <input name="set_cat_and_task" id="set_cat_and_task" type="text" placeholder="Category or Task">
-                  </div>
-                  <div class="col-md-3 addon_range_setup_block">
-                    <label>Target</label>
-                    <input name="set_target" id="set_target" type="number" placeholder="Count">
-                    <label>Hours</label>
-                    <input name="set_hour" id="set_hour" type="number" placeholder="HH.MM">
-                  </div>
-                  <div class="col-md-1 range_setup_block">
-                    <button type="button" class="setup_clear" onclick="SetupReset(this)">Clear</button>
-                    <button type="button" class="setup_add" onclick="SetupAdding(this)">Add</button>
-                  </div>
-                </div>
-                <div id="new_setup_field"></div>
-                <div class="error_block"><p></p></div>
-                <button type="Submit" class="setup_submit">Submit</button>
-              </form>
-            </div>
-
-            <div id="addon_category_status" class="category_status_tab_content" style="padding: 10px;">
-              <div class="row category_status_table">
-                <table id="ms_table" class="col-md-12 display nowrap">
-                  <thead>
-                    <tr>
-                      {% for entry_value in range(1, 6) %}
-                        <th>Header_{{entry_value}}</th>
-                      {% endfor %}
-                      <th>Edit</th>
-                    </tr>
-                    <tr>
-                      {% for entry_data in range(1, 7) %}
-                        <td></td>
-                      {% endfor %}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for entry_value in range(1, 6) %}
-                      {% set index = loop.index %}
-                      <tr data-col={{index}}>
-                        {% for entry_key in range(1, 6) %}
-                          <td value="{{entry_value}}">Value_{{entry_key}}_{{entry_value}}</td>
-                        {% endfor %}
-                        <td class="row_Revert" id="revert_row" value="file_Revert"><b><i class="fa fa-edit"></i></b></td>
-                      </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-            </div>
           </div>
         </div>
           
@@ -705,19 +659,14 @@
   </section>
   <script type="text/javascript">
     var my_storage = '{{received_data|tojson}}';
+    var acknow_state = '{{acknow_status|tojson}}';
   </script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/jquery.min.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/jquery-1.12.4.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/jquery-ui.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/jquery-confirm.min.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/bootstrap.bundle.min.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/nightly.jquery.dataTables.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/dataTables.fixedHeader.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/popper.min.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/bootstrap-datepicker.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/customize/addon.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/customize/multi-select_table.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/customize/main_js.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/js_custom/tabletoExcel.js')}}"></script>
+  <script src="{{url_for('static', filename= 'js/jquery.min.js')}}"></script>
+  <script src="{{url_for('static', filename= 'js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{url_for('static', filename= 'js/popper.min.js')}}"></script>
+  <script src="{{url_for('static', filename= 'js/bootstrap-datepicker.js')}}"></script>
+  <script src="{{url_for('static', filename= 'js/customize/main_js.js')}}"></script>
+  <script src="{{url_for('static', filename= 'js/customize/addon/addon_common.js')}}"></script>
+  <script src="{{url_for('static', filename= 'js/customize/addon/process_addon.js')}}"></script>
 </body>
 </html>

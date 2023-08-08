@@ -6,6 +6,13 @@ body{
     user-select: none;
 }
 
+.body_bckgrnd{
+    background: #f4f4f4;
+    position: relative;
+    padding-top: 0px;
+}
+
+
 .header_block{
     position: fixed;
     width: 100%;

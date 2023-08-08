@@ -2,53 +2,15 @@ $(document).ready(function($){
     $('[id^="creation_progress"]').css('display', 'none');
     $('.add_more_process, .add_more_tasks').css('display', 'none');
 
-    let firsty = '<select name="addon_process" disabled><option value="">Select Process</option></select>'
-    $('#addon_category_setup #addon_process').append(firsty)
-
     document.onkeydown = function(e) {
         if(e.keyCode == 27){
             $("#acknowModel").fadeOut(1000);
             window.location.href = '/team_lead';
         }
     }
-    $('#addon_creation').css('display','none');
-    $('#addon_category_setup').css('display','block');
-    $('#addon_category_status').css('display','none');
-    // $('button.process_tab_link').css({'color':'#fff','background-color': '#00b1b3', 'font-size': '14px', 'font-weight': '600'})
-    $('button.category_setup_tablink').css({'color':'#fff','background-color': '#00b1b3', 'font-size': '14px', 'font-weight': '600'})
 });
 
-var addon_storage = JSON.parse(my_storage);
-
-
-/* ################################################################ Tab Movement ################################################################ */
-function moveReport(evt, tabname){
-    var iter, tabcontent, tablinks;
-    if(tabname == 'addon_process'){
-        $('#addon_creation').css('display','block');
-        $('#addon_category_setup').css('display','none');
-        $('#addon_category_status').css('display','none');
-        $('button.process_tab_link').css({'color':'#fff','background-color': '#00b1b3', 'font-size': '14px', 'font-weight': '600'})
-        $('button.category_setup_tablink').css({'color':'#000','background-color': 'transparent', 'font-size': '13px', 'font-weight': '600'})
-        $('button.task_status_tab_link').css({'color':'#000','background-color': 'transparent', 'font-size': '13px', 'font-weight': '600'})
-    }else if(tabname == 'addon_category_setup'){
-        $('#addon_category_setup').css('display','block');
-        $('#addon_creation').css('display','none');
-        $('#addon_category_status').css('display','none');
-        $('button.category_setup_tablink').css({'color':'#fff','background-color': '#00b1b3', 'font-size': '14px', 'font-weight': '600'})
-        $('button.process_tab_link').css({'color':'#000','background-color': 'transparent', 'font-size': '13px', 'font-weight': '600'})
-        $('button.task_status_tab_link').css({'color':'#000','background-color': 'transparent', 'font-size': '13px', 'font-weight': '600'})
-    }else if(tabname == 'addon_task_status'){
-        $('#addon_category_status').css('display','block');
-        $('#addon_creation').css('display','none');
-        $('#addon_category_setup').css('display','none');
-        $('button.task_status_tab_link').css({'color':'#fff','background-color': '#00b1b3', 'font-size': '14px', 'font-weight': '600'})
-        $('button.process_tab_link').css({'color':'#000','background-color': 'transparent', 'font-size': '13px', 'font-weight': '600'})
-        $('button.category_setup_tablink').css({'color':'#000','background-color': 'transparent', 'font-size': '13px', 'font-weight': '600'})
-    }
-}
-/* ################################################################ Tab Movement ################################################################ */
-
+var data_storage = JSON.parse(my_storage);
 
 function ul_tag_count(){
     var ul_tag_count = ''
@@ -285,6 +247,7 @@ function users_drop_hide(event){
         items[i].classList.add("d-none");
     }
     $("#multiuserDropdown_"+tag_count).attr('class','d-none')
+    // $('.mapped_users_'+tag_count).attr("style","display: none !important");
 }
 
 function dropdownUsers_checking(){
@@ -452,120 +415,3 @@ $('#acknowModel .close').on('click', function(){
     $('#acknowModel').attr("style","display: none");
     window.location.href = '/team_lead';
 })
-
-/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ - Category - Creation @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
-var active_process_list = []
-$('#addon_category_setup #category_project select').on('change', function(){
-    active_process_list = []
-    let selected_cat_project = $(this).val()
-    $.each(addon_storage,function(user_key,user_values){
-        if(user_key == "employee_projects"){
-            if(user_values[selected_cat_project]['status'] == 'Active'){
-                $.each(user_values[selected_cat_project]['process'],function(process_activated, process_fields){
-                    let opt_object = '<option value="'+process_activated+'" data-id="'+user_values[selected_cat_project]['project_id']+'">'+process_activated+'</option>'
-                    active_process_list.push(opt_object)
-                });
-            }
-        }
-    });
-    $('#addon_category_setup #addon_process select').remove()
-    let firsty = '<select name="addon_process"><option value="">Select Process</option>'
-    $('#addon_category_setup #addon_process').append(firsty+active_process_list.join("")+'</select>')
-});
-
-//enter validation input
-function category_creation_validation(){
-    let check_list = [];
-    let error_data = ""
-    $('[id^="category_creation"]').each(function(field_index, field_values){
-        let field_row_number = field_index+1
-        let validate_fieldrow = '#category_creation_'+field_row_number.toString()
-        
-        let input_process_selection = $(validate_fieldrow+' #addon_process select').val();
-        if(input_process_selection == ''){
-            error_data = [field_row_number, "Please select process.."]
-            check_list.push(error_data);
-        }else{
-            let input_setup_entry = $(validate_fieldrow+' input#set_cat_and_task').val();
-            if(input_setup_entry == ''){
-                error_data = [field_row_number, "Please fill the category/task name.."]
-                check_list.push(error_data);
-            }else{
-                let input_settarget_entry = $(validate_fieldrow+' .addon_range_setup_block #set_target').val();
-                if(input_settarget_entry == ''){
-                    error_data = [field_row_number, "Please set the required target count.."]
-                    check_list.push(error_data);
-                }else{
-                    let input_sethours_entry = $(validate_fieldrow+' .addon_range_setup_block #set_hour').val();
-                    if(input_sethours_entry == ''){
-                        error_data = [field_row_number, "Please set the required hours for the category/task.."]
-                        check_list.push(error_data);
-                    }
-                }
-            }
-        }
-    });
-    return check_list;
-}
-
-// New Field Adding
-function SetupAdding(event){
-    let setup_old_number = $(event).parent().parent().attr('data-row')
-    let triger = category_creation_validation()
-    if (triger.length != 0){
-        $('.error_block').css('display','block')
-        $('.error_block p').text(triger[0][1])
-        event.preventDefault();
-    }else{
-        $('.error_block').css('display','none')
-        $('.error_block p').text('')
-        let setup_tag_count = parseInt(setup_old_number)+1
-        let setup_added = '<div id="category_creation_'+setup_tag_count+'" class="row col-md-12" data-row="'+setup_tag_count+'"><span class="close setup_close" onclick="SetupRemoving(this)">&times;</span><div class="col-md-4 addon_process_setup_block" id="addon_process"><label for="addon_process">Process</label><select name="addon_process"><option value="">Select Process</option>'+active_process_list.join("")+'</select><input style="display: none;" name="addon_process_id" id="addon_process_id" type="text" for="addon_process" readonly></div><div class="col-md-3 addon_category_setup_block"><label>Category/Task</label><input name="set_cat_and_task" id="set_cat_and_task" type="text" placeholder="Category or Task"></div><div class="col-md-3 addon_range_setup_block"><label>Target</label><input name="set_target" id="set_target" type="number" placeholder="Count"><label>Hours</label><input name="set_hour" id="set_hour" type="number" placeholder="HH.MM"></div><div class="col-md-1 range_setup_block"><button type="button" class="setup_clear" onclick="SetupReset(this)">Clear</button><button type="button" class="setup_add" onclick="SetupAdding(this)">Add</button></div></div>'
-        $('#new_setup_field').append(setup_added)
-        if($('#addon_category_setup #category_project select').is(':disabled') == false){
-            $('#addon_category_setup #category_project select').prop('disabled', true);
-        }
-    }
-    $('#category_creation_'+setup_old_number+' .setup_add').css('display', 'none');
-    $('#category_creation_'+setup_old_number+' .setup_close').css('display', 'none');
-    $('#category_creation_'+setup_old_number+' .setup_clear').css('width', '70%')
-}
-
-// Existing Field Removing
-function SetupRemoving(event){
-    let setup_current_number = $(event).parent().attr('data-row')
-    let setup_previous_number = setup_current_number-1
-    $('#category_creation_'+setup_current_number).remove();
-    // Previous Add
-    $('#category_creation_'+setup_previous_number+' .setup_add').fadeIn(750);
-    if (setup_previous_number == 1){
-        $('#category_creation_'+setup_previous_number+' .setup_clear').css('width', '70%')
-        $('#category_creation_'+setup_previous_number+' .setup_close').css('display','none')
-    }else{
-        $('#category_creation_'+setup_previous_number+' .setup_clear').css('width', '100%')
-        $('#category_creation_'+setup_previous_number+' .setup_close').css('display','block')
-    }
-}
-
-// reset setup
-function SetupReset(event){
-    let setup_row_number = $(event).parent().parent().attr('data-row')
-    let reset_setup_field = '#category_creation_'+setup_row_number
-    $('.error_block').css('display','none')
-    $('.error_block p').text('')
-    // clear - select fields
-    $(reset_setup_field+' #addon_process select').val('')
-    $(reset_setup_field+' input#set_cat_and_task').val('')
-    $(reset_setup_field+' .addon_range_setup_block #set_target').val('')
-    $(reset_setup_field+' .addon_range_setup_block #set_hour').val('')   
-}
-
-// Final Submission
-function SetupfinalSubmision(event){
-    let triger = category_creation_validation()
-    if (triger.length != 0){
-        $('.error_block').css('display','block')
-        $('.error_block p').text(triger[0][1])
-        event.preventDefault();
-    }
-}
