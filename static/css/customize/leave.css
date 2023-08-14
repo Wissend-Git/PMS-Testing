@@ -105,6 +105,18 @@ h6.no_data_capsule{
     border-bottom: 1px solid #ccc;
 }
 
+button.leave_status_export{
+    font-size: 13px;
+    margin: 10px 0px;
+    padding: 5px 10px;
+    outline: none;
+    border: 0;
+    background: green;
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 600;
+}
+
 .taking_and_balance_content .balance_status, .taking_and_balance_content .taking_status{
     padding: 2px;
 }
@@ -700,14 +712,14 @@ input#contact{
     font-size: 15px;
 /*    color: #436d70;*/
     color: #cc1313;
-    margin-top: 10%;
     margin-bottom: 5px;
 }
 
 .alert_modal_content img{
     width: 60px; height: 60px;
-    margin-left: 40%;
+    margin-left: 42%;
     margin-bottom: 11px;
+    margin-top: 10%;
 }
 
 /*.alert_modal_content button{*/

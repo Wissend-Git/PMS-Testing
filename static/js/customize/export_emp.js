@@ -130,3 +130,41 @@ $('.logout_export').on('click', function(){
         });
     }
 });
+
+$('.leave_status_export').on('click', function(){
+    var th_value = "";
+    var thead_list = [];
+    var thead_value = "";
+    var tbody_list = [];
+    $('#leave_status_tab #ms_table thead tr th').each(function(){
+        th_value = "<th>"+$(this).text()+"</th>"
+        thead_list.push(th_value)
+    });
+    thead_value = "<thead>"+thead_list.join('')+"</thead>";
+    $('#leave_status_tab #ms_table tbody tr').each(function(){
+        tbody_list.push("<tr>")
+        $('td',this).each(function(){
+            tbody_list.push("<td>"+$(this).text()+"</td>")
+        });
+        tbody_list.push("</tr>")
+    });
+    tbody_value = "<tbody>"+tbody_list.join('')+"</tbody>"
+    table_value = thead_value+tbody_value
+    if ($('#leave_dup_table thead').length == 0){
+        $('#leave_dup_table').append(table_value)
+    }
+    else{
+        $('#leave_dup_table thead').remove();
+        $('#leave_dup_table tbody').remove();
+        $('#leave_dup_table').append(table_value)
+    }
+    setTimeout(3)
+    let table = document.querySelector('#leave_dup_table');
+    TableToExcel.convert(table,{
+        name: 'Leave - Status Report.xlsx',
+        headers: true,     
+        sheet:{
+            name: 'Leave Status'
+        }
+    });
+});

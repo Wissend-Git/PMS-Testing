@@ -536,19 +536,21 @@
               {% if leave_status[0] == [] %}
                 <h6 class="text-center font-weight-bold no_data_capsule">No Records Found</h6>
               {% else %}
+                <button type="button" class="leave_status_export"><i class="fa fa-download" aria-hidden="true" ></i> Export</button>
                 <div class="row leave_status_table">
+                  <table id="leave_dup_table" hidden></table>
                   <table id="ms_table" class="col-md-12 display nowrap">
                     <thead>
                       <tr>
                         {% for entry_data in leave_status[0][0].keys() %}
-                          {% if entry_data != "Balance" and entry_data != "Image" %}
+                          {% if entry_data != "Balance" and entry_data != "Image" and entry_data != "Reporting1id" and entry_data != "Reporting2id" %}
                             <th>{{entry_data}}</th>
                           {% endif %}
                         {% endfor %}
                       </tr>
                       <tr>
                         {% for entry_data in leave_status[0][0].keys() %}
-                          {% if entry_data != "Balance" and entry_data != "Image" %}
+                          {% if entry_data != "Balance" and entry_data != "Image" and entry_data != "Reporting1id" and entry_data != "Reporting2id" %}
                             <td></td>
                           {% endif %}
                         {% endfor %}
@@ -559,7 +561,7 @@
                         {% set index = loop.index %}
                           <tr data-col={{index}}>
                             {% for entry_key,entry_val in entry_data.items() %}
-                              {% if entry_key != "Balance" and entry_key != "Image" %}
+                              {% if entry_key != "Balance" and entry_key != "Image" and entry_key != "Reporting1id" and entry_key != "Reporting2id" %}
                                 {% if entry_key == 'Reason' %}
                                   <td><b id="reason_tooltip">View<label class="reason_tooltiptext">{{entry_val}}</label></b></td>
                                 {% elif entry_key == 'Status' %}
@@ -664,8 +666,8 @@
                                 <label class="perm_hours">Hour<span class="required"> *</span></label>
                                 <select name="perm_hours_type">
                                   <option value="">Permission Hours</option>
-                                  <option value="1hr">1 Hour</option>
-                                  <option value="2hr">2 Hour</option>
+                                  <option value="1">1 Hour</option>
+                                  <option value="2">2 Hour</option>
                                 </select>
                               </div>
                             </div>
@@ -726,9 +728,8 @@
             <div id="alert_modal">
               <div class="alert_modal_content">
                 <span class="close cursor alert_modal_close" style="font-size: 20px; cursor: pointer;"><i class="fa fa-times" aria-hidden="true"></i></span>
-                <p class="alert_modal_text"></p>
                 <img src="static/images/icons/tool_icons/Warning.png" width="20px" height="20px"><br>
-                <a class="alert_modal_visible" href="{{url_for('leave_request')}}">Skip</a><br>
+                <p class="alert_modal_text"></p>
               </div>
             </div>
             <div id="approve_confirm">
@@ -767,9 +768,10 @@
   <script type="text/javascript" src="{{url_for('static', filename= 'js/dataTables.fixedHeader.js')}}"></script>
   <script type="text/javascript" src="{{url_for('static', filename= 'js/popper.min.js')}}"></script>
   <script type="text/javascript" src="{{url_for('static', filename= 'js/bootstrap-datepicker.js')}}"></script>
+  <script type="text/javascript" src="{{url_for('static', filename= 'js/customize/leave.js')}}"></script>
   <script type="text/javascript" src="{{url_for('static', filename= 'js/customize/multi-select_table.js')}}"></script>
   <script type="text/javascript" src="{{url_for('static', filename= 'js/customize/main_js.js')}}"></script>
   <script type="text/javascript" src="{{url_for('static', filename= 'js/js_custom/tabletoExcel.js')}}"></script>
-  <script type="text/javascript" src="{{url_for('static', filename= 'js/customize/leave.js')}}"></script>
+  <script type="text/javascript" src="{{url_for('static', filename= 'js/customize/export_emp.js')}}"></script>
 </body>
 </html>

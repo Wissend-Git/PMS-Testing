@@ -373,7 +373,6 @@ def addon():
 		else:
 			acknowledgement = ""
 			form_data = request.form
-			print(form_data)
 			if session.get('wissend_id', 0) != 0:
 				emp_storage = db_functions.employee_project_data(session)
 				if isinstance(emp_storage, int) == False:
@@ -384,7 +383,6 @@ def addon():
 						else:
 							acknowledgement = db_functions.process_creation_insert(form_data, emp_storage)
 							acknowledgement['addon_type'] = 'Process Creation Status'
-						print("Found")
 						return render_template("addon_page.html", received_data=emp_storage, acknow_status=acknowledgement)
 					elif form_data.get("assign_project_id",0) != 0:
 						db_functions.shift_data_insert(session,form_data)
@@ -436,7 +434,21 @@ def leave_request():
 						if leave_status_result != []:
 							if leave_status_result[0] != []:
 								for each_dict in leave_status_result[0]:
-									leave_data.append({'Apply Date': str(each_dict['apply_date']), 'Emp ID': str(each_dict['wiss_employee_id']), 'Name': str(each_dict['employee_name']), 'Type': str(each_dict['apply_type']), 'From Date': str(each_dict['from_date']), 'To Date': str(each_dict['to_date']), '# Days': str(each_dict['num_days']), '# Hours': str(each_dict['num_hours']), 'Status': str(each_dict['status']), 'Reason': str(each_dict['reason']), 'Image':f"/static/images/employee_images/{str(each_dict['wiss_employee_id'])}.jpg"})
+									leave_data.append({
+										'Apply Date': str(each_dict['apply_date']),
+										'Emp ID': str(each_dict['wiss_employee_id']),
+										'Name': str(each_dict['employee_name']),
+										'Type': str(each_dict['apply_type']),
+										'From Date': str(each_dict['from_date']),
+										'To Date': str(each_dict['to_date']),
+										'# Days': str(each_dict['num_days']),
+										'# Hours': str(each_dict['num_hours']),
+										'Status': str(each_dict['status']),
+										'Reason': str(each_dict['reason']),
+										'Image':f"/static/images/employee_images/{str(each_dict['wiss_employee_id'])}.jpg",
+										'Reporting1id': str(each_dict['reporting_id_1']),
+										'Reporting2id': str(each_dict['reporting_id_2'])
+									})
 							if leave_status_result[1] != []:
 								leave_balance_data = {'reporting1': {'name':str(leave_status_result[1]['reporting_1']), 'wiss_id':str(leave_status_result[1]['wiss_report_id_1']), 'emp_id':str(leave_status_result[1]['rep_emp_id1']),'Image': f"/static/images/employee_images/{str(leave_status_result[1]['wiss_report_id_1'])}.jpg"},'reporting2': {'name':str(leave_status_result[1]['reporting_2']), 'wiss_id':str(leave_status_result[1]['wiss_report_id_2']), 'emp_id':str(leave_status_result[1]['rep_emp_id2']),'Image': f"/static/images/employee_images/{str(leave_status_result[1]['wiss_report_id_2'])}.jpg"},
 								'Balance': {'cl':str(leave_status_result[1]['CL']),'sl':str(leave_status_result[1]['SL']),'lop':str(leave_status_result[1]['LOP']),'perm':str(leave_status_result[1]['permission']),'od':str(leave_status_result[1]['od']),'scl':str(leave_status_result[1]['scl'])}}
@@ -462,7 +474,21 @@ def leave_request():
 			if leave_status_result != []:
 				if leave_status_result[0] != []:
 					for each_dict in leave_status_result[0]:
-						leave_data.append({'Apply Date': str(each_dict['apply_date']), 'Emp ID': str(each_dict['wiss_employee_id']), 'Name': str(each_dict['employee_name']), 'Type': str(each_dict['apply_type']), 'From Date': str(each_dict['from_date']), 'To Date': str(each_dict['to_date']), '# Days': str(each_dict['num_days']), '# Hours': str(each_dict['num_hours']), 'Status': str(each_dict['status']), 'Reason': str(each_dict['reason']), 'Image':f"/static/images/employee_images/{str(each_dict['wiss_employee_id'])}.jpg"})
+						leave_data.append({
+							'Apply Date': str(each_dict['apply_date']),
+							'Emp ID': str(each_dict['wiss_employee_id']),
+							'Name': str(each_dict['employee_name']),
+							'Type': str(each_dict['apply_type']),
+							'From Date': str(each_dict['from_date']),
+							'To Date': str(each_dict['to_date']),
+							'# Days': str(each_dict['num_days']),
+							'# Hours': str(each_dict['num_hours']),
+							'Status': str(each_dict['status']),
+							'Reason': str(each_dict['reason']),
+							'Image':f"/static/images/employee_images/{str(each_dict['wiss_employee_id'])}.jpg",
+							'Reporting1id': str(each_dict['reporting_id_1']),
+							'Reporting2id': str(each_dict['reporting_id_2'])
+						})
 				if leave_status_result[1] != []:
 					leave_balance_data = {'reporting1': {'name':str(leave_status_result[1]['reporting_1']), 'wiss_id':str(leave_status_result[1]['wiss_report_id_1']), 'emp_id':str(leave_status_result[1]['rep_emp_id1']),'Image': f"/static/images/employee_images/{str(leave_status_result[1]['wiss_report_id_1'])}.jpg"},'reporting2': {'name':str(leave_status_result[1]['reporting_2']), 'wiss_id':str(leave_status_result[1]['wiss_report_id_2']), 'emp_id':str(leave_status_result[1]['rep_emp_id2']),'Image': f"/static/images/employee_images/{str(leave_status_result[1]['wiss_report_id_2'])}.jpg"},
 					'Balance': {'cl':str(leave_status_result[1]['CL']),'sl':str(leave_status_result[1]['SL']),'lop':str(leave_status_result[1]['LOP']),'perm':str(leave_status_result[1]['permission']),'od':str(leave_status_result[1]['od']),'scl':str(leave_status_result[1]['scl'])}}
@@ -1038,6 +1064,7 @@ def team_lead():
 						print("Team Lead - Session Timeout")
 						return redirect('/logout')
 					emp_storage = db_functions.employee_project_data(session)
+					emp_storage['user_shift_time'] = session['user_shift_time']
 					if isinstance(emp_storage, int) == False:
 						if session['emp_type'] in ['ADMIN','TA','TM','TL','TLR','TMR','TBH','TBHR','TQA']:
 							emp_storage['check_key_lead'] = 0
@@ -1049,7 +1076,7 @@ def team_lead():
 										for process_data in process_name['process'].values():
 											if str(process_data['lead_id']) == str(session['employee_id']) or str(process_data['manager_id']) == str(session['employee_id']) or str(process_data['business_head_id']) == str(session['employee_id']):
 												emp_storage['check_key_lead'] = 1
-								return render_template("team_lead_page.html", received_data=emp_storage)
+								return render_template("team_lead_page.html", received_data=emp_storage, session_storage=session)
 							else:
 								return redirect("change_password")
 						else:
@@ -1079,6 +1106,7 @@ def employee_page():
 						print("Employee Page - Session Timeout")
 						return redirect('/logout')
 					emp_storage = db_functions.employee_project_data(session)
+					emp_storage['user_shift_time'] = session['user_shift_time']
 					if isinstance(emp_storage, int) == False:
 						if session['emp_type'] in ['ADMIN','TA','TM','TL', 'TLR', 'TMR','TBH','TBHR','TQA']:
 							if session['wissend_password'] != '0':
@@ -1307,7 +1335,6 @@ def shift_status():
 		if request.method == "GET":
 			status_result = db_functions.shift_status_pickup(session)
 			if status_result != []:
-				print('Coming inv')
 				for each_status_result in status_result:
 					user_dict = {
 								"employee_name":str(each_status_result["employee_name"]),
@@ -1316,8 +1343,6 @@ def shift_status():
 								"designation":str(each_status_result["designation"]),
 								"shift_name":str(each_status_result["shift_name"]),
 								}
-					# print("user_dict",user_dict)
-					# print("Shift",each_status_result)
 					if data_set.get("projects",0) != 0:
 						if not any(d['project_name'] == str(each_status_result['project_name']) for d in data_set["projects"]):
 							user_list = []
@@ -1325,11 +1350,8 @@ def shift_status():
 							data_set["projects"].append({"project_name":str(each_status_result['project_name']),"project_id":str(each_status_result['project_id']),"users":user_list})
 						else:
 							print("Else Part",data_set["projects"])
-					# break
 			if data_set.get("projects",0) != 0:
 				data_set["projects"].append(project_dict)
-			print(data_set)
-			# data_set = "Hai"
 			return render_template_string(str(data_set))
 		else:
 			return render_template_string("Shift assign POST")

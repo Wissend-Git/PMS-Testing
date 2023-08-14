@@ -41,8 +41,8 @@ $(".od_block_segment").datepicker({"dateFormat" : "mm/dd/yyyy", 'autoclose': tru
 
 /* #################################### Alert Module */
 $('.alert_modal_close').on('click', function(){
-  $('#alert_modal').fadeOut(1000);
-  window.location.href = '/leave_request';
+  $('#alert_modal').css('display','none');
+  cancel_execution()
 });
 
 /* #################################### Alert Module */
@@ -73,9 +73,10 @@ function LeaveBalanceAndSelection(){
   let balance_storage = leave_storage[1]['Balance'];
   if(balance_storage['cl'] == '0.0'){$('.apply_for select[name="apply_type"] option[value="CL"]').hide();}
   if(balance_storage['sl'] == '0.0'){$('.apply_for select[name="apply_type"] option[value="SL"]').hide();}
+  if(balance_storage['scl'] == '0.0'){$('.apply_for select[name="apply_type"] option[value="SCL"]').hide();}
   if(balance_storage['perm'] == '0.0'){$('.apply_for select[name="apply_type"] option[value="P"]').hide();}
   if(balance_storage['perm'] == '1.0' ){
-    $('.perm_date_and_session select[name="perm_hours_type"] option[value="2hr"]').hide();
+    $('.perm_date_and_session select[name="perm_hours_type"] option[value="2"]').hide();
   }
 }
 
@@ -232,18 +233,18 @@ function LeaveRestriction(SelectedLeaveCount){
   if(CurrentSelected_LeaveType == 'SL'){
     if(SelectedLeaveCount > 3){
       $('#alert_modal .alert_modal_text').text("Not allowed to apply more than 3 days.");
-      $('#alert_modal').fadeIn(1000);
+      $('#alert_modal').css('display','block');
     }else if(parseFloat(restricted_key['sl']) < SelectedLeaveCount){
       $('#alert_modal .alert_modal_text').text("Apply the leave based on your available balance.");
-      $('#alert_modal').fadeIn(1000);
+      $('#alert_modal').css('display','block');
     }
   }else if(CurrentSelected_LeaveType == 'CL'){
     if(SelectedLeaveCount > 3){
       $('#alert_modal .alert_modal_text').text("Not allowed to apply more than 3 days.");
-      $('#alert_modal').fadeIn(1000);
+      $('#alert_modal').css('display','block');
     }else if(parseFloat(restricted_key['cl']) < SelectedLeaveCount){
       $('#alert_modal .alert_modal_text').text("Apply the leave based on your available balance.");
-      $('#alert_modal').fadeIn(1000);
+      $('#alert_modal').css('display','block');
     }
   }
 }
@@ -342,7 +343,13 @@ function status_and_approval_color(){
   });
 }
 
+var intablechecklist = []
+$(leave_storage[0]).each(function(dd, ele){
+  intablechecklist.push(ele['Reporting1id']+'|'+ele['Reporting2id'])
+});
+
 $('.leave_status_table tbody tr td[value]').on('click',function(){
+  let clickindex = $(this).parent().attr('data-col')
   let table_col_headers = []
   let table_values = []
   let selected_row_values = []
@@ -382,10 +389,14 @@ $('.leave_status_table tbody tr td[value]').on('click',function(){
   }
 
   let mode_change = $(this).text()
+  let checktrreport1 = intablechecklist[clickindex-1].split('|')[0]
+  let checktrreport2 = intablechecklist[clickindex-1].split('|')[1]
+  let checkemp = data_storage['employee_id'].toString()
+
   if(['ADMIN','TA'].includes(data_storage['emp_type'])){
     $('#approve_confirm').css('display','block');
   }else if(['TMR', 'TM', "TBHR", 'TBH'].includes(data_storage['emp_type'])){
-    if(data_storage['emp_id'] == leave_storage[1]['reporting1']['emp_id2'] || data_storage['emp_id'] == leave_storage[1]['reporting2']['emp_id']){
+    if(checkemp == checktrreport1 || checkemp == checktrreport2){
       if (mode_change == 'Pending'){
         $('#approve_confirm').css('display','block');
       }

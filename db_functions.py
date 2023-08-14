@@ -82,7 +82,8 @@ finally:
 				session['emp_type'] = employee_data[0][5]
 				session['desig_role'] = employee_data[0][6]
 				session['entry_login'] = 0
-				
+				session['user_shift_time'] = {'shift_id': '', 'shift_name': '', 'shift_timing_formated': ''}
+				# Atterndance Query
 				attd_query = """
 				SELECT * from `attendance_tracker` WHERE employee_id = '{}' and attendance_date = '{}' limit 1;
 				""".format(session['employee_id'], session['db_date'])
@@ -94,6 +95,22 @@ finally:
 						session['entry_login'] = 1
 					else:	
 						session['entry_login'] = 0
+				# Shift Query
+				shiftget_query = """
+				SELECT shft_rcord.shift_id, shfttime_info.shift_name, CONCAT(
+					DATE_FORMAT(shfttime_info.shift_time_in, '%h:%i %p'),
+					' - ',
+					DATE_FORMAT(shfttime_info.shift_time_off, '%h:%i %p')
+				) as "shift_timing_formated" FROM `shift_assign_records` as shft_rcord
+				INNER JOIN `employees_info` as emp_info on emp_info.employee_id = shft_rcord.employee_id
+				INNER JOIN `shift_timings_info` as shfttime_info on shfttime_info.shift_id = shft_rcord.shift_id
+				WHERE shft_rcord.employee_id = {0} and emp_info.status = 'Active' and shft_rcord.`is_updated` = "N" LIMIT 1;
+				""".format(session['employee_id'])
+				dict_cursor = database_reconnection(cur="dict")
+				dict_cursor.execute(shiftget_query)
+				shift_data = dict_cursor.fetchall()
+				if shift_data != []:
+					session['user_shift_time'] = shift_data[0]
 				result = session
 			else:
 				print("{} | User data not found".format(wissend_id))
@@ -211,6 +228,7 @@ finally:
 		data['log_off_status'] = "Yet to submit"
 		data['log_on_time'] = ""
 		data['log_off_time'] = ""
+		data['user_shift_time'] = ""
 		try:
 			if session_data['emp_type'] in ['ADMIN', 'TA', 'MA', 'MU','TQA']:
 				emp_query = " WHERE emp_prcs_tbl.status = 'Active' "

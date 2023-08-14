@@ -427,17 +427,12 @@
               <div class="col-md-5 announcement_content">
                 <div class="announcement_block">
                   <div class="row">
-                    <h6>AI - Explore Contest</h6>
+                    <h6>Independence Day Celebration</h6>
                     <div class="click_order">
                       <ul>
-                        <li>&#10687; Refer to our meeting yesterday on AI exploration ideas.</li>
-                        <li>&#10687; Click the link below to submit your ideas.</li>
-                        <li>&#10687; This will be open till 28th July 2023 till 6.00pm</li>
+                        <li>&#10687; Click the below link to submit your nomination.</li>
                       </ul>
-                      <a target="_blank" id="tooltip" href="https://docs.google.com/forms/d/e/1FAIpQLSfirw66dFJvm8VdfV6oDowhFhVoVrZfE0ZUIOGL0Qgm2_PquQ/viewform">Form Link →</a>
-                      {% for pdf_source in received_data['template_pdf_path']['Contest'] %}
-                        <a target="_blank" href="{{pdf_source[0]}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="padding-right: 5px"></i> View PDF</a>
-                      {% endfor %}
+                      <a target="_blank" id="tooltip" href="https://docs.google.com/forms/d/e/1FAIpQLSdU1VPVqslyhavQbhOSO5O2WYe5B1fAQiKPRvqUIylTsftJlg/viewform">Form Link →</a>
                     </div>
                   </div>
                 </div>
@@ -452,6 +447,24 @@
                       <li class="col-md-12 profile_id"><h7 style="font-style: bold; text-align: center; margin-left: 10px;">{{received_data['wissend_id']}}</h7></li>
                       <li class="col-md-12 profile_name"><h3 style="font-style: bold; font-weight: 600; text-align: center !important; margin-left: 10px;">{{received_data['employee_name']}}</h3></li>
                       <li class="col-md-12 profile_designation"><h7 style="font-style: bold; text-align: center; margin-left: 10px;">{{received_data['employee_designation']}}</h7></li> 
+                      <li class="col-md-12 profile_shift" style="margin-top: 20px;">
+                        {% if 'General' in received_data['user_shift_time']['shift_name'] %}
+                          <b style="font-size: 13px;padding: 5px 0px 5px 5px;border-radius: 3px;color: #457b9d;border:1px solid #457b9d">
+                            General Shift
+                            <span style="font-size: 13px;background: #457b9d;color: #fff;padding: 5px 15px;margin-left: 10px;">{{received_data['user_shift_time']['shift_timing_formated']}}</span>
+                          </b>
+                        {% elif 'Second' in received_data['user_shift_time']['shift_name'] %}
+                          <b style="font-size: 13px;padding: 5px 0px 5px 5px;border-radius: 3px;color: #457b9d;border:1px solid #457b9d">
+                            Second Shift
+                            <span style="font-size: 13px;background: #457b9d;color: #fff;padding: 5px 15px;margin-left: 10px;">{{received_data['user_shift_time']['shift_timing_formated']}}</span>
+                          </b>
+                        {% elif 'Night' in received_data['user_shift_time']['shift_name'] %}
+                          <b style="font-size: 13px;padding: 5px 0px 5px 5px;border-radius: 3px;color: #457b9d;border:1px solid #457b9d">
+                            Night Shift
+                            <span style="font-size: 13px;background: #457b9d;color: #fff;padding: 5px 15px;margin-left: 10px;">{{received_data['user_shift_time']['shift_timing_formated']}}</span>
+                          </b>
+                        {% endif %}
+                      </li>
                       <li class="col-md-12 info_title">Project Info</li>
                       <li class="col-md-12 profile_block" style="margin-top: 10px;">
                         <p style="font-style: bold; color: #666666;">Projects [ {{received_data['employee_projects'].keys()|length}} ]</p>
